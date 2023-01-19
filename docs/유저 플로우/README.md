@@ -5,3 +5,6 @@
 
 ## Case 1 : Login
 ![](./images/login.PNG)
+
+## Case 2 : Regist Course(Lecture)
+![](/images/regist_course.PNG)
