@@ -1,5 +1,5 @@
 #데이터베이스 테이블 설계
->(User 테이블, Studio 테이블, Lecture 테이블, LectureSchedule 테이블, Yoga 테이블, StudioBoard 테이블, Token 테이블, QuestionBoard 테이블, M:N 연관 관계 테이블 등) 설계
+>각 테이블 별 칼럼 수정 및 설계 구체화
 
 ![데이터베이스 테이블 설계1](../../image/Database_테이블_설계_page-0001.jpg)
 ![데이터베이스 테이블 설계2](../../image/Database_테이블_설계_page-0002.jpg)

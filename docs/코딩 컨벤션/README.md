@@ -206,7 +206,8 @@
 - Reference
     
     [9. Naming Conventions](https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html)
-    
+
+## 깃 컨벤션
 
 ## Github
 
@@ -217,3 +218,5 @@
     [](https://t1.kakaocdn.net/service_if_kakao_prod/file/file-1636525934056)
     
     [게으른 개발자](https://trustyoo86.github.io/github/2019/02/15/github-template.html)
+
+    깃 컨벤션 참고: https://velog.io/@shin6403/Git-git-%EC%BB%A4%EB%B0%8B-%EC%BB%A8%EB%B2%A4%EC%85%98-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
