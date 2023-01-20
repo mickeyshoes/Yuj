@@ -101,3 +101,61 @@
 - 성민
     - 오전 : 개인 공부(webRTC)
     - 오후 : 데이터베이스 설계 → 끝나면 API 문서 작성 예정
+
+# 230119 Daily Scrum
+
+# 스크럼 도중 미안해 금지
+
+### 진행했던 일
+
+- **재성**
+    - 알고리즘 P5 풀다가 접음
+    - 운동(푸샵하고 30분 달림)
+    - 포트폴리오 정리를 위한 1학기 관통 프로젝트 분석(하다 잠)
+    - DB ERD 설계를 위한 Cardinality, Optionality 학습
+        
+        [23.01.18 Cardinality & Optionality](https://www.notion.so/23-01-18-Cardinality-Optionality-8c4ce6936ba742f0b1e4c1f973b89f9e)
+        
+    - 생활코딩 관계형 데이터 모델링 듣기
+        
+        [관계형 데이터 모델링](https://www.youtube.com/playlist?list=PLuHgQVnccGMDF6rHsY9qMuJMd295Yk4sa)
+        
+- 호준
+    - 체력 보충…
+- 인중
+    - 알고리즘 스터디
+- 진호
+    - 눈 어제보다 호전
+    - react 파트 깨작
+    - 도커 영상보며 깨작
+- 현규
+    - 리액트 UseState hook 학습
+    - JWT 토큰 및 로그인 관련 학습
+    - (~현재) 건강상태 악화 ㅜㅜ
+- 성민
+    - [Openvidu](https://www.notion.so/Openvidu-6fca0ec37ce040e19dd8fd06567008cd)
+    - REST API 설계 가이드 봤음 하하
+        
+        [REST API 이해와 설계 - #2 API 설계 가이드](https://www.hides.kr/551)
+        
+
+### 진행할 일
+
+- **재성**
+    - DB 설계 마무리
+    - REST API 설계 최대한 많이 하기(마무리 할 각오)
+    - 최대한 RESTful하게 작성하기
+- 호준
+    - DB 설계, ER다이어그램 작성
+    - API 명세서 작성
+- 인중
+    - 목업 제작
+        - 강사 스튜디오 마무리
+- 진호
+    - 목업 마이페이지 진행
+        - 대시보드 외의 내정보, 수강내역페이지도 만들기
+- 현규
+    - 목업 제작
+        - 회원 가입 및 로그인 페이지 마무리
+        - 전체적 디자인 통일성 확인 및 강사 스튜디오 작업 도움
+- 성민
