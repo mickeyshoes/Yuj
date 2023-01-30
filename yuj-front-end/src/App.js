@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <div class="navbar bg-base-300">
+      <div class="navbar bg-point">
         <div class="flex-1">
           <a class="btn btn-ghost normal-case text-xl">daisyUI</a>
         </div>
@@ -31,7 +31,7 @@ function App() {
           </div>
         </div>
       </div>
-      <h1 className="text-3xl font-bold underline">
+      <h1 className="text-3xl font-bold underline bg-primary">
         Hello world!
       </h1>
       <header className="App-header">
