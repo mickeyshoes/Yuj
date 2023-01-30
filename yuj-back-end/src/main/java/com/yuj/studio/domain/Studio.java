@@ -1,6 +1,6 @@
-package com.yuj.studio;
+package com.yuj.studio.domain;
 
-import com.yuj.user.Users;
+import com.yuj.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +24,6 @@ public class Studio {
     private String description;
 
     @OneToOne
-    @JoinColumn(name = "users_id")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

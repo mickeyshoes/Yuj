@@ -1,6 +1,6 @@
 package com.yuj.lecture.domain;
 
-import com.yuj.user.Users;
+import com.yuj.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,8 +32,8 @@ public class Lecture {
     private int totalCount;
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "yoga_id")

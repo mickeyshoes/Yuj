@@ -1,6 +1,6 @@
-package com.yuj.user;
+package com.yuj.user.domain;
 
-import com.yuj.studio.Studio;
+import com.yuj.studio.domain.Studio;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +15,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Users {
+public class User {
     @Id
     @GeneratedValue
-    @Column(name = "users_id")
+    @Column(name = "user_id")
     private Long userId;
 
     @Column(nullable = false)
@@ -56,7 +56,7 @@ public class Users {
     @JoinColumn(name = "token_id")
     private Token token;
 
-    @OneToOne(mappedBy = "users")
+    @OneToOne(mappedBy = "user")
     private Studio studio;
 
 

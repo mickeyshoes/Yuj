@@ -1,4 +1,4 @@
 package com.yuj.lecture.repository;
 
-public class Repository {
+public class LectureRepository {
 }
