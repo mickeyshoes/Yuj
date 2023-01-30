@@ -209,6 +209,56 @@
 
 ## 깃 컨벤션
 
+## 깃 브랜치 전략
+
+### Simple Git Flow
+![simple-git-flow.png](image/simple-git-flow.png)
+
+### 브랜치 구성
+
+1. **feature**
+    - 기능 개발을 위한 브랜치
+2. **dev**
+    - 배포 전 개발 작업을 통합하는 브랜치
+    - feature 브랜치의 merge 대상이 됨
+3. **master**
+    - 배포가 이루어지는 최종 브랜치
+    - dev 브랜치의 merge 대상이 됨
+    - CI/CD가 적용되어 서버에 자동으로 소스 배포가 이루어짐
+    
+
+### 세부 전략
+
+- **feature 브랜치 생성**
+    - Jira 작업 단위로 브랜치 생성
+    - 많은 브랜치가 발생할 것 ⇒ dev 에 병합 이후 브랜치 삭제
+    - 
+    - 네이밍 규칙 : `{issue-number}-{feature-name}`
+        - ex) `S08P12A504-30-목업-제작-1`
+    - 분기 순서
+        1. 백로그에서 Jira 원격 브랜치 생성
+                
+        2. 로컬에서 원격 브랜치 정보 업데이트하기
+            
+            ```bash
+            $git remote update
+            ```
+            
+        3. 로컬에서 해당 브랜치로 이동하기
+            
+            ```bash
+            $git checkout [브랜치명]
+            ```
+            
+        4. 작업 진행
+- **작업 완료 후 feature → dev 병합 시**
+    - merge request를 작성
+    - 팀원들의 코드리뷰 후 merge approve
+- **feature → dev 병합 이후 작은 수정사항이 발생할 경우**
+    - dev 브랜치에서 수정하고 바로 push
+- **dev → master 병합 시점**
+    - 가능하면 매 스프린트가 끝날 때 병합 진행
+
 ## Github
 
 ![Untitled](image/Untitled%203.png)

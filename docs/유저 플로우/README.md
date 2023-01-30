@@ -9,12 +9,21 @@
 ![](./images/login.PNG)
 
 ### Case 2 : Regist Course(Lecture)
-![](/images/regist_course.PNG)
+![](./images/regist_course.PNG)
 
 ### Case 3 : Take a Lecture
-![](/images/take_course.PNG)
+![](./images/take_course.PNG)
 
 ### Case 4 : Add Comment
-![](/images/review.PNG)
+![](./images/review.PNG)
 
 ## Actor : Teacher
+
+## Case 1 : Login
+![](./images/teacher_login.PNG)
+
+## Case 2 : Add Course(Lecture)
+![](./images/add_course.PNG)
+
+## Case 3 : Start Lecture
+![](./images/start_lecture.PNG)
