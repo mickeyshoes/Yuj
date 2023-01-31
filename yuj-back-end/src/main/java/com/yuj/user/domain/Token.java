@@ -1,4 +1,4 @@
-package com.yuj.user;
+package com.yuj.user.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,5 +21,5 @@ public class Token {
     private String refreshToken;
 
     @OneToOne(mappedBy = "token")
-    private Users users;
+    private User user;
 }
