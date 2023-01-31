@@ -1,9 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 function App() {
   return (
     <div className="App">
+      <AccountBoxIcon />
       <div class="navbar bg-point">
         <div class="flex-1">
           <a class="btn btn-ghost normal-case text-xl">daisyUI</a>
