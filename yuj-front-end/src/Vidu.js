@@ -1,10 +1,10 @@
 import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
 import React, { Component } from 'react';
-import './App.css';
-import UserVideoComponent from './UserVideoComponent';
-import ListMembers from "./ListMembers";
-import Messages from  './Messages'
+import './components/openVidu/OpenVidu.css';
+import UserVideoComponent from './components/openVidu/UserVideoComponent';
+import ListMembers from "./components/openVidu/ListMembers";
+import Messages from './components/openVidu/Messages'
 import { Base64 } from 'js-base64';
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -105,6 +105,7 @@ class Vidu extends Component {
     }
 
     sendmessageByClick() {
+        console.log('문자 보내기', this.state.subscribers);
         this.setState({
             messages: [
                 ...this.state.messages,
@@ -201,27 +202,8 @@ class Vidu extends Component {
                     });
                 });
 
-                // mySession.on('signal:chat', (event) => { 
-
-                //     console.log(219,event)
-                //     let chatdata = event.data.split(',');
-                //     if (chatdata[0] !== this.state.myUserName) { 
-                //         this.setState({
-                //             messages: [
-                //                 ...this.state.messages,
-                //                 {
-                //                     userName: chatdata[0],
-                //                     text: chatdata[1],
-                //                     chatClass: 'messages__item--visitor',
-                //                 },
-                //             ],
-                //         });
-                //     }
-                // })
-
                 // On every Stream destroyed...
                 mySession.on('streamDestroyed', (event) => {
-
                     // Remove the stream from 'subscribers' array
                     this.deleteSubscriber(event.stream.streamManager);
                 });
@@ -239,7 +221,6 @@ class Vidu extends Component {
                     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
                     mySession.connect(token, { clientData: this.state.myUserName })
                         .then(async () => {
-
                             // --- 5) Get your own camera stream ---
 
                             // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
@@ -256,7 +237,6 @@ class Vidu extends Component {
                             });
 
                             // --- 6) Publish your stream ---
-
                             mySession.publish(publisher);
 
                             // Obtain the current video device in use
@@ -347,7 +327,7 @@ class Vidu extends Component {
     async videoControl() { 
         // 비디오 출력 여부를 관리하는 상태변수
         // console.log(this.state.publisher.properties.publishVideo);
-        const { publisher, subscriber } = this.state;
+        const { publisher } = this.state;
         if (publisher.properties.publishVideo === false) {
             publisher.properties.publishVideo = true;
             await publisher.publishVideo(true);
@@ -364,14 +344,15 @@ class Vidu extends Component {
     }
     async voiceControl() { 
         // 음성 출력 여부를 관리하는 상태변수
+        const { publisher } = this.state;
         if (this.state.publisher.properties.publishAudio === false) {
-            this.state.publisher.properties.publishAudio = true;
+            publisher.properties.publishAudio = true;
             await this.state.publisher.publishAudio(true);
             this.setState(() => ({
                 voiceMessage: '음소거 하기'
             }));
         } else { 
-            this.state.publisher.properties.publishAudio = false;
+            publisher.properties.publishAudio = false;
             await this.state.publisher.publishAudio(false);
             this.setState(() => ({
                 voiceMessage: '음소거 해제'
@@ -391,6 +372,7 @@ class Vidu extends Component {
                     },
                 }
             );
+            // 현재 세션에 참가하고 있는 사람들의 세션 아이디, 비디오, 오디오 상태 확인
             let listMembersDemo = [];
             Sessions.data.content.forEach((content) => {
                 content.connections.content.map((c) => {
@@ -415,7 +397,6 @@ class Vidu extends Component {
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
-        const messages = this.state.messages;
 
         return (
             <div className="container">
@@ -467,7 +448,7 @@ class Vidu extends Component {
                         </div>
 
                         {this.state.mainStreamManager !== undefined ? (
-                            <div id="main-video" className="col-md-12">
+                            <div id="main-video" className="col-md-6">
                                 <UserVideoComponent streamManager={this.state.mainStreamManager} />
                                 <div>
                                     {this.state.liston ? (
@@ -498,7 +479,7 @@ class Vidu extends Component {
                                     <span class="material-symbols-outlined">videocam</span> : <span class="material-symbols-outlined">videocam_off</span>}  {this.state.videoMessage}</h3>
                                 </button>
                                 <button class="clickControl" onClick={this.voiceControl}><h3>{this.state.publisher.properties.publishAudio === true ?
-                                    <span class="material-symbols-outlined">mic</span> : <span class="material-symbols-outlined">mic_off</span>}  {this.state.videoMessage}</h3>
+                                    <span class="material-symbols-outlined">mic</span> : <span class="material-symbols-outlined">mic_off</span>}  {this.state.voiceMessage}</h3>
                                 </button>
                                 <button class="clickControl" onClick={this.listControl}><h3>{this.state.liston === true ?
                                     <span class="material-symbols-outlined">person</span> : <span class="material-symbols-outlined">person_off</span>} {this.state.listMessage}</h3>
