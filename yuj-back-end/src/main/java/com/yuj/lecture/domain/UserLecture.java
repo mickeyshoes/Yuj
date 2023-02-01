@@ -21,6 +21,7 @@ public class UserLecture {
     private Long userLectureId;
 
     private LocalDate registDate;
+    @Column(nullable = true)
     private int score;
     private String review;
     private LocalDateTime reviewUpdateDate;
