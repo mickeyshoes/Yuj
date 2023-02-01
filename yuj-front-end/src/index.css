@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-//전체 폰트 적용
+/* 전체 폰트 적용 */
 .App {
     font-family:"nanum Gothic";
 }
