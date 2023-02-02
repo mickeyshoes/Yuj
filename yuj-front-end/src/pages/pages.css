@@ -1,0 +1,46 @@
+input::-webkit-outer-spin-button,
+
+input::-webkit-inner-spin-button {
+
+    -webkit-appearance: none;
+
+    margin: 0;
+
+}
+
+.info-background-image{
+    background-image: url('../assets/infoBackground.png');
+    width: 1396px;
+    height: 945px;
+    opacity: 0.9;
+    margin-left: 120px;
+}
+
+.info-container{
+    width: 605px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin-left: 10%;
+    margin-top: 5%;
+    
+}
+
+.profile-input{
+    margin-top:24px;
+    margin-left: 10px;
+}
+
+.info-input{
+    width:100%;
+}
+
+.mypage-input{
+    opacity: 0.7;
+    width: 100%;
+}
+
+.mypage-save-button{
+    color: white;
+    width: 120px;
+    height: 32px;
+
+}

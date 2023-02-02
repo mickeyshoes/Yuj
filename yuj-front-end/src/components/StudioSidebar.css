@@ -1,0 +1,79 @@
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+/* .side-box{
+    width : 3000px;
+    height : 100vx
+} */
+
+.profile-img{
+    /* position: absolute; */
+    width: 150px;
+    height: 170px;
+    /* margin-left: 75px;
+    margin-top: 108px; */
+    border-radius: 100px;
+    object-fit: cover;
+}
+
+.teacher-nickname{
+    /* position: absolute; */
+    /* width: 189px;
+    height: 46px; */
+    /* left: 57px;
+    top: 317px; */
+    
+    font-family: 'NanumGothic';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.015em;
+    
+    color: #000000;
+}
+
+.teacher-email{
+    font-family: 'Comfortaa';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.015em;
+    
+    color: #000000;
+}
+
+.live-btn{
+    /* position: absolute; */
+    width: 180px;
+    height: 50px;
+    /* left: 60px;
+    top: 526px; */
+    
+    background: #90859A;
+    border-radius: 30px;
+    
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.015em;
+
+    color: #FFFFFF;
+}
+
+.mypage-sidebar-yuj-logo{
+    position : relative;
+    top : 40%;
+}
+
+.sidebar-menu{
+    padding: 0px 70px 0px 70px;
+}

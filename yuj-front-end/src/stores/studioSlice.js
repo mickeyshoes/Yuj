@@ -1,65 +1,26 @@
-/**
- * 1. 필요한 메서드 import 하기
- */
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
+// import axios from 'axios';
 
 
-
-/**
- * 2. Axios 함수 만들기(API를 호출하는 함수)
- */
-
-// 특정 스튜디오의 정보를 가져오는 함수
-const getStudio = createAsyncThunk("GET_STUDIO", async(studioId) => {
-
-	// Studio의 정보를 GET 메소드로 가져오는 api 호출
-	const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${studioId}`);
-
-	// 가져온 Studio 데이터를 리턴
-	return response.data;
-})
-
-// 새로운 스튜디오를 등록하는 함수
-const createStudio = createAsyncThunk("CREATE_STUDIO", async(studio) => {
-
-	// post로 넘겨줄 스튜디오 form 객체 만들기
-	const studioForm = {
-		'userId': studio.teacherId,
-		'title': studio.studioName,
-		'body': studio.studioDesc
-	}
-	console.log(studioForm);
-
-	// 만들어준 스튜디오 form 객체를 post로 보내는 api 호출
-	const response = await axios.post(`https://jsonplaceholder.typicode.com/posts`,JSON.stringify(studioForm),{
-		headers: {
-			'Content-type': 'application/json; charset=UTF-8',
-		}
-	});
-
-	// 저장 성공 여부 데이터를 리턴
-	return response.data;
-})
-
-
-
-
-/**
- * 3. 사용할 State를 정의하는 Slice 만들기
- */
 const studioSlice = createSlice({
 	name:'studioSlice',
 
-	// initialState => State의 초기값
 	initialState:{
-		teacherId: 0,
-		studioName: "초기값",
-		studioDesc: "초기값",
+		studioDetail: {
+			studio_id: 0,
+			user_id: 0,
+			banner_image: './assets/infoBackground.png',
+			description: 
+			`※ 구독자분들과 함께 요가수련하는 요가 안내자입니다.
+			※ 비즈니스 문의 | yogaboyofficial@gmail.com
+			※ 하루10분, 요가로 찾은 내 몸의 선 | 클래스101 | https://101creator.page.link/eW3k
+			※ 건강한 다이어트, 하루 30분 요가 챌린지 | 클래스유 | https://me2.do/GRAbFITs`,
+			nickname: '요가소년',
+			email: 'yogachild@gmail.com',
+		},
 		studioList: [],
 	},
 
-	// reducers => State를 바꿀 수 있는 모든 함수(= action) 정의
 	reducers: {
 		changeStudioName:(state, action) => {
 			const newStudioName = action.payload;
@@ -75,18 +36,7 @@ const studioSlice = createSlice({
 		}
 	},
 
-	// extraReducers => Axios 함수의 상태(Success, Failed, Pending)에 따른 동작 정의
-	extraReducers: {
-		[getStudio.fulfilled]: (state, {payload}) => {
-			console.log("get Studio", payload);
-			state.studioName = payload.title;
-			state.studioDesc = payload.body;
-		},
-		[createStudio.fulfilled]: (state, {payload}) => {
-			console.log("create Studio", payload);
-			alert("Studio created!");
-		}
-	}
+	extraReducers: {}
 });
 
 
@@ -100,6 +50,3 @@ export default studioSlice;
 
 // 일반 action export 하기
 export const { changeStudioName, changeStudioDesc, addStudioToList } = studioSlice.actions;
-
-// Axios 비동기 action export 하기
-export { getStudio, createStudio };

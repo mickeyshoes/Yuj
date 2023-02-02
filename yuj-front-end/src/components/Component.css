@@ -1,0 +1,27 @@
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+/* .side-box{
+    width : 3000px;
+    height : 100vx
+} */
+
+.mypage-sidebar{
+    align-items: center;
+    color : black;
+    line-height : 5;
+    width: 300px;
+    min-height: 788px;
+    height: 100%;
+    font-size : 18px;
+    font-family: 'nanumgothic';
+    display: flex;
+}
+
+.mypage-sidebar-yuj-logo{
+    position : relative;
+    top : 40%;
+}
+
+.sidebar-menu{
+    padding: 0px 70px 0px 70px;
+}
