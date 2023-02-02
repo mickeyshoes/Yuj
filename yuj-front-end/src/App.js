@@ -1,26 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import { BrowserRouter as BrRouter, Route, Navigate, Routes, Outlet } from 'react-router-dom'
-import Vidu from './Vidu'
+import { BrowserRouter } from 'react-router-dom'
+import ComponentsTest from './pages/ComponentsTest'
 
 function App() {
   return (
-    <div className="App">
-      <AccountBoxIcon />
+    <BrowserRouter>
+      <div className="App">
 
-      <BrRouter>
-        <Routes>
-            <Route path='/' element={<Vidu/>}>
-            </Route>
-            <Route path='/chat/*' element={<Outlet/> }>
-                <Route path='stage' element={<Vidu/>}></Route>
-            </Route>
-            <Route path='/*' element={ <Navigate to='/'/>} />
-        </Routes>
-      </BrRouter>
+        <ComponentsTest />
 
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

@@ -1,6 +1,6 @@
-import React, { useState , memo , useEffect , useRef, createRef} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import './index.css';
+import './OpenVidu.css';
 import ListMember from './ListMember' 
 
 const MemberCount = styled.p`

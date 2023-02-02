@@ -1,9 +1,10 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react/prefer-stateless-function */
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const MessageContainer = styled.div`
+    text-align: left;
     width: 316px;
     color: white;
 `;
@@ -21,6 +22,7 @@ const Text = styled.p`
 
 
 const Message = ({ text = 'text not set', userName = 'user Name not set' }) => {
+    console.log(text, userName);
     return (
         <MessageContainer>
             <Username>{userName}</Username>

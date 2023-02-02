@@ -2,7 +2,7 @@
 import React, { useState , memo , useEffect , useRef, createRef} from 'react';
 import styled from 'styled-components';
 import Message from './Message';
-import './index.css';
+import './OpenVidu.css';
 
 const ChatContainer = styled.div`
 `;
@@ -17,7 +17,7 @@ const ChatBox = styled.div`
     word-break: break-all;
     line-break: normal;
     position: absolute;
-    bottom: 13%;
+    bottom: 67%;
     right:0;
     p{
         position: static !important;
@@ -40,11 +40,12 @@ const Messages = ({ session , userName='need to set userName' }) => {
     const [messages, setMessages] = useState([]);
     const inputRef = useRef(null);
 
+    //채팅 받는 부분
     useEffect(() => {
         session.on('signal:chat', (event) => { 
-            // console.log(event.data); //[userName, text]
             let chatdata = event.data.split(',');
-            if (chatdata[0] !== userName) { 
+
+            if (chatdata[0] !== userName) {
                 setMessages(current => {
                     return [...current, {
                         userName: chatdata[0],
@@ -53,7 +54,12 @@ const Messages = ({ session , userName='need to set userName' }) => {
                     }]
                 })
             }
+            
         })
+        
+        return () => {
+            session.off('signal:chat')
+        }
     }, []);
 
     const messageRef = createRef(null);
@@ -68,7 +74,8 @@ const Messages = ({ session , userName='need to set userName' }) => {
         scrollToBottom();
     }, [messages])
 
-    function sendmessageByClick(e) {
+    //채팅 보내는 부분
+    function sendmessageByClick() {
         const currentText = inputRef.current.value;
         setMessages(current => {
             return [
