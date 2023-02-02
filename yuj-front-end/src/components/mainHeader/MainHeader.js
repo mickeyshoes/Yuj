@@ -7,7 +7,7 @@ import './MainHeader.css'
 
 const mainHeader = () => {
   return (
-    <div className="navbar bg-secondary" style={{ height: '100px' }}>
+    <div className="navbar bg-secondary" style={{ height: '90px', minHeight: '90px' }}>
       <div className="flex-1">
         <Link to="/" className="normal-case text-xl">
           <img className='yuj-logo' alt='No Image' src='assets/YujMainLogo.svg' style={{ height: '75px', marginLeft: '40px' }}></img>
@@ -20,8 +20,8 @@ const mainHeader = () => {
         </div>
         <ul className="menu menu-horizontal px-1">
           <li><Link to="/" className={styles.menu}>메인 페이지</Link></li>
-          <li><Link to="/" className={styles.menu}>강의 소개</Link></li>
-          <li><Link to="/" className={styles.menu}>강사 소개</Link></li>
+          <li><Link to="/testLectureCard" className={styles.menu}>강의 소개</Link></li>
+          <li><Link to="/testLectureDetail" className={styles.menu}>강사 소개</Link></li>
           <li><Link to="/" className={styles.menu}>문의사항</Link></li>
         </ul>
         <LoginBox />
