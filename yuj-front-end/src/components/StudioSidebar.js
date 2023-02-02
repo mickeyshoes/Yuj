@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './StudioSidebar.css';
-import yujLogo from '../assets/mypage-sidebar-yuj-logo.png';
 import { Link, Route } from 'react-router-dom';
 import { CommonModal, CommonModalBtn } from '../components/CommonModal';
 import { useNavigate } from 'react-router-dom';
@@ -88,7 +87,7 @@ const StudioSidebar = (props) => {
               })}
 
             </ul>
-            <img className='mypage-sidebar-yuj-logo mt-60 mb-10' src={yujLogo} alt='yuj sidebar logo' />
+            <img className='mypage-sidebar-yuj-logo mt-60 mb-10' src='/assets/mypage-sidebar-yuj-logo.png' alt='yuj sidebar logo' />
           </div>
         </div>
     </>

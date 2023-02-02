@@ -1,6 +1,6 @@
 import React from "react";
 import MypageSidebar from './../components/MypageSidebar';
-import profilePicture from '../assets/tempProfilePicture.jpg'
+
 import MainFooter from './../components/mainFooter/MainFooter';
 import MainHeader from './../components/mainHeader/MainHeader';
 function maxLengthCheck(e) {
@@ -34,7 +34,7 @@ const MyPageInfo = () => {
                                 </label>
                                 <div className="avatar">
                                     <div className="w-24 rounded-full">
-                                        <img src={profilePicture} />
+                                        <img src='/assets/tempProfilePicture.jpg' />
                                     </div>
                                     <input type="file" className="file-input file-input-bordered file-input-accent w-full profile-input mypage-input" />
                                 </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Component.css';
-import yujLogo from '../assets/mypage-sidebar-yuj-logo.png';
+
 import { Link, Route } from 'react-router-dom';
 
 function MypageSidebar() {
@@ -25,7 +25,7 @@ function MypageSidebar() {
 
         <div className="drawer-side">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu p-10  bg-primary bg-base-100 text-base-content mypage-sidebar" >
+          <ul className="menu p-10  bg-primary text-base-content mypage-sidebar" >
             {/* 사이드바 내용물 map이용 출력 */}
             {sidebarMenu.map((menu) => {
               return (
@@ -36,7 +36,7 @@ function MypageSidebar() {
                 </li>
               );
             })}
-            <img className='mypage-sidebar-yuj-logo' src={yujLogo} alt='yuj sidebar logo' />
+            <img className='mypage-sidebar-yuj-logo' src='/assets/mypage-sidebar-yuj-logo.png' alt='yuj sidebar logo' />
 
           </ul>
         </div>

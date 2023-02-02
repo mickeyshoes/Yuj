@@ -1,10 +1,5 @@
 @import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
-/* .side-box{
-    width : 3000px;
-    height : 100vx
-} */
-
 .mypage-sidebar{
     align-items: center;
     color : black;
@@ -19,7 +14,7 @@
 
 .mypage-sidebar-yuj-logo{
     position : relative;
-    top : 40%;
+    top : 15%;
 }
 
 .sidebar-menu{

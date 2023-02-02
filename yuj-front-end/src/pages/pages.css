@@ -9,7 +9,7 @@ input::-webkit-inner-spin-button {
 }
 
 .info-background-image{
-    background-image: url('../assets/infoBackground.png');
+    background-image: '/assets/infoBackground.png';
     width: 1396px;
     height: 945px;
     opacity: 0.9;
@@ -43,4 +43,15 @@ input::-webkit-inner-spin-button {
     width: 120px;
     height: 32px;
 
+}
+
+.dashboard-box{
+    width: 30%;
+    min-width: 357px;
+    height: 415px;
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #EBE8DF;
+    margin: 50px;
 }
