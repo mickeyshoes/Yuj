@@ -1,6 +1,7 @@
 @import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 .mypage-sidebar{
+    background-color: #F1EFE9;
     align-items: center;
     color : black;
     line-height : 5;
@@ -9,12 +10,11 @@
     height: 100%;
     font-size : 18px;
     font-family: 'nanumgothic';
-    display: flex;
 }
 
 .mypage-sidebar-yuj-logo{
     position : relative;
-    top : 15%;
+    top: 40%;
 }
 
 .sidebar-menu{

@@ -8,10 +8,16 @@ input::-webkit-inner-spin-button {
 
 }
 
+.box-font{
+    font-size: 20px;
+    font-weight: 700;
+}
+
 .info-background-image{
-    background-image: '/assets/infoBackground.png';
-    width: 1396px;
-    height: 945px;
+    background-image: url('../../public/assets/infoBackground.png'); /* url사용하니 절대경로 참조가 안되어 직접 assets 접근 */
+    background-repeat: no-repeat;
+    width: 89rem;
+    height: 59rem;
     opacity: 0.9;
     margin-left: 120px;
 }
@@ -47,11 +53,12 @@ input::-webkit-inner-spin-button {
 
 .dashboard-box{
     width: 30%;
-    min-width: 357px;
+    min-width: 10rem;
     height: 415px;
+    min-height:10rem;
     border-width: 2px;
     border-radius: 10px;
     border-style: solid;
     border-color: #EBE8DF;
-    margin: 50px;
+    margin: 1rem;
 }

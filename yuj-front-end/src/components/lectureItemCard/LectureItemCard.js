@@ -11,13 +11,13 @@ const LectureItemCard = () => {
                             <div className='badge badge-outline bg-accent p-4 text-xs font-semibold rounded-xl' style={{ color: '#fff', border: '0' }}>Raja</div>
                             <div className='badge badge-outline bg-success p-4 text-xs font-semibold rounded-xl' style={{ color: '#fff', border: '0' }}>완료</div>
                         </div>
-                        <img src='./assets/Sample.jpg' alt='Card Image' />
+                        <img src='/assets/Sample.jpg' alt='Card Image' />
                     </a>
                 </figure>
                 <div className='card-body'>
                     <div className='flex'>
                         <a href='' className='flex align-center'>
-                            <img className='h-3.5 pr-2' src='./assets/YujMainLogo.svg' />
+                            <img className='h-3.5 pr-2' src='/assets/YujMainLogo.svg' />
                             <div className='text-xs font-bold'>요가소년</div>
                         </a>
                         <div></div>
