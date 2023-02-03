@@ -10,14 +10,15 @@ const ChatBox = styled.div`
     position: absolute;
     background-color: rgba(0, 0, 0, 0.33);
     border-radius: 20px;
-    width: 500px;
+    width: 320px;
     height: 400px;
 
+    z-index: 99;
     overflow-y: scroll;
     word-break: break-all;
     line-break: normal;
-    position: absolute;
-    bottom: 67%;
+    margin: 10px;
+    bottom: 10%;
     right:0;
     p{
         position: static !important;
@@ -28,8 +29,12 @@ const ChatInputContainer = styled.div`
     top: 1000px;
     width: 100%;
     opacity: 0.33;
+
+    display: flex;
+    flex-direction: row;
     #chat_message{
         margin-left: 10px;
+        margin-bottom: 10px;
         margin-right: 10px;
         width: 80%;
         height: 40px;
@@ -107,7 +112,7 @@ const Messages = ({ session , userName='need to set userName' }) => {
                 }
                 <ChatInputContainer>
                     {
-                        <div>
+                        <>
                             <input
                                 ref={inputRef}
                                 id="chat_message"
@@ -115,7 +120,7 @@ const Messages = ({ session , userName='need to set userName' }) => {
                                 placeholder="내용을 입력하세요"
                             />
                             <p className="chatbox__send--footer" onClick={sendmessageByClick}>전송</p>
-                        </div>
+                        </>
                     }
                 </ChatInputContainer>
             </ChatBox>

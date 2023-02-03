@@ -5,24 +5,36 @@ import ListMember from './ListMember'
 
 const MemberCount = styled.p`
     position: relative !important;
-    font-size: 1rem;
+    width: 175px;
+    height: 27px;
+
+    font-family: 'Montserrat';
+    font-style: normal;
     font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    
     color: white;
 `;
 
 const MemberBox = styled.div`
     position: absolute;
+    width: 320px;
+    height: 320px;
+
+    z-index: 99;
     background-color: rgba(0, 0, 0, 0.33);
     border-radius: 20px;
-    width: 500px;
-    height: 310px;
 
+    margin: 10px;
     overflow-y: scroll;
     word-break: break-all;
     line-break: normal;
-    position: absolute;
+    text-align: center;
     bottom: 60%;
     right:0;
+
+    color: white;
 `;
 const ListMembers = ({ listMembers }) => {
     return (

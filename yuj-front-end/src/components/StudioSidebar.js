@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import './StudioSidebar.css';
 import { Link, Route } from 'react-router-dom';
 import { CommonModal, CommonModalBtn } from '../components/CommonModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 const StudioSidebar = (props) => {
 
@@ -19,6 +19,10 @@ const StudioSidebar = (props) => {
 
   const goLiveClicked = () => {
     console.log('Go Live!');
+    // <Link to='/vidu' state={{mySessionId : '20', myUserName : '황아영', myUserType : '강사'}}/>
+    navigate('/vidu', { state: { mySessionId: '20', myUserName: '황아영', myUserType: '강사' } }) 
+      
+    
   }
 
 
@@ -47,7 +51,7 @@ const StudioSidebar = (props) => {
             {
               text: "참여하기",
               className: "btn-accent text-white",
-              onClickEvent: () => {navigate('/login')}
+              onClickEvent: () => goLiveClicked()
             },
             {
               text: "취소하기",

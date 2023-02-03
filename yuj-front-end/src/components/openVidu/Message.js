@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const MessageContainer = styled.div`
     text-align: left;
-    width: 316px;
+    width: 160px;
     color: white;
 `;
 
