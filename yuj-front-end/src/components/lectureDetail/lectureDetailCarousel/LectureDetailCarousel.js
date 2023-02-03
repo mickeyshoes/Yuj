@@ -6,7 +6,7 @@ const LectureDetailCarousel = () => {
         <div>
             <div className="carousel w-full">
                 <div id="item1" className="carousel-item relative justify-center w-full">
-                    <div className='self-center px-20'>
+                    <div className='self-center px-28'>
                         <img src="./assets/Sample.jpg" className="w-full" />
                     </div>
                     <div className="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/2">
@@ -15,7 +15,7 @@ const LectureDetailCarousel = () => {
                     </div>
                 </div>
                 <div id="item2" className="carousel-item relative justify-center w-full">
-                    <div className='self-center px-20'>
+                    <div className='self-center px-28'>
                         <img src="./assets/Sample2.jpg" className="w-full" />
                     </div>
                     <div className="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/2">
@@ -24,7 +24,7 @@ const LectureDetailCarousel = () => {
                     </div>
                 </div>
                 <div id="item3" className="carousel-item relative justify-center w-full">
-                    <div className='self-center px-20'>
+                    <div className='self-center px-28'>
                         <img src="./assets/Sample3.jpg" className="w-full" />
                     </div>
                     <div className="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/2">

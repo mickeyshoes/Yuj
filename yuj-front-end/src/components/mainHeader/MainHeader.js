@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import styles from './MainHeader.module.css'
 import SearchIcon from '@mui/icons-material/Search';
 import LoginBox from './LoginBox';
-import './MainHeader.css'
 
 const MainHeader = () => {
   return (
@@ -16,7 +15,7 @@ const MainHeader = () => {
       <div className="flex-none" >
         <div className="form-control" style={{ position: 'relative', paddingRight: '15px' }}>
           <SearchIcon style={{ position: 'absolute', top:'6px', right:'20px', height:'0.75rem'}}/>
-          <input type="text" placeholder="#강의#강사" className="input input-bordered" />
+          <input type="text" placeholder="#강의#강사" className={styles.search + " input input-bordered"} />
         </div>
         <ul className="menu menu-horizontal px-1">
           <li><Link to="/" className={styles.menu}>메인 페이지</Link></li>
