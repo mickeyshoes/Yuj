@@ -1,0 +1,28 @@
+# exception_ko.yml
+unKnown:
+  code: "-9999"
+  msg: "알수 없는 오류가 발생하였습니다."
+userNotFound:
+  code: "-1000"
+  msg: "존재하지 않는 회원입니다."
+emailLoginFailed:
+  code: "-1001"
+  msg: "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다."
+emailSignupFailed:
+  code: "-1002"
+  msg: "이미 가입된 이메일입니다."
+authenticationEntrypoint:
+  code: "-1003"
+  msg: "해당 리소스에 접근하기 위한 권한이 없습니다."
+accessDenied:
+  code: "-1004"
+  msg: "해당 리소스에 접근할 수 없는 권한입니다."
+refreshTokenInValid:
+  code: "-1005"
+  msg: "리프레쉬 토큰이 잘못되었습니다."
+expiredAccessToken:
+  code: "-1006"
+  msg: "액세스 토큰이 만료되었습니다."
+passwordNotCorrect:
+  code: "-1007"
+  msg: "비밀번호가 일치하지 않습니다."

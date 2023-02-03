@@ -1,0 +1,39 @@
+spring:
+  jpa:
+    generate-ddl: 'true'
+    database: mysql
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: create
+    open-in-view: 'false'
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        format_sql: 'true'
+  datasource:
+    url: jdbc:mysql://i8a504.p.ssafy.io:3306/YUJ?serverTimezone=UTC
+    username: admin
+    password: yuj1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+      open-in-view: false
+  profiles:
+    include: jwt
+
+# logging.level.web=DEBUG
+# logging.level.org.hibernate.SQL=DEBUG
+# logging.level.org.hibernate.type.descriptor.BasicBinder=TRACE
+
+# open-vidu
+server:
+  port: '5000'
+  ssl:
+    enabled: 'false'
+
+OPENVIDU_URL: http://localhost:4443/
+OPENVIDU_SECRET: '123123'
