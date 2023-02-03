@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-// import axios from 'axios';
+import axios from 'axios';
 
 
 const studioSlice = createSlice({
@@ -40,13 +40,6 @@ const studioSlice = createSlice({
 });
 
 
-
-/**
- * 4. 만든 Slice, action을 다른 곳에서 사용할 수 있도록 export
- */
-
-// Slice는 default로 export 하기
 export default studioSlice;
 
-// 일반 action export 하기
 export const { changeStudioName, changeStudioDesc, addStudioToList } = studioSlice.actions;
