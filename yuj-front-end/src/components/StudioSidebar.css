@@ -5,6 +5,10 @@
     height : 100vx
 } */
 
+.studio-sidebar{
+    background-color: #F1EFE9;
+}
+
 .profile-img{
     /* position: absolute; */
     width: 150px;
