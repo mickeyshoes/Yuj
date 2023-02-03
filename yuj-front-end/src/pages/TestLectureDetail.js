@@ -8,14 +8,14 @@ const TestLectureDetail = () => {
   return (
     <div className='flex w-full'>
       <StudioSidebar />
-      <div className='flex-auto'>
-        <div className='flex justify-center mt-5'>
+      <div className='px-40 overflow-hidden'>
+        <div className='mt-5'>
           <LectureDetailCarousel />
         </div>
-        <div className='flex justify-center mt-5'>
+        <div className='mt-5'>
           <LectureDetailInfoBox />
         </div>
-        <div className='flex justify-center mt-3'>
+        <div className='mt-3'>
           <LectureDetailSchedule />
         </div>
       </div>

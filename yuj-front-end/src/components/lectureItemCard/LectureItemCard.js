@@ -3,7 +3,7 @@ import React from 'react'
 const LectureItemCard = () => {
     return (
         <div>
-            <div className='card w-80 bg-base-100 shadow-xl'>
+            <div className='card w-72 bg-base-100 shadow-xl'>
                 <figure className='relative'>
                     {/* a 태그는 차후 Link 태그 등으로 교체 */}
                     <a href=''> 
@@ -22,7 +22,7 @@ const LectureItemCard = () => {
                         </a>
                         <div></div>
                     </div>
-                    <p className='card-title text-base'>
+                    <p className='card-title text-sm'>
                         {/* 글자수 제한 및 대체 기능 구현 */}
                         속근육 강화를 위한 20분 파트별 요...
                     </p>
