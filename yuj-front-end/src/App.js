@@ -30,7 +30,6 @@ function App() {
           <Route path="/mypage/info" element={<MyPageInfo />}></Route>
           <Route path="/mypage/lecture" element={<MyPageLecture />}></Route>
         </Routes>
-        
       </BrowserRouter>
       
       {/* end div */}

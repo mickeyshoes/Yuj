@@ -13,16 +13,18 @@ const StudioSidebar = (props) => {
   const user_id = 1;
 
 
+  //강사
   const startLiveClicked = () => {
     console.log('Start Live!');
+    navigate('/viduTeacher', { state: { mySessionId: '20', myUserName: '황아영', myUserType: '강사' } }) 
   }
 
+  //수강생
   const goLiveClicked = () => {
     console.log('Go Live!');
     // <Link to='/vidu' state={{mySessionId : '20', myUserName : '황아영', myUserType : '강사'}}/>
-    navigate('/vidu', { state: { mySessionId: '20', myUserName: '황아영', myUserType: '강사' } }) 
-      
-    
+    // navigate('/viduStudent', { state: { mySessionId: '20', myUserName: '황아영', myUserType: '강사' } })
+    navigate('/viduStudent', { state: { mySessionId: '20', myUserName: '황아영', myUserType: '수강생' } }) 
   }
 
 
@@ -49,9 +51,14 @@ const StudioSidebar = (props) => {
           content={'실시간 강의에 참여하시겠습니까?'} 
           buttons={[
             {
-              text: "참여하기",
+              text: "수강생으로 참여하기",
               className: "btn-accent text-white",
               onClickEvent: () => goLiveClicked()
+            },
+            {
+              text: "강사로 수업 시작하기",
+              className: "btn-accent text-white",
+              onClickEvent: () => startLiveClicked()
             },
             {
               text: "취소하기",

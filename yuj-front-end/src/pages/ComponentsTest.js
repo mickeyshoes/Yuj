@@ -6,7 +6,8 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './Home';
 import Login from './Login';
 import SignIn from './Signin';
-import Vidu from '../utils/FunctionalizedVidu'
+import ViduTeacher from '../utils/FunctionalizedViduTeacher'
+import ViduStudent from '../utils/FunctionalizedViduStudent'
 import StudioPage from './StudioPage';
 import StudioSamplePage from './StudioSamplePage';
 import TestLectureCard from './TestLectureCard';
@@ -22,12 +23,14 @@ const Test = () => {
   return (
     // <div className={Styles.wrapper}>
     <div>
-      {location.pathname !== '/vidu' ? <MainHeader /> : null}
+      {location.pathname !== '/viduTeacher' ? location.pathname !== '/viduStudent' ? <MainHeader /> : null : null}
+      
       <div className={Styles.contentWrapper}>
         <Routes>
           <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path='/vidu' element={<Vidu />} />
+          <Route path='/viduTeacher' element={<ViduTeacher />} />
+          <Route path='/viduStudent' element={<ViduStudent />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/studio" element={<StudioPage />} />
           <Route path="/studiosample" element={<StudioSamplePage />} />
@@ -36,7 +39,8 @@ const Test = () => {
           <Route path="/fileInput" element={<FileInput />} />
         </Routes>
       </div> 
-      {location.pathname !== '/vidu' ? <MainFooter /> : null}
+      {location.pathname !== '/viduTeacher' ? location.pathname !== '/viduStudent' ? <MainFooter /> : null : null}
+      
     </div>
   )
 }

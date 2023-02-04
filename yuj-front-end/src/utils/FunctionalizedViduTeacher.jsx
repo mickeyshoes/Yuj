@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import Vidu from '../pages/Vidu';
+import Vidu from '../pages/ViduTeacher';
 const FunctionalizedVidu = ({...rest}) => {
     const { state } = useLocation();
     
