@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import ReactApexChart from "react-apexcharts";
 
-class MypageWeeklyStudyChart extends React.Component {
+class MyPageWeeklyStudyChart extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
 
-            series: [67],
+            series: [85],
             options: {
                 chart: {
                     height: 350,
@@ -18,7 +18,7 @@ class MypageWeeklyStudyChart extends React.Component {
                         hollow: {
                             margin: 15,
                             size: '70%',
-                            image: '/assets/mypage-header.png',
+                            image: '/assets/chartCenterImage.png',
                             imageWidth: 64,
                             imageHeight: 64,
                             imageClipped: false
@@ -40,7 +40,7 @@ class MypageWeeklyStudyChart extends React.Component {
                 fill: {
                     type: 'image',
                     image: {
-                        src: ['/assets/logo512.png'],
+                        src: ['/assets/chartBackground.jpg'],
                     }
                 },
                 stroke: {
@@ -69,4 +69,4 @@ class MypageWeeklyStudyChart extends React.Component {
 }
 
 
-export default MypageWeeklyStudyChart;
+export default MyPageWeeklyStudyChart;

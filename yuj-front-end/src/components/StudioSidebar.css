@@ -75,7 +75,10 @@
 }
 
 .mypage-sidebar-yuj-logo{
-    position : relative;
+    /* position : relative; */
+    position : sticky;
+    position : -webkit-sticky;
+    top : -60px;
     /* top : 40%; */
 }
 

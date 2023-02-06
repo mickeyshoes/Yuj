@@ -1,24 +1,24 @@
 import React from "react";
-import MypageSidebar from "../components/MypageSidebar";
-import './pages.css';
+import MyPageSidebar from "../components/MyPageSidebar";
+import Styles from "./MyPages.module.css";
 import MainHeader from './../components/mainHeader/MainHeader';
 import MainFooter from "../components/mainFooter/MainFooter";
-import MypageWeeklyStudyChart from '../components/MypageWeeklyStudyChart';
-import MypageCalendar from "../components/MypageCalendar";
+import MyPageWeeklyStudyChart from '../components/MyPageWeeklyStudyChart';
+import MyPageCalendar from "../components/MyPageCalendar";
 
 const MyPageDashBoard = () => {
     return (
         <>
             <MainHeader />
             <container className="flex ml-100">
-                <MypageSidebar />
+                <MyPageSidebar />
                 <main>
                     <div className="mx-28 mt-16">
                     <div className="text-3xl font-bold">마이 페이지 - 대시보드</div>
                         <div className="w-full flex">
-                            <div className="dashboard-box">
+                            <div className={Styles[`dashboard-box`]}>
                                 <div className="flex m-5 justify-between" >
-                                    <div className="box-font">
+                                    <div className={Styles[`box-font`]}>
                                         <div>현재</div>
                                         <div>수강중인</div>
                                         <div>강의</div>
@@ -34,9 +34,9 @@ const MyPageDashBoard = () => {
                                 url링크 걸어서 강의 스튜디오로이동해야함
 
                             </div>
-                            <div className="dashboard-box">
+                            <div className={Styles[`dashboard-box`]}>
                                 <div className="flex m-5 justify-between" >
-                                    <div className="box-font">
+                                    <div className={Styles[`box-font`]}>
                                         <div>수강</div>
                                         <div>완료한</div>
                                         <div>강의</div>
@@ -52,12 +52,12 @@ const MyPageDashBoard = () => {
                                 좌측div에 강의썸네일 우측에는 강의제목, 강의완료 날짜
                                 url링크 걸어서 강의 스튜디오로이동해야함
                             </div>
-                            <div className="dashboard-box">
-                                <div className="m-5 box-font">주간 학습 달성률 컴포넌트</div>
+                            <div className={Styles[`dashboard-box`]}>
+                                <div className={"m-5 " + Styles[`box-font`]}>주간 학습 달성률 컴포넌트</div>
                                 <div>
 
                                     대망의 자바스크립트 차트
-                                    <MypageWeeklyStudyChart />
+                                    <MyPageWeeklyStudyChart />
 
                                 </div>
                                 <div>주간 학습 : 이번주 참석 횟수 계산 / 이번주 모든 횟수 계산</div>
@@ -66,7 +66,7 @@ const MyPageDashBoard = () => {
                         <div className="m-14">
                             <div>학습 일정</div>
                             <div>
-                                <MypageCalendar />
+                                <MyPageCalendar />
                             </div>
                         </div>
                     </div>
