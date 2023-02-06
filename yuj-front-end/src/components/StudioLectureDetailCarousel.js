@@ -1,7 +1,7 @@
 import React from 'react';
 import CircleIcon from '@mui/icons-material/Circle';
 
-const LectureDetailCarousel = () => {
+const StudioLectureDetailCarousel = () => {
     return (
         <div>
             <div className="carousel w-full">
@@ -42,4 +42,4 @@ const LectureDetailCarousel = () => {
     )
 }
 
-export default LectureDetailCarousel
+export default StudioLectureDetailCarousel

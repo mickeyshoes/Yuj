@@ -3,8 +3,8 @@ import MypageSidebar from './../components/MypageSidebar';
 import MainHeader from './../components/mainHeader/MainHeader';
 import MainFooter from "../components/mainFooter/MainFooter";
 import StudioSamplePage from './StudioSamplePage';
-import TestLectureCard from './TestLectureCard';
-import TestLectureDetail from './TestLectureDetail';
+import TestLectureCard from './TestLectureCard(삭제예정)';
+import TestLectureDetail from './TestLectureDetail(삭제예정)';
 
 
 const MyPageLecture = () => {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LectureDetailScheduleCard = () => {
+const StudioLectureDetailScheduleCard = () => {
     return (
         <div className="card w-40 bg-secondary rounded-lg">
             <div className="card-body p-6">
@@ -11,4 +11,4 @@ const LectureDetailScheduleCard = () => {
     )
 }
 
-export default LectureDetailScheduleCard
+export default StudioLectureDetailScheduleCard

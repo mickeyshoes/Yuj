@@ -10,9 +10,11 @@ import ViduTeacher from '../utils/FunctionalizedViduTeacher'
 import ViduStudent from '../utils/FunctionalizedViduStudent'
 import StudioPage from './StudioPage';
 import StudioSamplePage from './StudioSamplePage';
-import TestLectureCard from './TestLectureCard';
-import TestLectureDetail from './TestLectureDetail';
+import TestLectureCard from './TestLectureCard(삭제예정)';
+import TestLectureDetail from './TestLectureDetail(삭제예정)';
 import FileInput from '../components/FileInput';
+import StudioLectureList from './StudioLectureList';
+import StudioLectureDetail from './StudioLectureDetail';
 
 const Test = () => {
   const location = useLocation();
@@ -34,8 +36,10 @@ const Test = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/studio" element={<StudioPage />} />
           <Route path="/studiosample" element={<StudioSamplePage />} />
-          <Route path="/testLecturecard" element={<TestLectureCard />} />
-          <Route path="/testLectureDetail" element={<TestLectureDetail />} />
+          <Route path="/studioLectureList" element={<StudioLectureList />} />
+          <Route path="/studioLectureDetail" element={<StudioLectureDetail />} />
+          {/* <Route path="/testLecturecard" element={<TestLectureCard />} />
+          <Route path="/testLectureDetail" element={<TestLectureDetail />} /> */}
           <Route path="/fileInput" element={<FileInput />} />
         </Routes>
       </div> 

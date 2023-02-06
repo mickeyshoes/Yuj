@@ -7,7 +7,7 @@ import MainFooter from "../components/mainFooter/MainFooter";
 import StudioMainBanner from '../components/StudioMainBanner';
 import StudioMainDescription from '../components/StudioMainDescription';
 import ListTitle from '../components/ListTitle';
-import LectureItemCard from '../components/lectureItemCard/LectureItemCard';
+import LectureItemCard from '../components/LectureItemCard';
 
 
 const StudioPage = () => {
