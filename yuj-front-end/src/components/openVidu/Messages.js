@@ -6,20 +6,28 @@ import './OpenVidu.css';
 
 const ChatContainer = styled.div`
 `;
-const ChatBox = styled.div`
+const Wrapper = styled.div`
     position: absolute;
     background-color: rgba(0, 0, 0, 0.33);
     border-radius: 20px;
+    margin: 10px;
+    bottom: 10%;
+    right:0;
+    z-index: 99;
+`
+
+const ChatBox = styled.div`
     width: 320px;
     height: 320px;
-
     z-index: 99;
     overflow-y: scroll;
     word-break: break-all;
     line-break: normal;
-    margin: 10px;
-    bottom: 10%;
-    right:0;
+    scrollbar-width: none;
+    
+    ::-webkit-scrollbar{
+        display:none;
+    }
     p{
         position: static !important;
     }
@@ -74,13 +82,21 @@ const Messages = ({ session , userName='need to set userName' }) => {
                         chatClass: 'messages__item--visitor',
                     }]
                 })
-            }
-            
+            }  
         })
-        
         return () => {
             session.off('signal:chat')
         }
+    }, []);
+
+    useEffect(() => {
+        session.on("subscribeToSpeechToText", event => {
+            if (event.reason === "recognizing") {
+                console.log("User " + event.connection.connectionId + " is speaking: " + event.text);
+            } else if (event.reason === "recognized") {
+                console.log("User " + event.connection.connectionId + " spoke: " + event.text);
+            }
+        })
     }, []);
 
     const messageRef = createRef(null);
@@ -118,7 +134,7 @@ const Messages = ({ session , userName='need to set userName' }) => {
         
     }
     return (
-        <>
+        <Wrapper>
             <ChatBox className="where" ref={messageRef}>
                 {
                     messages?.map((message, i) => (
@@ -127,7 +143,8 @@ const Messages = ({ session , userName='need to set userName' }) => {
                         </ChatContainer>
                     ))
                 }
-                <ChatInputContainer>
+            </ChatBox>
+            <ChatInputContainer>
                     {
                         <MessageLabel>
                             <input
@@ -142,8 +159,7 @@ const Messages = ({ session , userName='need to set userName' }) => {
                         </MessageLabel>
                     }
                 </ChatInputContainer>
-            </ChatBox>
-        </>
+        </Wrapper>
     )
 }
 

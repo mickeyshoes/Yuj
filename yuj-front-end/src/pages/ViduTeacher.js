@@ -8,10 +8,11 @@ import ListMembers from "../components/openVidu/ListMembers";
 import Messages from '../components/openVidu/Messages'
 import { Base64 } from 'js-base64';
 import { SignalCellularNull } from "@mui/icons-material";
+import { Navigate } from 'react-router-dom';
 
-const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io/";
-const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io/openvidu';
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
+// const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io/";
+const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io:4443';
+const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const OPENVIDU_SERVER_URL = 'http://localhost:4443';
 const OPENVIDU_SERVER_SECRET = '123123';
 
@@ -29,6 +30,9 @@ class Vidu extends Component {
             publisher: undefined,
             subscribers: [],
 
+            // 최초 방문 체크
+            isVisited: false,
+
             // 하단 footer에 표시되는 문구
             videoMessage: '비디오 끄기',
             voiceMessage: '음소거 하기',
@@ -43,6 +47,9 @@ class Vidu extends Component {
             // 참가자 관련
             listMembers: [],
             liston: false,
+
+            // 선택 여부
+            isActive: false,
         };
 
         this.joinSession = this.joinSession.bind(this);
@@ -97,7 +104,7 @@ class Vidu extends Component {
     }
 
     handleMainVideoStream(stream) {
-        console.log('클릭했음', stream);
+        this.setState({ isActive: !this.state.isActive });
         if (this.state.mainStreamManager !== stream) {
             this.setState({
                 mainStreamManager: stream
@@ -281,6 +288,7 @@ class Vidu extends Component {
             mainStreamManager: undefined,
             publisher: undefined
         });
+        
     }
 
     async switchCamera() {
@@ -393,19 +401,27 @@ class Vidu extends Component {
     }
 
     render() {
-        if(this.state.session === undefined){
+        if(this.state.session === undefined && this.state.isVisited === false){
             this.joinSession();
+            this.setState({ isVisited: true });
         }
 
         const VideoContainer = styled.div`
             background: white;
-            display: flex !important;
-            flex-wrap: wrap !important;
+            /* display: flex !important; */
+            /* flex-wrap: wrap !important; */
             justify-content: center;
             top:0px;
             width: 100vw;
             height: 92vh;
             overflow-y: scroll;
+        `;
+
+        const VideoGrid = styled.div`
+            display: flex !important;
+            flex-wrap: wrap !important;
+            width: 100%;
+            height: 100%;
         `;
 
         const ButtonContainer = styled.div`
@@ -422,6 +438,9 @@ class Vidu extends Component {
         console.log('현재 Subscribers 정보 :', this.state.subscribers);
         return (
             <div>
+                {this.state.session === undefined && this.state.isVisited === true ? (
+                    <Navigate to='/studio'></Navigate>
+                ) : null}
                 {this.state.session !== undefined ? (
                     <div>
                         <div>
@@ -442,17 +461,27 @@ class Vidu extends Component {
                                 </div>
                             ) : null}
                         </div>
+                        
                         <VideoContainer>
-                            {this.state.mainStreamManager !== undefined ? (
-                                <div style={{width:'34%'}}>
-                                    <UserVideoComponent streamManager={this.state.mainStreamManager} />
-                                </div>
-                            ) : null}
-                            {this.state.subscribers.map((sub, i) => (
-                                <div key={i} style={{width:'33%'}} onClick={() => this.handleMainVideoStream(sub)}>
-                                    <UserVideoComponent streamManager={sub} onClick={() => { console.log('클릭',sub);} } />
-                                </div>
-                            ))}
+                            <div>
+                                {this.state.mainStreamManager !== undefined && this.state.isActive === true ? (
+                                    <div style={{ position: 'relative', width: 'auto' }} onClick={() => { this.handleMainVideoStream(this.state.mainStreamManager) }}>
+                                        <UserVideoComponent isActive={ this.state.isActive} streamManager={this.state.mainStreamManager} />
+                                    </div>
+                                ) : null}
+                            </div>
+                            <VideoGrid>
+                                {this.state.publisher !== undefined ? (
+                                    <div style={{ position: 'relative', width: '33%' }} onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                                        <UserVideoComponent streamManager={this.state.publisher} />
+                                    </div>
+                                ): null}
+                                {this.state.subscribers.map((sub, i) => (
+                                    <div key={i} style={{ position: 'relative', width:'33%'}} onClick={() => this.handleMainVideoStream(sub)}>
+                                        <UserVideoComponent streamManager={sub} onClick={() => { console.log('클릭',sub);} } />
+                                    </div>
+                                ))}
+                            </VideoGrid>
                         </VideoContainer>
                         {this.state.mainStreamManager !== undefined ? (
                             <ButtonContainer>

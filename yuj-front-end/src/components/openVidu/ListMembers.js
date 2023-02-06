@@ -21,6 +21,7 @@ const MemberBox = styled.div`
     position: absolute;
     width: 320px;
     height: 280px;
+    padding: 20px;
 
     z-index: 99;
     background-color: rgba(0, 0, 0, 0.33);
@@ -28,6 +29,9 @@ const MemberBox = styled.div`
 
     margin: 10px;
     overflow-y: scroll;
+    ::-webkit-scrollbar{
+        display: none;
+    }
     word-break: break-all;
     line-break: normal;
     text-align: center;

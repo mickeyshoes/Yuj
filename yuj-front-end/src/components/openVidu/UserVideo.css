@@ -1,5 +1,5 @@
 video {
-    width: 80%;
+    width: 100%;
     height: auto;
     float: left;
     cursor: pointer;
@@ -7,7 +7,7 @@ video {
 .streamcomponent div {
     position: absolute;
     /* background: #f8f8f8; */
-    color: #777777;
+    /* color: #777777; */
     font-weight: bold;
     border-bottom-right-radius: 4px;
 }

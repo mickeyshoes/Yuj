@@ -9,9 +9,15 @@ import Messages from '../components/openVidu/Messages'
 import { Base64 } from 'js-base64';
 import { SignalCellularNull } from "@mui/icons-material";
 
+import { Navigate } from 'react-router-dom';
+
+// const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io/";
+const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io:4443';
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
-const OPENVIDU_SERVER_URL = 'http://localhost:4443';
+// const OPENVIDU_SERVER_URL = 'http://localhost:4443';
 const OPENVIDU_SERVER_SECRET = '123123';
+
+const OPENVIDU_PRO_SPEECH_TO_TEXT = 'vosk';
 
 class Vidu extends Component {
     constructor(props) {
@@ -27,6 +33,9 @@ class Vidu extends Component {
             publisher: undefined,
             subscribers: [],
 
+            // 최초 방문 체크
+            isVisited: false,
+
             // 하단 footer에 표시되는 문구
             videoMessage: '비디오 끄기',
             voiceMessage: '음소거 하기',
@@ -41,6 +50,9 @@ class Vidu extends Component {
             // 참가자 관련
             listMembers: [],
             liston: false,
+
+            // 선택 여부
+            isActive: false,
         };
 
         this.joinSession = this.joinSession.bind(this);
@@ -95,6 +107,7 @@ class Vidu extends Component {
     }
 
     handleMainVideoStream(stream) {
+        this.setState({ isActive: !this.state.isActive });
         if (this.state.mainStreamManager !== stream) {
             this.setState({
                 mainStreamManager: stream
@@ -120,7 +133,7 @@ class Vidu extends Component {
     }
 
     sendmessageByClick() {
-        console.log('문자 보내기', this.state.subscribers);
+        // console.log('문자 보내기', this.state.subscribers);
         this.setState({
             messages: [
                 ...this.state.messages,
@@ -253,6 +266,7 @@ class Vidu extends Component {
     //채팅창 열고 닫기
     chattoggle() { 
         this.setState({ chaton: !this.state.chaton });
+        
         if (this.state.chaton === false) {
             this.setState({ chatMessage: '채팅창 끄기' });
         } else { 
@@ -263,6 +277,7 @@ class Vidu extends Component {
     leaveSession() {
         // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
         const mySession = this.state.session;
+        // const navigate = useNavigate();
 
         if (mySession) {
             mySession.disconnect();
@@ -273,8 +288,8 @@ class Vidu extends Component {
         this.setState({
             session: undefined,
             subscribers: [],
-            mySessionId: 'SessionA',
-            myUserName: 'Participant' + Math.floor(Math.random() * 100),
+            mySessionId: undefined,
+            myUserName: undefined,
             mainStreamManager: undefined,
             publisher: undefined
         });
@@ -390,19 +405,27 @@ class Vidu extends Component {
     }
 
     render() {
-        if(this.state.session === undefined){
+        if(this.state.session === undefined && this.state.isVisited === false){
             this.joinSession();
+            this.setState({ isVisited: true });
         }
 
         const VideoContainer = styled.div`
             background: white;
-            display: flex !important;
-            flex-wrap: wrap !important;
+            /* display: flex !important;
+            flex-wrap: wrap !important; */
             justify-content: center;
             top:0px;
             width: 100vw;
             height: 92vh;
             overflow-y: scroll;
+        `;
+
+        const VideoGrid = styled.div`
+            display: flex !important;
+            flex-wrap: wrap !important;
+            width: 100%;
+            height: 100%;
         `;
 
         const ButtonContainer = styled.div`
@@ -417,6 +440,9 @@ class Vidu extends Component {
         `;
         return (
             <div>
+                {this.state.session === undefined && this.state.isVisited === true ? (
+                    <Navigate to='/studio'></Navigate>
+                ) : null}
                 {this.state.session !== undefined ? (
                     <div>
                         <div>
@@ -437,20 +463,31 @@ class Vidu extends Component {
                                 </div>
                             ) : null}
                         </div>
+
                         <VideoContainer>
-                            {this.state.mainStreamManager !== undefined ? (
-                                <div style={{width:'50%'}}>
-                                    <UserVideoComponent streamManager={this.state.mainStreamManager} />
-                                </div>
-                            ) : null}
-                            {this.state.subscribers.map((sub, i) => (
-                                ( JSON.parse(sub.stream.connection.data).clientType === '강사' ? (
-                                    <div key={i} style={{ width: '50%' }} onClick={() => this.handleMainVideoStream(sub)}>
-                                        <UserVideoComponent streamManager={sub} />
+                            <div>
+                                {this.state.mainStreamManager !== undefined && this.state.isActive === true ? (
+                                    <div style={{ position: 'relative', width: 'auto' }} onClick={() => {this.handleMainVideoStream(this.state.mainStreamManager) }}>
+                                        <UserVideoComponent isActive={ this.state.isActive} streamManager={this.state.mainStreamManager} />
                                     </div>
-                                ) : null)
-                            ))}
+                                ) : null}
+                            </div>
+                            <VideoGrid>
+                                {this.state.publisher !== undefined ? (
+                                    <div style={{ position: 'relative', width: '50%' }} onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                                        <UserVideoComponent streamManager={this.state.publisher} />
+                                    </div>
+                                ): null}
+                                {this.state.subscribers.map((sub, i) => (
+                                    ( JSON.parse(sub.stream.connection.data).clientType === '강사' ? (
+                                        <div key={i} style={{ width: '50%' }} onClick={() => this.handleMainVideoStream(sub)}>
+                                            <UserVideoComponent streamManager={sub} />
+                                        </div>
+                                    ) : null)
+                                ))}
+                            </VideoGrid>
                         </VideoContainer>
+
                         {this.state.mainStreamManager !== undefined ? (
                             <ButtonContainer>
                                 <img className='yuj-logo' alt='No Image' src='/assets/YujMainLogo.svg' style={{ marginBottom: '10px' }}></img>

@@ -13,7 +13,7 @@ const Member = styled.p`
 const ListMember = ({ listMember }) => {
     return (
         <Member>
-            <>{listMember[0]}</>
+            <p style={{width:'80px'}}>{listMember[0]}</p>
             {
                 listMember[2] === true ?
                 <span class="material-symbols-outlined">videocam</span> : <span class="material-symbols-outlined">  videocam_off</span>
