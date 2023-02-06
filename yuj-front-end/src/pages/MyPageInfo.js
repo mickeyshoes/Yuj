@@ -1,5 +1,5 @@
 import React from "react";
-import MyPageSidebar from './../components/MyPageSidebar';
+import MyPageSidebar from '../components/MyPageSidebar';
 import MainFooter from './../components/mainFooter/MainFooter';
 import MainHeader from './../components/mainHeader/MainHeader';
 import Styles from './MyPages.module.css';
