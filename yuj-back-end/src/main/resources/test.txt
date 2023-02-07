@@ -1,0 +1,42 @@
+# 회원가입
+
+cork2586
+
+{
+  "birthDate": "2023-02-02",
+  "email": "cork2586@naver.com",
+  "gender": "male",
+  "id": "cork2586",
+  "name": "허재성",
+  "nickname": "줴릴",
+  "password": "1234",
+  "phone": "010-5209-5605",
+  "profileImagePath": null,
+  "role": "ROLE_USER"
+}
+
+koreii
+
+{
+  "birthDate": "1995-02-23",
+  "email": "koreii@naver.com",
+  "gender": "male",
+  "id": "koreii",
+  "name": "코레이",
+  "nickname": "허줴릴",
+  "password": "1234",
+  "phone": "010-1234-5678",
+  "profileImagePath": null,
+  "role": "ROLE_TEACHER"
+}
+
+# 회원 수정
+
+{
+  "email": "wotjd5605@naver.com",
+  "name": "허재성",
+  "nickname": "허줴릴",
+  "password": "1234",
+  "phone": "010-5209-1234",
+  "profileImagePath": null
+}
