@@ -44,7 +44,7 @@ const Test = () => {
           <Route path="/studioLectureUpdatePage" element={<StudioLectureUpdatePage />} />
           {/* <Route path="/testLecturecard" element={<TestLectureCard />} />
           <Route path="/testLectureDetail" element={<TestLectureDetail />} /> */}
-          <Route path="/fileInput" element={<FileInput />} />
+          <Route path="/fileInput" element={<FileInput initialLabelText={'확장자: png, jp,g jpeg / 용량 100MB 이하'} onChangeEvent={(file) => {console.log(file)}}/>} />
         </Routes>
       </div> 
       {location.pathname !== '/viduTeacher' ? location.pathname !== '/viduStudent' ? <MainFooter /> : null : null}
