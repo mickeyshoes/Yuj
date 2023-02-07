@@ -65,8 +65,8 @@ const MessageLabel = styled.label`
     }
 `;
 
-const Messages = ({ session , userName='need to set userName' }) => {
-    const [messages, setMessages] = useState([]);
+const Messages = ({ session, messages, setMessages, userName='need to set userName' }) => {
+    // const [messages, setMessages] = useState([]);
     const inputRef = useRef(null);
 
     //채팅 받는 부분
@@ -75,14 +75,19 @@ const Messages = ({ session , userName='need to set userName' }) => {
             let chatdata = event.data.split(',');
 
             if (chatdata[0] !== userName) {
-                setMessages(current => {
-                    return [...current, {
-                        userName: chatdata[0],
-                        text: chatdata[1],
-                        chatClass: 'messages__item--visitor',
-                    }]
+                // setMessages(current => {
+                //     return [...current, {
+                //         userName: chatdata[0],
+                //         text: chatdata[1],
+                //         chatClass: 'messages__item--visitor',
+                //     }]
+                // })
+                setMessages({
+                    userName: chatdata[0],
+                    text: chatdata[1],
+                    chatClass: 'messages__item--visitor',
                 })
-            }  
+            }
         })
         return () => {
             session.off('signal:chat')
@@ -101,7 +106,6 @@ const Messages = ({ session , userName='need to set userName' }) => {
 
     const messageRef = createRef(null);
     const scrollToBottom = () => { 
-        console.log(messageRef.current);
         if (messageRef.current) { 
             messageRef.current.scrollTop = messageRef.current.scrollHeight;
         }
@@ -114,15 +118,20 @@ const Messages = ({ session , userName='need to set userName' }) => {
     //채팅 보내는 부분
     function sendmessageByClick() {
         const currentText = inputRef.current.value;
-        setMessages(current => {
-            return [
-                ...current,
-                {
-                    userName,
-                    text: currentText,
-                    chatClass: 'messages__item--operator',
-                },
-            ]
+        // setMessages(current => {
+        //     return [
+        //         ...current,
+        //         {
+        //             userName,
+        //             text: currentText,
+        //             chatClass: 'messages__item--operator',
+        //         },
+        //     ]
+        // })
+        setMessages({
+            userName,
+            text: currentText,
+            chatClass: 'messages__item--operator',
         })
         const mySession = session;
         mySession.signal({

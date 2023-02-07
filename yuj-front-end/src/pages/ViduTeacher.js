@@ -11,7 +11,7 @@ import { SignalCellularNull } from "@mui/icons-material";
 import { Navigate } from 'react-router-dom';
 
 const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io/";
-const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io';
+const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io:4443';
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const OPENVIDU_SERVER_URL = 'http://localhost:4443';
 const OPENVIDU_SERVER_SECRET = '123123';
@@ -434,8 +434,6 @@ class Vidu extends Component {
             clear: both;
             justify-content: space-evenly !important;
         `;
-
-        console.log('현재 Subscribers 정보 :', this.state.subscribers);
         return (
             <div>
                 {this.state.session === undefined && this.state.isVisited === true ? (
@@ -456,7 +454,7 @@ class Vidu extends Component {
                                 <div className="chatbox__messages" ref="chatoutput">
                                     {
                                         this.state.session ?
-                                            <Messages session={this.state.session} userName={this.state.myUserName} /> : null
+                                            <Messages session={this.state.session} messages={this.state.messages} setMessages={(newMessage) => this.setState({messages:[...this.state.messages,newMessage]})} userName={this.state.myUserName} /> : null
                                     }
                                 </div>
                             ) : null}
