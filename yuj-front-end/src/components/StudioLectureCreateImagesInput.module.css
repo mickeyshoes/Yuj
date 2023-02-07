@@ -1,0 +1,15 @@
+.btnUpload {
+  width: 15rem;
+  height: 10rem;
+  background: #EBE8DF;
+  border-radius: 10px;
+  font-size: xxx-large;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btnUpload:hover {
+  background: #B7AFBD;
+  color: #fff;
+}

@@ -6,7 +6,7 @@ const StudioLectureCreateScheduleInput = () => {
 
     const schedule =
         <div className='flex gap-3 items-center'>
-            <select class="select flex-auto max-w-xs bg-primary">
+            <select className="select flex-auto max-w-xs bg-primary">
                 <option disabled selected>요일</option>
                 <option>Homer</option>
                 <option>Marge</option>
@@ -14,7 +14,7 @@ const StudioLectureCreateScheduleInput = () => {
                 <option>Lisa</option>
                 <option>Maggie</option>
             </select>
-            <select class="select flex-auto max-w-xs bg-primary">
+            <select className="select flex-auto max-w-xs bg-primary">
                 <option disabled selected>시작</option>
                 <option>Homer</option>
                 <option>Marge</option>
@@ -22,7 +22,7 @@ const StudioLectureCreateScheduleInput = () => {
                 <option>Lisa</option>
                 <option>Maggie</option>
             </select>
-            <select class="select flex-auto max-w-xs bg-primary">
+            <select className="select flex-auto max-w-xs bg-primary">
                 <option disabled selected>종료</option>
                 <option>Homer</option>
                 <option>Marge</option>
