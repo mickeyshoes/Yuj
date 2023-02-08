@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 //시작, 끝 시간 셀렉트 박스를 위한 시간 옵션 만들기
 let hour = [];
@@ -18,7 +16,6 @@ const StudioLectureCreateScheduleInput = () => {
   const [dayOfWeek, setDayOfWeek] = useState("default");
   const [startTimeValue, setStartTimeValue] = useState("default");
   const [endTimeValue, setEndTimeValue] = useState("default");
-  const [schedule, setSchedule] = useState([]);
 
   const handleDayOfWeek = (e) => {
     setDayOfWeek(e.target.value);
@@ -32,6 +29,7 @@ const StudioLectureCreateScheduleInput = () => {
 
   const addSchedule = (
     <div className="flex gap-3 items-center">
+      {/* 요일 */}
       <select className="select flex-auto max-w-xs bg-primary" onChange={handleDayOfWeek} value={dayOfWeek}>
         <option value="default" disabled className="bg-info">요일</option>
         <option value='1'>일요일</option>
@@ -72,19 +70,11 @@ const StudioLectureCreateScheduleInput = () => {
           </option>
         ))}
       </select>
-      <DeleteForeverIcon
-        className="text-accent hover:cursor-pointer hover:text-success"
-        style={{ fontSize: "xx-large" }}
-      />
     </div>
   );
 
   return (
     <>
-      <div className="flex items-center mb-4">
-        <p className="text-lg text-success">수업 일정</p>
-        <AddCircleIcon className="ml-2 text-accent hover:cursor-pointer hover:text-success" />
-      </div>
       {addSchedule}
     </>
   );
