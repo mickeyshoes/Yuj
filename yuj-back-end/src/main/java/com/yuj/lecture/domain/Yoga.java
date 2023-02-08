@@ -1,9 +1,6 @@
 package com.yuj.lecture.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +12,11 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Yoga {
     @Id
     @GeneratedValue
+    @Column(name = "yoga_id")
     private Long yogaId;
 
     @Column(nullable = false, unique = true)
@@ -25,5 +24,6 @@ public class Yoga {
 
     @Column(nullable = false, unique = true)
     private String englishName;
+
     private String description;
 }

@@ -8,8 +8,6 @@ import StudioLectureCreateImagesInput from '../components/StudioLectureCreateIma
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckIcon from '@mui/icons-material/Check';
-import { useDispatch } from 'react-redux';
-import { getYogaInfo } from '../stores/commonSlice';
 
 const StudioLectureCreatePage = () => {
     // useHistory의 기능을 모두 useNavigate가 대체 -> 뒤로가기, 앞으로가기 등
@@ -71,8 +69,6 @@ const StudioLectureCreatePage = () => {
         return addScheduleArr;
     }
 
-    const dispatch = useDispatch();
-
     return (
         <>
             <div className="flex w-full">
@@ -91,11 +87,6 @@ const StudioLectureCreatePage = () => {
                             <textarea className={Styles.focusNone + " textarea textarea-bordered w-full my-7"} rows={7} placeholder="강좌에 대한 설명을 입력해 주세요."></textarea>
                             <hr />
                         </div>
-
-                        {/* 테스트 */}
-                        {/* <div className='m-3'>
-                            <button className='btn text-lg border' onClick={() => dispatch(getYogaInfo())}>요가 가져오기 API</button>
-                        </div> */}
 
                         {/* 수업 일정 */}
                         <div className='my-7'>
