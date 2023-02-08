@@ -65,6 +65,7 @@ const StudioSidebar = (props) => {
               className: "btn-primary text-black"
             }
           ]}
+          modalId={'studio-sidebar'}
         />
         <div className="drawer-side">
           <div className='flex flex-col bg-primary items-center pt-16 studio-sidebar'>
@@ -84,7 +85,7 @@ const StudioSidebar = (props) => {
             {
               studioDetail.user_id != user_id ?
               // <button className='live-btn mt-16' onClick={() => goLiveClicked()}>Go Live</button>
-              <CommonModalBtn text={'Go Live'} className={'border-none live-btn mt-12'}/>
+              <CommonModalBtn text={'Go Live'} className={'border-none live-btn mt-12'} modalId={'studio-sidebar'}/>
               :
               <button className='live-btn mt-12' onClick={() => startLiveClicked()}>Start Live</button>
             }

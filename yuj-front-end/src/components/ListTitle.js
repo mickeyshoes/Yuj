@@ -4,7 +4,7 @@ import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOu
 const ListTitle = ({titleText, onClickEvent}) => {
     return (
         <>
-            <div className={'flex items-center justify-center mt-40'}>
+            <div className={'flex items-center justify-center'}>
                 <p className={'text-2xl font-bold text-accent mr-3'}>{titleText}</p>
                 <div className={'flex justify-center items-center'} onClick={() => onClickEvent()}>
                     <ArrowCircleRightOutlinedIcon fontSize="medium" className={'text-accent hover:cursor-pointer'}/>

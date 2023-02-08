@@ -13,11 +13,11 @@ import MainFooter from "../components/mainFooter/MainFooter";
  * 자세한 사용법은 맨 아래 예제를 참고해주세요.
  *
  */
-const CommonModal = ({title, content, buttons=[]}) => {
+const CommonModal = ({title, content, buttons=[], modalId}) => {
 
   return (
     <>
-        <input type="checkbox" id="my-modal" className="modal-toggle" />
+        <input type="checkbox" id={modalId} className="modal-toggle" />
         <div className="modal">
             <div className="modal-box">
                 <h3 className="font-bold text-lg">{title}</h3>
@@ -31,6 +31,7 @@ const CommonModal = ({title, content, buttons=[]}) => {
                             className={btn.className}
                             style={btn.style}
                             onClickEvent={btn.onClickEvent}
+                            modalId={modalId}
                         />
                     )
                 }
@@ -41,10 +42,10 @@ const CommonModal = ({title, content, buttons=[]}) => {
   );
 }
 
-const CommonModalBtn = ({text, className, style, onClickEvent}) => {
+const CommonModalBtn = ({text, className, style, onClickEvent, modalId}) => {
     return (
         <>
-            <label htmlFor="my-modal" onClick={() => onClickEvent ? onClickEvent() : null} style={style} className={"btn "+className}>{text}</label>
+            <label htmlFor={modalId} onClick={() => onClickEvent ? onClickEvent() : null} style={style} className={"btn "+className}>{text}</label>
         </>
     )
 }
