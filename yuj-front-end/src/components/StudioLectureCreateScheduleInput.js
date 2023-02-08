@@ -1,48 +1,93 @@
-import React from 'react';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import React, { useState } from "react";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-const StudioLectureCreateScheduleInput = () => {
+//시작, 끝 시간 셀렉트 박스를 위한 시간 옵션 만들기
+let hour = [];
+for (let i = 1; i < 25; i++) {
+  let op = {};
 
-    const schedule =
-        <div className='flex gap-3 items-center'>
-            <select className="select flex-auto max-w-xs bg-primary">
-                <option disabled selected>요일</option>
-                <option>Homer</option>
-                <option>Marge</option>
-                <option>Bart</option>
-                <option>Lisa</option>
-                <option>Maggie</option>
-            </select>
-            <select className="select flex-auto max-w-xs bg-primary">
-                <option disabled selected>시작</option>
-                <option>Homer</option>
-                <option>Marge</option>
-                <option>Bart</option>
-                <option>Lisa</option>
-                <option>Maggie</option>
-            </select>
-            <select className="select flex-auto max-w-xs bg-primary">
-                <option disabled selected>종료</option>
-                <option>Homer</option>
-                <option>Marge</option>
-                <option>Bart</option>
-                <option>Lisa</option>
-                <option>Maggie</option>
-            </select>
-            <DeleteForeverIcon className='text-accent' style={{fontSize:"xx-large"}}/>
-        </div>
+  //시간을 00:00로 나타내기
+  op.value = ("0" + i).slice(-2);
+  op.label = ("0" + i).slice(-2) + ":00";
 
-
-    return (
-        <>
-            <div className='flex items-center mb-4'>
-                <p className='text-lg text-accent'>수업 일정</p>
-                <AddCircleIcon className='ml-2 text-accent' />
-            </div>
-            {schedule}
-        </>
-    )
+  hour.push(op);
 }
 
-export default StudioLectureCreateScheduleInput
+const StudioLectureCreateScheduleInput = () => {
+  const [dayOfWeek, setDayOfWeek] = useState("default");
+  const [startTimeValue, setStartTimeValue] = useState("default");
+  const [endTimeValue, setEndTimeValue] = useState("default");
+  const [schedule, setSchedule] = useState([]);
+
+  const handleDayOfWeek = (e) => {
+    setDayOfWeek(e.target.value);
+  };
+  const handleSelectStartTime = (e) => {
+    setStartTimeValue(e.target.value);
+  };
+  const handleSelectEndTime = (e) => {
+    setEndTimeValue(e.target.value);
+  };
+
+  const addSchedule = (
+    <div className="flex gap-3 items-center">
+      <select className="select flex-auto max-w-xs bg-primary" onChange={handleDayOfWeek} value={dayOfWeek}>
+        <option value="default" disabled className="bg-info">요일</option>
+        <option value='1'>일요일</option>
+        <option value='2'>월요일</option>
+        <option value='3'>화요일</option>
+        <option value='4'>수요일</option>
+        <option value='5'>목요일</option>
+        <option value='6'>금요일</option>
+        <option value='7'>토요일</option>
+      </select>
+      {/* 시작 시간 */}
+      <select
+        className="select flex-auto max-w-xs bg-primary"
+        onChange={handleSelectStartTime}
+        value={startTimeValue}
+      >
+        <option value="default" disabled  className="bg-info">
+          시작
+        </option>
+        {hour.map((time) => (
+          <option value={time.value} key={time.value}>
+            {time.label}
+          </option>
+        ))}
+      </select>
+      {/* 종료 시간 */}
+      <select
+        className="select flex-auto max-w-xs bg-primary"
+        onChange={handleSelectEndTime}
+        value={endTimeValue}
+      >
+        <option value="default" disabled  className="bg-info">
+          종료
+        </option>
+        {hour.map((time) => (
+          <option value={time.value} key={time.value}>
+            {time.label}
+          </option>
+        ))}
+      </select>
+      <DeleteForeverIcon
+        className="text-accent hover:cursor-pointer hover:text-success"
+        style={{ fontSize: "xx-large" }}
+      />
+    </div>
+  );
+
+  return (
+    <>
+      <div className="flex items-center mb-4">
+        <p className="text-lg text-success">수업 일정</p>
+        <AddCircleIcon className="ml-2 text-accent hover:cursor-pointer hover:text-success" />
+      </div>
+      {addSchedule}
+    </>
+  );
+};
+
+export default StudioLectureCreateScheduleInput;

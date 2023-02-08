@@ -1,23 +1,26 @@
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 .menu {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 500;
     /* font-family: 'nanum Gothic'; */
-    padding: 0.80rem;
+    padding: 0.50rem;
 }
 
 .menu:hover {
     background-color: #F8F6F3;
-    font-weight: 700;
+    font-weight: 900;
+    /* text-decoration: underline; */
+    /* text-shadow:3px 5px 5px #bdbdbd; */
 }
 .menu:focus {
     background-color: #F8F6F3;
 }
 
 .search {
-    height: 1.5rem;
+    height: 1.75rem;
     width: 100%;
-    font-size: 10px;
+    font-size: 11px;
     border: 0;
     border-radius: 25px;
     padding-right: 30px;
@@ -26,6 +29,6 @@
 .search:focus {
     outline: 0;
     outline-offset: 0;
-    font-size: 12px;
+    font-size: 13px;
     width: 200px;
 }

@@ -35,7 +35,7 @@ const StudioLectureCreatePage = () => {
                         </div>
                         <hr />
                         <div className='text-accent text-lg my-7'>
-                            총 수강 정원 &nbsp; <input type='number' className='input input-primary border-2 w-20 text-right' placeholder='' /> &nbsp; 명
+                            총 수강 정원 &nbsp; <input type='number' max='10' className='input input-primary border-2 w-20 text-right' placeholder='' /> &nbsp; 명
                         </div>
                         <hr />
 

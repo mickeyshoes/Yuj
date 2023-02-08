@@ -4,5 +4,6 @@
 
 /* 전체 폰트 적용 */
 .App {
-    font-family:"nanum Gothic";
+    font-family: "nanum Gothic";
+    color: #323131;
 }
