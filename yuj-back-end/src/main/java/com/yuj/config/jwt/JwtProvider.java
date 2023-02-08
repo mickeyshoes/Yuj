@@ -36,9 +36,9 @@ public class JwtProvider {
         secretKey = Base64UrlCodec.BASE64URL.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    //  Jwt 생성
-    public TokenResponseDTO createTokenResponseDto(String userPk, List<String> roles) {
-        System.out.println("In createTokenResponseDto");
+    //  로그인 시 Jwt 생성
+    public TokenResponseDTO createTokenLoginResponseDto(String userPk, List<String> roles) {
+        System.out.println("In createTokenLoginResponseDto");
         System.out.println("userPk = " + userPk);
 
         //  User 구분을 위해 Claims에 User pk 및 authorities 목록 삽입
@@ -59,6 +59,34 @@ public class JwtProvider {
         String refreshToken = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_MILLISECOND))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+
+        return TokenResponseDTO.builder()
+                .grantType("Bearer")
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .accessTokenExpireDate(ACCESS_TOKEN_VALID_MILLISECOND)
+                .build();
+    }
+
+    //  로그인 시 Jwt 생성
+    public TokenResponseDTO createTokenReissueResponseDto(String userPk, List<String> roles, String refreshToken) {
+        System.out.println("In createTokenReissueResponseDto");
+        System.out.println("userPk = " + userPk);
+
+        //  User 구분을 위해 Claims에 User pk 및 authorities 목록 삽입
+        Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
+        claims.put("roles", roles);
+
+        //  생성 날짜, 만료 날짜를 위한 Date
+        Date now = new Date();
+
+        String accessToken = Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_MILLISECOND))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
 

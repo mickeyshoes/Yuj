@@ -5,7 +5,6 @@ import com.yuj.response.SingleResult;
 import com.yuj.user.dto.request.TokenRequestDTO;
 import com.yuj.user.dto.request.UserLoginRequestDTO;
 import com.yuj.user.dto.response.TokenResponseDTO;
-import com.yuj.user.dto.response.UserResponseDTO;
 import com.yuj.user.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,8 +27,8 @@ public class LoginController {
             @ApiParam(value = "로그인 요청 DTO", required = true)
             @RequestBody UserLoginRequestDTO userLoginRequestDTO
             ) {
-        TokenResponseDTO tokenResponseDTO = loginService.login(userLoginRequestDTO);
-        return responseService.getSingleResultSuccess(tokenResponseDTO);
+        TokenResponseDTO tokenLoginResponseDTO = loginService.login(userLoginRequestDTO);
+        return responseService.getSingleResultSuccess(tokenLoginResponseDTO);
     }
 
     @ApiOperation(
