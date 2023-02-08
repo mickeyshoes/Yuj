@@ -1,4 +1,10 @@
 package com.yuj.studio.service;
 
-public class StudioService {
+import com.yuj.studio.dto.response.StudioResponseDTO;
+
+public interface StudioService {
+
+    StudioResponseDTO getStudio(Long studioId) throws Exception;
+    StudioResponseDTO getStudioByUserId(Long userId) throws Exception;
+
 }
