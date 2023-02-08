@@ -3,12 +3,12 @@ USE YUJ;
 INSERT INTO `user` 
 (user_id, id, password, username, nickname, phone, email, birth_date, gender, profile_image, is_teacher, is_admin)
 VALUES
-(0, 'edward1234', '1234', '에드워드', '요가소년', '01043689273','edward777@naver.com',NOW(),'man','./profile1.jpg',1,0),
-(1, 'jessica09', '1234', '제시카', 'jessicaQueen', '01034785412','jessicahello@gmail.com',NOW(),'woman','./profile2.jpg',0,0),
-(2, 'james89', '1234', '제임스', 'JJJMMM', '01038726371','jvm1551@naver.com',NOW(),'man','./profile3.jpg',0,0),
-(3, 'whyijk', '1234', '필립', '필립짱', '01038542345','phlfell@gmail.com',NOW(),'man','./profile4.jpg',0,0),
-(4, 'nanana', '1234', '나미', '난나난나', '01096832236','nanana@naver.com',NOW(),'woman','./profile5.jpg',1,0),
-(5, 'jarvan14', '1234', '자르반', '자르반14세', '01062554499','jarvan@naver.com',NOW(),'man','./profile6.jpg',0,0);
+(12321452, 'edward1234', '1234', '에드워드', '요가소년', '01043689273','edward777@naver.com',NOW(),'man','./profile1.jpg',1,0),
+(48941156, 'jessica09', '1234', '제시카', 'jessicaQueen', '01034785412','jessicahello@gmail.com',NOW(),'woman','./profile2.jpg',0,0),
+(98871232, 'james89', '1234', '제임스', 'JJJMMM', '01038726371','jvm1551@naver.com',NOW(),'man','./profile3.jpg',0,0),
+(33210177, 'whyijk', '1234', '필립', '필립짱', '01038542345','phlfell@gmail.com',NOW(),'man','./profile4.jpg',0,0),
+(41230873, 'nanana', '1234', '나미', '난나난나', '01096832236','nanana@naver.com',NOW(),'woman','./profile5.jpg',1,0),
+(44874875, 'jarvan14', '1234', '자르반', '자르반14세', '01062554499','jarvan@naver.com',NOW(),'man','./profile6.jpg',0,0);
 
 INSERT INTO `studio`
 (studio_id, banner_image, description,user_id)
