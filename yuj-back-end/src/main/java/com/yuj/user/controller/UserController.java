@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @Api(tags = {"User"})
 @RequiredArgsConstructor
 @RestController

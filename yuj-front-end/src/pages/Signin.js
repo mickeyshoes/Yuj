@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const Signin = () => {
   const [userId, setUserId] = useState('');
@@ -34,8 +35,28 @@ const Signin = () => {
     console.log("profileImg = " + profileImg);
 
     let signUpDto = {
-
+      id: "jwelyl",
+      password: "1234",
+      name: "허재성",
+      gender: "male",
+      birthDate: "1995-02-23",
+      nickname: "코레이",
+      email: "cork2586@naver.com",
+      phone: " 010-5209-5605",
+      profileImagePath: "사진경로",
+      role: "ROLE_USER"
     }
+
+    axios.post('https//i8a504.p.ssafy.io', signUpDto)
+      .then(response => {
+      console.log("OK!!!!");
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.log("Error!!!!!!!!!!!!!");
+      console.error(error);
+    });
+    
   };
 
   return (
