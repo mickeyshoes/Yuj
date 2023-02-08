@@ -17,6 +17,7 @@ import StudioLectureListPage from './StudioLectureListPage';
 import StudioLectureDetailPage from './StudioLectureDetailPage';
 import StudioLectureCreatePage from './StudioLectureCreatePage';
 import StudioLectureUpdatePage from './StudioLectureUpdatePage';
+import UserLivePage from './UserLivePage';
 
 const Test = () => {
   const location = useLocation();
@@ -45,6 +46,7 @@ const Test = () => {
           {/* <Route path="/testLecturecard" element={<TestLectureCard />} />
           <Route path="/testLectureDetail" element={<TestLectureDetail />} /> */}
           <Route path="/fileInput" element={<FileInput initialLabelText={'확장자: png, jp,g jpeg / 용량 100MB 이하'} onChangeEvent={(file) => {console.log(file)}}/>} />
+          <Route path="/userlive" element={<UserLivePage/>}></Route>
         </Routes>
       </div> 
       {location.pathname !== '/viduTeacher' ? location.pathname !== '/viduStudent' ? <MainFooter /> : null : null}
