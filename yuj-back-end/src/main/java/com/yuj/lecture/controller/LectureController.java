@@ -3,7 +3,13 @@ package com.yuj.lecture.controller;
 import com.yuj.lecture.dto.request.LectureUpdateActiveRequestDTO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.service.LectureService;
+import com.yuj.response.ListResult;
+import com.yuj.response.ResponseService;
+
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +20,14 @@ import org.springframework.web.bind.annotation.*;
 public class LectureController {
 
     private final LectureService lectureService;
-
+    
+    @GetMapping
+    public ResponseEntity<?> searchLectureByName(@RequestParam("search") String name) throws Exception{
+    	List<LectureResponseDTO> resultList = lectureService.searchLectureByName(name);
+    	
+    	return new ResponseEntity<>(resultList, HttpStatus.OK);
+    }
+    
     @GetMapping("/{lectureId}")
     public ResponseEntity<LectureResponseDTO> getLectureById(@PathVariable long lectureId) throws Exception {
         LectureResponseDTO lectureResponseDTO = lectureService.getLectureById(lectureId);

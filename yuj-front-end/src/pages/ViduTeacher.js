@@ -11,9 +11,9 @@ import { SignalCellularNull } from "@mui/icons-material";
 import { Navigate } from 'react-router-dom';
 
 const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io";
-const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io';
+// const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io';
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
-// const OPENVIDU_SERVER_URL = 'http://localhost:4443';
+const OPENVIDU_SERVER_URL = 'http://localhost:4443';
 const OPENVIDU_SERVER_SECRET = '123123';
 
 class Vidu extends Component {
@@ -79,6 +79,7 @@ class Vidu extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('beforeunload', this.onbeforeunload);
+        this.leaveSession();
     }
 
     onbeforeunload(event) {
@@ -189,6 +190,7 @@ class Vidu extends Component {
                 },
             }
         );
+        console.log('회의 전체 세션 목록 : ', Sessions);
         Sessions.data.content.forEach((content) => { 
             console.log(content);
         })
@@ -270,8 +272,9 @@ class Vidu extends Component {
         }
     }
 
-    leaveSession() {
+    async leaveSession() {
         // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+        this.getSessions();
         const mySession = this.state.session;
 
         if (mySession) {
@@ -281,14 +284,29 @@ class Vidu extends Component {
         // Empty all properties...
         this.OV = null;
         this.setState({
-            session: undefined,
+            session: '',
             subscribers: [],
             mySessionId: 'SessionA',
             myUserName: 'Participant' + Math.floor(Math.random() * 100),
             mainStreamManager: undefined,
             publisher: undefined
         });
-        
+        // OpenVidu.deleteSession(this.state.mySessionId)
+        //     .then(() => { 
+        //         console.log("Session deleted");
+        //     })
+        //     .catch(error => { 
+        //         console.log(error);
+        //     })
+        let Tanos = await axios.delete(
+            '/openvidu/api/sessions/' + this.state.mySessionId,
+            {
+                headers: {
+                    'Authorization': 'Basic ' + Base64.encode('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
+                },
+            }
+        );
+        console.log(Tanos);
     }
 
     async switchCamera() {
@@ -366,14 +384,14 @@ class Vidu extends Component {
         if (this.state.liston === false) {
             this.setState({ listMessage: '참가자 끄기' });
             let Sessions = await axios.get(
-                OPENVIDU_SERVER_URL + '/openvidu/api/sessions',
+                '/openvidu/api/sessions',
                 {
                     headers: {
                         'Authorization': 'Basic ' + Base64.encode('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
                     },
                 }
             );
-
+            console.log(Sessions);
             // 현재 세션에 참가하고 있는 사람들의 세션 아이디, 비디오, 오디오 상태 확인
             let listMembersDemo = [];
             Sessions.data.content.forEach((content) => {
@@ -388,17 +406,16 @@ class Vidu extends Component {
                         let member = {};
                         member[0] = JSON.parse(c.clientData).clientData;
                         member[1] = JSON.parse(c.clientData).clientType;
-                        // member[2] = c.publishers[0].mediaOptions.videoActive;
-                        // member[3] = c.publishers[0].mediaOptions.audioActive;
+                        member[2] = c.publishers[0].mediaOptions.videoActive;
+                        member[3] = c.publishers[0].mediaOptions.audioActive;
                         listMembersDemo.push(member);
                     });
                 }
                 console.log('리스트 데모 : ', listMembersDemo);
-                if (listMembersDemo.length !== 0) {
-                    this.setState(() => ({
-                        listMembers: listMembersDemo
-                    }));
-                }
+                this.setState(() => ({
+                    listMembers: listMembersDemo
+                }));
+                
             })
         } else { 
             this.setState({ listMessage: '참가자 켜기' });
@@ -516,7 +533,7 @@ class Vidu extends Component {
     }
 
     async createSession(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + '/api/openvidu/sessions', { customSessionId: sessionId }, {
+        const response = await axios.post('/api/openvidu/sessions', { customSessionId: sessionId }, {
             headers: { 'Content-Type': 'application/json', },
         });
         console.log("createSession 함수 호출", response.data);
@@ -525,7 +542,7 @@ class Vidu extends Component {
     
     // 백앤드로부터 토큰 요청 (백앤드에서 오픈비두로부터 토큰 받음)
     async createToken(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + '/api/openvidu/sessions/' + sessionId + '/connections', {}, {
+        const response = await axios.post('/api/openvidu/sessions/' + sessionId + '/connections', {}, {
             headers: { 'Content-Type': 'application/json', },
         });
         return response.data; // The token

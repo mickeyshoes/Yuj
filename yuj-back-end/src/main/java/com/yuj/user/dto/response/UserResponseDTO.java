@@ -1,7 +1,11 @@
 package com.yuj.user.dto.response;
 
 import com.yuj.user.domain.User;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -10,6 +14,7 @@ import java.time.LocalDate;
  */
 
 @Getter
+@Builder
 public class UserResponseDTO {
     private String id;
     private String name;
@@ -19,17 +24,6 @@ public class UserResponseDTO {
     private LocalDate birthDate;
     private String gender;
     private String profileImage;
-    private String role;
+    private boolean isTeacher;
 
-    public UserResponseDTO(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.nickname = user.getNickname();
-        this.phone = user.getPhone();
-        this.email = user.getEmail();
-        this.birthDate = user.getBirthDate();
-        this.gender = user.getGender();
-        this.profileImage = user.getProfileImagePath();
-        this.role = user.getRoles().get(0);
-    }
 }

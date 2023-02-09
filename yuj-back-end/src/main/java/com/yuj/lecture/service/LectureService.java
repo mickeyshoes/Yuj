@@ -53,6 +53,16 @@ public class LectureService {
 
         return entityToResponseDTO(lecture);
     }
+    
+    public List<LectureResponseDTO> searchLectureByName(String name) throws Exception{
+    	List<LectureResponseDTO> result = new ArrayList<>();
+    	List<Lecture> list = lectureRepository.findLecture(name);
+    	
+    	for (Lecture lecture : list) {
+			result.add(entityToResponseDTO(lecture));
+		}
+    	return result;
+    }
 
     private LectureResponseDTO entityToResponseDTO(Lecture lecture) {
         User user = lecture.getUser();

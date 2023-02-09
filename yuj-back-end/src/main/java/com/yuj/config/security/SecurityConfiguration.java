@@ -41,8 +41,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()             //   로그인은 토큰 없이 가능
+                .antMatchers(HttpMethod.POST, "/login").permitAll()	//   로그인은 토큰 없이 가능
+                .antMatchers(HttpMethod.GET, "/users").permitAll() 
                 .antMatchers(HttpMethod.POST, "/users").permitAll()             //   회원가입은 토큰 없이 가능
+                .antMatchers(HttpMethod.GET, "/lectures").permitAll()
                 .antMatchers(HttpMethod.POST, "/reissue").permitAll()            //   회원가입은 토큰 없이 가능
                 .antMatchers(HttpMethod.POST, "/openvidu/**").permitAll()          //  토큰 재발행은 토큰 없이 가능
                 .antMatchers(HttpMethod.GET, "/mypage/**").permitAll()          //테스트용 마이페이지 임시허용(추후삭제)

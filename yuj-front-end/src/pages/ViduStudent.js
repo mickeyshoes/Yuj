@@ -82,6 +82,7 @@ class Vidu extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('beforeunload', this.onbeforeunload);
+        this.leaveSession();
     }
 
     onbeforeunload(event) {
@@ -182,7 +183,7 @@ class Vidu extends Component {
             });
         }
     }
-
+leaveSession
     async getSessions() {
         let Sessions = await axios.get(
             OPENVIDU_SERVER_URL + '/openvidu/api/sessions',
@@ -277,8 +278,8 @@ class Vidu extends Component {
     leaveSession() {
         // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
         const mySession = this.state.session;
-        // const navigate = useNavigate();
-
+        
+        console.log('학생 세션 : ', this.state.session);
         if (mySession) {
             mySession.disconnect();
         }
@@ -370,7 +371,7 @@ class Vidu extends Component {
         if (this.state.liston === false) {
             this.setState({ listMessage: '참가자 끄기' });
             let Sessions = await axios.get(
-                OPENVIDU_SERVER_URL + '/openvidu/api/sessions',
+                '/openvidu/api/sessions',
                 {
                     headers: {
                         'Authorization': 'Basic ' + Base64.encode('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
@@ -491,19 +492,19 @@ class Vidu extends Component {
                         {this.state.mainStreamManager !== undefined ? (
                             <ButtonContainer>
                                 <img className='yuj-logo' alt='No Image' src='/assets/YujMainLogo.svg' style={{ marginBottom: '10px' }}></img>
-                                <button class="clickControl" onClick={this.videoControl}><h3>{this.state.publisher.properties.publishVideo === true ?
-                                    <span class="material-symbols-outlined">videocam</span> : <span class="material-symbols-outlined">videocam_off</span>}  {this.state.videoMessage}</h3>
+                                <button className="clickControl" onClick={this.videoControl}><h3>{this.state.publisher.properties.publishVideo === true ?
+                                    <span className="material-symbols-outlined">videocam</span> : <span className="material-symbols-outlined">videocam_off</span>}  {this.state.videoMessage}</h3>
                                 </button>
-                                <button class="clickControl" onClick={this.voiceControl}><h3>{this.state.publisher.properties.publishAudio === true ?
-                                    <span class="material-symbols-outlined">mic</span> : <span class="material-symbols-outlined">mic_off</span>}  {this.state.voiceMessage}</h3>
+                                <button className="clickControl" onClick={this.voiceControl}><h3>{this.state.publisher.properties.publishAudio === true ?
+                                    <span className="material-symbols-outlined">mic</span> : <span className="material-symbols-outlined">mic_off</span>}  {this.state.voiceMessage}</h3>
                                 </button>
-                                <button class="clickControl" onClick={this.listControl}><h3>{this.state.liston === true ?
-                                    <span class="material-symbols-outlined">person</span> : <span class="material-symbols-outlined">person_off</span>} {this.state.listMessage}</h3>
+                                <button className="clickControl" onClick={this.listControl}><h3>{this.state.liston === true ?
+                                    <span className="material-symbols-outlined">person</span> : <span className="material-symbols-outlined">person_off</span>} {this.state.listMessage}</h3>
                                 </button>
-                                <button class="clickControl" onClick={this.chattoggle}><h3>{this.state.chaton === true ?
-                                    <span class="material-symbols-outlined">chat</span> : <span class="material-symbols-outlined">speaker_notes_off</span>} {this.state.chatMessage}</h3>
+                                <button className="clickControl" onClick={this.chattoggle}><h3>{this.state.chaton === true ?
+                                    <span className="material-symbols-outlined">chat</span> : <span className="material-symbols-outlined">speaker_notes_off</span>} {this.state.chatMessage}</h3>
                                 </button>
-                                <button class="clickControl" onClick={this.leaveSession}><h3><span class="material-symbols-outlined">exit_to_app</span> 종료</h3></button>
+                                <button className="clickControl" onClick={this.leaveSession}><h3><span className="material-symbols-outlined">exit_to_app</span> 종료</h3></button>
                             </ButtonContainer>
                         ) : null}
                     </div>
@@ -518,7 +519,7 @@ class Vidu extends Component {
     }
 
     async createSession(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + '/api/openvidu/sessions', { customSessionId: sessionId }, {
+        const response = await axios.post('/api/openvidu/sessions', { customSessionId: sessionId }, {
             headers: { 'Content-Type': 'application/json', },
         });
         console.log("createSession 함수 호출", response.data);
@@ -527,7 +528,7 @@ class Vidu extends Component {
     
     // 백앤드로부터 토큰 요청 (백앤드에서 오픈비두로부터 토큰 받음)
     async createToken(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + '/api/openvidu/sessions/' + sessionId + '/connections', {}, {
+        const response = await axios.post('/api/openvidu/sessions/' + sessionId + '/connections', {}, {
             headers: { 'Content-Type': 'application/json', },
         });
         return response.data; // The token
