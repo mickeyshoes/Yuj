@@ -3,6 +3,7 @@ package com.yuj.studio.service;
 import com.yuj.studio.domain.Studio;
 import com.yuj.studio.dto.response.StudioResponseDTO;
 import com.yuj.studio.repository.StudioRepository;
+import com.yuj.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,16 @@ public class StudioService {
     }
 
     private StudioResponseDTO entityToResponseDTO(Studio studio) {
+        User user = studio.getUser();
         return StudioResponseDTO.builder()
                 .studioId(studio.getStudioId())
                 .description(studio.getDescription())
                 .bannerImage(studio.getBannerImage())
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .profileImagePath(user.getProfileImagePath())
                 .build();
     }
 }

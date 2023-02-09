@@ -1,6 +1,6 @@
-// import { useState } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { getStudio, createStudio, changeStudioName, changeStudioDesc } from '../stores/studioSlice';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from '../stores/studioSlice';
 import StudioSidebar from '../components/StudioSidebar';
 import MainHeader from './../components/mainHeader/MainHeader';
 import MainFooter from "../components/mainFooter/MainFooter";
@@ -12,20 +12,30 @@ import LectureItemCard from '../components/LectureItemCard';
 
 const StudioPage = () => {
 
+    const user = useSelector(state => state.user);
+    const studio = useSelector(state => state.studio);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getStudioDetail(user.userId));
+        dispatch(getStudioLectureList(user.userId));
+        dispatch(getStudioLiveLecture(user.userId));
+    },[])
+
     return (
         <>
             <MainHeader/>
             <div className={'flex'}>
-                <StudioSidebar/>
+                <StudioSidebar studioDetail={studio.studioDetail} userId={user.userId} studioLiveLecture={studio.studioLiveLecture}/>
                 <div>
-                    <StudioMainBanner/>
+                    <StudioMainBanner studioBannerImage={studio.studioDetail.bannerImage}/>
                     <div className={'px-40'}>
-                        <StudioMainDescription/>
+                        <StudioMainDescription studioDetail={studio.studioDetail}/>
                         <ListTitle titleText={'강의 목록'} onClickEvent={() => console.log('강의 목록 clicked!')}/>
-                        <div className={'mt-20 my-48 flex justify-evenly'}>
-                            <LectureItemCard />
-                            <LectureItemCard />
-                            <LectureItemCard />
+                        <div className={'mt-20 my-48  flex justify-evenly'}>
+                            {studio.studioLectureList.map((lecture, index) => 
+                                index < 3 ? <LectureItemCard key={lecture.lectureId} lecture={lecture}/> : null
+                            )}
                         </div>
                     </div>
                 </div>
