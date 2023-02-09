@@ -10,7 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -53,6 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers(OPENVIDU_URL + "**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/users/{id}").permitAll()                  //  회원 정보 조회는 토큰 있어야 가능    
 //                .antMatchers(HttpMethod.PUT, "/users/{id}").permitAll()                  //  회원 정보 수정은 토큰 있어야 가능
+                .antMatchers(HttpMethod.GET,"/yoga/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
                 .anyRequest().hasAnyRole("USER", "TEACHER")
                 .and()

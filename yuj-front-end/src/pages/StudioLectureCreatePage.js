@@ -10,6 +10,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckIcon from '@mui/icons-material/Check';
 
 const StudioLectureCreatePage = () => {
+
     // useHistory의 기능을 모두 useNavigate가 대체 -> 뒤로가기, 앞으로가기 등
     const navigate = useNavigate();
     // 스케줄 입력 컴포넌트 생성을 위한 카운트
@@ -27,7 +28,7 @@ const StudioLectureCreatePage = () => {
     function addSchedules(addScheduleCnt) {
         let addScheduleArr = [];
         for (let i = 1; i <= addScheduleCnt; i++) {
-            if (i == 1) {
+            if (i === 1) {
                 addScheduleArr.push(
                     <div className='flex items-center gap-3 mb-5'  key={i}>
                         <div className='w-full'>

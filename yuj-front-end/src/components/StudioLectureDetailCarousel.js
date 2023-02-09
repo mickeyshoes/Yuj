@@ -1,7 +1,10 @@
 import React from 'react';
 import CircleIcon from '@mui/icons-material/Circle';
+import { useState } from 'react';
 
 const StudioLectureDetailCarousel = () => {
+    const [carouselImages, setCarouselImages] = useState([]);
+
     return (
         <div>
             <div className="carousel w-full">
