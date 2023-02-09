@@ -42,4 +42,13 @@ public class StudioController {
 
         return ResponseEntity.status(HttpStatus.OK).body(lectureResponseDTOList);
     }
+
+    @GetMapping("/{userId}/checkLive")
+    public ResponseEntity<LectureResponseDTO> getActiveLecture(@PathVariable Long userId) throws Exception {
+        log.info("checkLectureLive controller");
+        log.info("userId : {}", userId);
+        LectureResponseDTO lectureResponseDTO = lectureService.getActiveLectureByUserId(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(lectureResponseDTO);
+    }
 }

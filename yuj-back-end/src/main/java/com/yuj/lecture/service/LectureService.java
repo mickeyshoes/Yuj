@@ -48,6 +48,12 @@ public class LectureService {
         }
     }
 
+    public LectureResponseDTO getActiveLectureByUserId(Long userId) throws Exception {
+        Lecture lecture = lectureRepository.findByUser_UserIdAndIsActiveTrue(userId).orElseThrow(() -> new Exception("수업이 존재하지 않습니다."));
+
+        return entityToResponseDTO(lecture);
+    }
+
     private LectureResponseDTO entityToResponseDTO(Lecture lecture) {
         User user = lecture.getUser();
         return LectureResponseDTO.builder()

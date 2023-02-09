@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
     Optional<List<Lecture>> findByUser_UserId(Long userId);
+    Optional<Lecture> findByUser_UserIdAndIsActiveTrue(Long userId);
 }
