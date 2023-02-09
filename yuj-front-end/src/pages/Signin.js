@@ -48,6 +48,7 @@ const Signin = () => {
     }
 
     axios.post('https//i8a504.p.ssafy.io', signUpDto)
+    // axios.post('http://localhost:5000/users', signUpDto)
       .then(response => {
       console.log("OK!!!!");
       console.log(response.data);
