@@ -47,7 +47,7 @@ const Signin = () => {
       role: "ROLE_USER"
     }
 
-    axios.post('https//i8a504.p.ssafy.io/users', signUpDto)
+    axios.post('https://i8a504.p.ssafy.io/api/users', signUpDto)
     // axios.post('http://localhost:5000/users', signUpDto)
       .then(response => {
       console.log("OK!!!!");
