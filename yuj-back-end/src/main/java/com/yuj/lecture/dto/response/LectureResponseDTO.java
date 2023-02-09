@@ -21,6 +21,7 @@ public class LectureResponseDTO {
     private int limitStudents;
     private int fee;
     private int totalCount;
+    private  boolean isActive;
     private String username;
     private String nickname;
     private String email;

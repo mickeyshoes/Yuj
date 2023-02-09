@@ -35,6 +35,19 @@ public class LectureService {
         return returnList;
     }
 
+    public LectureResponseDTO updateLectureActive(Long lectureId, long userId, Boolean isActive) throws Exception {
+        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() -> new Exception("강의가 존재하지 않습니다."));
+
+        if(lecture.getUser().getUserId() != userId) {
+            throw new Exception("해당 수업의 강사가 아닙니다.");
+        }else{
+            lecture.setActive(isActive);
+
+            Lecture updatedLecture = lectureRepository.save(lecture);
+            return entityToResponseDTO(updatedLecture);
+        }
+    }
+
     private LectureResponseDTO entityToResponseDTO(Lecture lecture) {
         User user = lecture.getUser();
         return LectureResponseDTO.builder()
@@ -53,6 +66,7 @@ public class LectureService {
                 .email(user.getEmail())
                 .profileImagePath(user.getProfileImagePath())
                 .yoga(lecture.getYoga())
+                .isActive(lecture.isActive())
                 .build();
     }
 }
