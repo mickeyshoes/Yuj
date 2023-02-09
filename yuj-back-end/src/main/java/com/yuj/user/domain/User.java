@@ -25,8 +25,14 @@ import java.util.stream.Collectors;
 @ToString
 @DynamicInsert
 public class User implements UserDetails {
+    @SequenceGenerator(
+            name="USER_SEQ_GEN",
+            sequenceName = "USER_SEQ",
+            initialValue = 100,
+            allocationSize = 1
+    )
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GEN")
     @Column(name = "user_id")
     private Long userId;
 

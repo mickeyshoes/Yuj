@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @Setter
 public class LectureSchedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "schedule_id")
     private Long scheduleId;
 

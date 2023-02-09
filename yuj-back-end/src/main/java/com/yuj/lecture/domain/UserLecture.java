@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 public class UserLecture {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userLectureId;
 
     private LocalDate registDate;

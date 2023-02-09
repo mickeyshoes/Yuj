@@ -35,20 +35,20 @@ const Signin = () => {
     console.log("profileImg = " + profileImg);
 
     let signUpDto = {
-      id: "jwelyl",
-      password: "1234",
-      name: "허재성",
-      gender: "male",
-      birthDate: "1995-02-23",
-      nickname: "코레이",
-      email: "cork2586@naver.com",
-      phone: " 010-5209-5605",
+      id: userId,
+      password: password,
+      name: username,
+      gender: gender,
+      birthDate: birthday,
+      nickname: nickname,
+      email: email,
+      phone: phone,
       profileImagePath: "사진경로",
       role: "ROLE_USER"
     }
 
-    axios.post('https//i8a504.p.ssafy.io', signUpDto)
-    // axios.post('http://localhost:5000/users', signUpDto)
+    // axios.post('https//i8a504.p.ssafy.io', signUpDto)
+    axios.post('http://localhost:5000/users', signUpDto)
       .then(response => {
       console.log("OK!!!!");
       console.log(response.data);

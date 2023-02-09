@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 public class UserLectureSchedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userLectureScheduleId;
     private LocalDateTime attendanceDate;
     private boolean isAttendance;

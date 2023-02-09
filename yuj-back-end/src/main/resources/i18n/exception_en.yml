@@ -8,7 +8,7 @@ userNotFound:
 emailLoginFailed:
   code: "-1001"
   msg: "It's an ID you didn't sign up for, or it's an incorrect password."
-emailSignupFailed:
+signupFailed:
   code: "-1002"
   msg: "This email is already subscribed."
 authenticationEntrypoint:

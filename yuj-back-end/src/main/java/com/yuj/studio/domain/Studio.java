@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 public class Studio {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "studio_id")
     private Long studioId;
 

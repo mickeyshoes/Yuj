@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 public class Token {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "token_id")
     private Long tokenId;
     @Column(name = "refresh_token", nullable = false)

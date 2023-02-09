@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @Api(tags = {"User"})
 @RequiredArgsConstructor
 @RestController
@@ -33,7 +33,7 @@ public class UserController {
 
     @ApiOperation(value = "회원가입", notes = "회원가입을 합니다.")
     @PostMapping
-    public SingleResult<HttpStatus> signup(
+    public SingleResult<String> signup(
 //            @ApiParam(value = "회원 가입 프로필 이미지", required = false)
 //            @RequestPart(value = "file", required = false) MultipartFile files,
             @ApiParam(value = "회원 가입 요청 DTO", required = true)
@@ -61,16 +61,20 @@ public class UserController {
 //            e.printStackTrace();
 //        }
 
-        boolean success = userService.signUp(userSignupRequestDto);
-        HttpStatus ret = success ? HttpStatus.ACCEPTED : HttpStatus.CONFLICT;
+//        boolean success = userService.signUp(userSignupRequestDto);
+//        HttpStatus ret = success ? HttpStatus.ACCEPTED : HttpStatus.CONFLICT;
 //        return responseService.getSingleResult(ret);
 
-        if(success) {
-            return responseService.getSingleResultSuccess(ret);
-        }
-        else {
-            return responseService.getSingleResultFail(ret, ret.value(), ret.getReasonPhrase());
-        }
+//        if(success) {
+//            return responseService.getSingleResultSuccess(ret);
+//        }
+//        else {
+//            return responseService.getSingleResultFail(ret, ret.value(), ret.getReasonPhrase());
+//        }
+
+        String id = userService.signUp(userSignupRequestDto);
+
+        return responseService.getSingleResultSuccess("가입한 아이디 : " + id);
     }
 
     @ApiImplicitParams({

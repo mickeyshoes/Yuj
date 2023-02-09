@@ -63,8 +63,9 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CPasswordNotCorrectException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult passwordNotCorrectException(HttpServletRequest request, CLoginFailedException e) {
+    protected CommonResult passwordNotCorrectException(HttpServletRequest request, CPasswordNotCorrectException e) {
         System.out.println("비밀번호 불일치 오류");
+
         return responseService.getFailResult(Integer.parseInt(getMessage("passwordNotCorrect.code")),
                 getMessage("passwordNotCorrect.msg"));
     }
@@ -74,9 +75,9 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(CSignUpFailedCException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult emailSignupFailedException(HttpServletRequest request, CSignUpFailedCException e) {
+    protected CommonResult SignupFailedException(HttpServletRequest request, CSignUpFailedCException e) {
         System.out.println("이미 로그인된 로그인 오류");
-        return responseService.getFailResult(Integer.parseInt(getMessage("emailSignupFailed")), getMessage("emailSignupFailed.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("signupFailed.code")), getMessage("signupFailed.msg"));
     }
 
     /**

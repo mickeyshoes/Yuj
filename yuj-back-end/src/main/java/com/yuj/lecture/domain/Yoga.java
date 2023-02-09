@@ -2,10 +2,7 @@ package com.yuj.lecture.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -15,7 +12,7 @@ import javax.persistence.Id;
 @Builder
 public class Yoga {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "yoga_id")
     private Long yogaId;
 
