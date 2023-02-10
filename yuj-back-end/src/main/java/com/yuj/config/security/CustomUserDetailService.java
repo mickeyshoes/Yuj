@@ -20,12 +20,15 @@ public class CustomUserDetailService implements UserDetailsService  {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        return userRepository.findById(Long.parseLong(username)).orElseThrow(CUserNotFoundException::new);
-        System.out.println("in loadUserByUsername");
-        List<User> userList = userRepository.findAll();
-        System.out.println("userRepository = " + userList);
-        System.out.println("size = " + userList.size());
+            Long pk = Long.parseLong(username);
 
-        System.out.println("username = " + username);
-        return userRepository.findById(username).orElseThrow(CUserNotFoundException::new);
+            System.out.println("in loadUserByUsername");
+            List<User> userList = userRepository.findAll();
+            System.out.println("userRepository = " + userList);
+            System.out.println("size = " + userList.size());
+
+            System.out.println("username = " + username);
+            System.out.println("pk = " + pk);
+            return userRepository.findById(pk).orElseThrow(CUserNotFoundException::new);
     }
 }

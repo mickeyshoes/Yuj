@@ -106,7 +106,7 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
 //        return String.valueOf(this.userId);
-        return this.id;
+        return String.valueOf(this.userId);
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

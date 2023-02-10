@@ -51,7 +51,7 @@ public class LoginService {
 
         //  AccessToken, RefreshToken 발급
 //        TokenResponseDTO tokenLoginResponseDTO = jwtProvider.createTokenLoginResponseDto(user.getId(), user.getRoles());
-        TokenResponseDTO tokenLoginResponseDTO = jwtProvider.createTokenLoginResponseDto(user.getId(), user.getRoleName());
+        TokenResponseDTO tokenLoginResponseDTO = jwtProvider.createTokenLoginResponseDto(user.getUserId(), user.getRoleName());
 
 //        //  이전 토큰을 DB에서 제거
 //        tokenRepository.deleteByUserId(user.getUserId());
@@ -90,7 +90,7 @@ public class LoginService {
         System.out.println("authentication.getName() = " + authentication.getName());
 
         //  user pk로 유저 검색 / repo에 저장된 Refresh Token이 없음
-        User user = userRepository.findById(authentication.getName())
+        User user = userRepository.findById(Long.parseLong(authentication.getName()))
                 .orElseThrow(CUserNotFoundException::new);
 
         System.out.println("******************** 1 ********************");
@@ -111,7 +111,7 @@ public class LoginService {
 //        TokenResponseDTO newCreatedToken = jwtProvider.createTokenLoginResponseDto(user.getId(), user.getRoles());
         //  Access Token 재발급
 //        TokenResponseDTO reissuedToken = jwtProvider.createTokenReissueResponseDto(user.getId(), user.getRoles(), tokenRequestDTO.getRefreshToken());
-        TokenResponseDTO reissuedToken = jwtProvider.createTokenReissueResponseDto(user.getId(), user.getRoleName(), tokenRequestDTO.getRefreshToken());
+        TokenResponseDTO reissuedToken = jwtProvider.createTokenReissueResponseDto(user.getUserId(), user.getRoleName(), tokenRequestDTO.getRefreshToken());
 
         System.out.println("******************** 4 ********************");
 

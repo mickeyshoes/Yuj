@@ -39,7 +39,7 @@ public class JwtProvider {
 
     //  로그인 시 Jwt 생성
 //    public TokenResponseDTO createTokenLoginResponseDto(String userPk, List<String> roles) {
-    public TokenResponseDTO createTokenLoginResponseDto(String userPk, String role) {
+    public TokenResponseDTO createTokenLoginResponseDto(Long userPk, String role) {
         System.out.println("In createTokenLoginResponseDto");
         System.out.println("userPk = " + userPk);
 
@@ -74,7 +74,7 @@ public class JwtProvider {
 
     //  로그인 시 Jwt 생성
 //    public TokenResponseDTO createTokenReissueResponseDto(String userPk, List<String> roles, String refreshToken) {
-    public TokenResponseDTO createTokenReissueResponseDto(String userPk, String role, String refreshToken) {
+    public TokenResponseDTO createTokenReissueResponseDto(Long userPk, String role, String refreshToken) {
         System.out.println("In createTokenReissueResponseDto");
         System.out.println("userPk = " + userPk);
 
