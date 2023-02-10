@@ -9,6 +9,8 @@ const LectureItemCard = (props) => {
     const lecture = props.thisLecture;
 
     const thumbnail = './assets/Sample.jpg';
+
+    const teacherProfile = '/assets/YujMainLogo.svg';
     
     // 강의 종료 날짜와 현재 날짜를 비교하여 '완료'를 띄워줄지 체크
     const date = new Date();
@@ -23,8 +25,8 @@ const LectureItemCard = (props) => {
     const yogaCategory = useSelector(state => state.common.yogaCategory);
     function yogaCategorySearch(lecture) {
         for(let i = 0; i < yogaCategory.length; i++) {
-            if(yogaCategory[i].yogaId = lecture.yogaId) {
-                return yogaCategory[i].name;
+            if(yogaCategory[i].yogaId === lecture.yoga.yogaId) {
+                return yogaCategory[i].englishName;
             }
         }
     }
@@ -37,7 +39,7 @@ const LectureItemCard = (props) => {
                     <Link to="/studioLectureDetailPage">
                         <div className='card-actions absolute top-4 left-6'>
                             <div className='badge badge-outline bg-accent p-4 text-xs font-semibold rounded-xl' style={{ color: '#fff', border: '0' }}>
-                                Raja
+                                {yogaCategorySearch(lecture)}
                             </div>
                             {complete()}
                         </div>
@@ -47,7 +49,7 @@ const LectureItemCard = (props) => {
                 <div className='card-body'>
                     <div className='flex'>
                         <a href='' className='flex align-center'>
-                            <img className='h-3.5 pr-2' src='/assets/YujMainLogo.svg' />
+                            <img className='h-3.5 pr-2' src={teacherProfile} />
                             <div className='text-xs font-bold'>요가소년</div>
                         </a>
                         <div></div>

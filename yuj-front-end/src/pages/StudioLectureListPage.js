@@ -11,17 +11,21 @@ const StudioLectureListPage = () => {
   let teacher = useSelector(state => state.studio.studioDetail);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('mount');
-    console.log(teacher.nickname);
+    console.log('firstmount');
     dispatch(getStudioLectureList(teacher.userId));
-    setLectureCount(lectureList.length);
     return () => {
     };
   }, []);
   let lectureList = useSelector(state => state.studio.studioLectureList)
 
-  //불러온 lecture 개수 표시
+  //불러온 lecture 개수 표시 //새로고침 될 때 다시 강의 개수 불러오기
   let [lectureCount, setLectureCount] = useState(0);
+  useEffect(() => {
+    console.log('count');
+    setLectureCount(lectureList.length);
+    return () => {
+    };
+  });
 
   //유저의 권한이 강사일 때 강의개설 버튼 생성
   const [userAuth, setUserAuth] = useState("teacher");
@@ -31,7 +35,7 @@ const StudioLectureListPage = () => {
   const studio = useSelector(state => state.studio);
   useEffect(() => {
     dispatch(getStudioDetail(user.userId));
-    dispatch(getStudioLectureList(user.userId));
+    // dispatch(getStudioLectureList(user.userId));
     dispatch(getStudioLiveLecture(user.userId));
   }, [])
 
