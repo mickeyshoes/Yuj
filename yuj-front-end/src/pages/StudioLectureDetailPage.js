@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import StudioSidebar from "../components/StudioSidebar";
 import StudioLectureDetailCarousel from "../components/StudioLectureDetailCarousel";
@@ -6,6 +6,8 @@ import StudioLectureDetailInfoBox from "../components/StudioLectureDetailInfoBox
 import StudioLectureDetailSchedule from "../components/StudioLectureDetailSchedule";
 import { StudioLectureDetailLectureRegistModal, StudioLectureDetailLectureRegistModalBtn } from "../components/StudioLectureDetailLectureRegistModal";
 import { StudioLectureDetailLectureClosingModal, StudioLectureDetailLectureClosingModalBtn } from "../components/StudioLectureDetailLectureClosingModal";
+import { useDispatch, useSelector } from 'react-redux';
+import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from "../stores/studioSlice";
 
 const StudioLectureDetailPage = () => {
   const [userAuth, setUserAuth] = useState("teacher");
@@ -25,6 +27,16 @@ const StudioLectureDetailPage = () => {
       <StudioLectureDetailLectureClosingModalBtn text={"폐강하기"} className={"px-12"} />
     </div>;
   }
+
+  //사이드바
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  const studio = useSelector(state => state.studio);
+  useEffect(() => {
+      dispatch(getStudioDetail(user.userId));
+      dispatch(getStudioLectureList(user.userId));
+      dispatch(getStudioLiveLecture(user.userId));
+  }, [])
 
   return (
     <>
@@ -55,7 +67,7 @@ const StudioLectureDetailPage = () => {
         ]}
       />
       <div className="flex w-full">
-        {/* <StudioSidebar /> */}
+        <StudioSidebar studioDetail={studio.studioDetail} userId={user.userId} studioLiveLecture={studio.studioLiveLecture}/>
         <div className="px-40 overflow-hidden">
           <div className="mt-5">
             <StudioLectureDetailCarousel />

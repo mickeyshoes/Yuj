@@ -8,6 +8,7 @@ import StudioMainBanner from '../components/StudioMainBanner';
 import StudioMainDescription from '../components/StudioMainDescription';
 import ListTitle from '../components/ListTitle';
 import LectureItemCard from '../components/LectureItemCard';
+import { useNavigate } from 'react-router-dom';
 
 
 const StudioPage = () => {
@@ -15,6 +16,7 @@ const StudioPage = () => {
     const user = useSelector(state => state.user);
     const studio = useSelector(state => state.studio);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getStudioDetail(user.userId));
@@ -30,10 +32,10 @@ const StudioPage = () => {
                     <StudioMainBanner studioBannerImage={studio.studioDetail.bannerImage}/>
                     <div className={'px-40'}>
                         <StudioMainDescription studioDetail={studio.studioDetail}/>
-                        <ListTitle titleText={'강의 목록'} onClickEvent={() => console.log('강의 목록 clicked!')}/>
+                        <ListTitle titleText={'강의 목록'} onClickEvent={() => { navigate("/studioLectureListPage")}}/>
                         <div className={'mt-20 my-48  flex justify-evenly'}>
                             {studio.studioLectureList.map((lecture, index) => 
-                                index < 3 ? <LectureItemCard key={lecture.lectureId} lecture={lecture}/> : null
+                                index < 3 ? <LectureItemCard key={lecture.lectureId} thisLecture={lecture}/> : null
                             )}
                         </div>
                     </div>

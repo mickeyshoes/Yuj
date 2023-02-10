@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getLecture } from '../stores/lectureSlice';
+import { Link } from 'react-router-dom';
 
 const LectureItemCard = (props) => {
 
@@ -19,18 +20,29 @@ const LectureItemCard = (props) => {
         }
     }
 
+    const yogaCategory = useSelector(state => state.common.yogaCategory);
+    function yogaCategorySearch(lecture) {
+        for(let i = 0; i < yogaCategory.length; i++) {
+            if(yogaCategory[i].yogaId = lecture.yogaId) {
+                return yogaCategory[i].name;
+            }
+        }
+    }
+
     return (
         <div>
             <div className='card w-72 bg-base-100 shadow-xl'>
                 <figure className='relative'>
                     {/* a 태그는 차후 Link 태그 등으로 교체 */}
-                    <a href=''>
+                    <Link to="/studioLectureDetailPage">
                         <div className='card-actions absolute top-4 left-6'>
-                            <div className='badge badge-outline bg-accent p-4 text-xs font-semibold rounded-xl' style={{ color: '#fff', border: '0' }}>Raja</div>
+                            <div className='badge badge-outline bg-accent p-4 text-xs font-semibold rounded-xl' style={{ color: '#fff', border: '0' }}>
+                                Raja
+                            </div>
                             {complete()}
                         </div>
                         <img src={thumbnail} alt='Card Image' />
-                    </a>
+                    </Link>
                 </figure>
                 <div className='card-body'>
                     <div className='flex'>

@@ -8,6 +8,9 @@ import StudioLectureCreateImagesInput from '../components/StudioLectureCreateIma
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckIcon from '@mui/icons-material/Check';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from '../stores/studioSlice';
 
 const StudioLectureCreatePage = () => {
 
@@ -30,7 +33,7 @@ const StudioLectureCreatePage = () => {
         for (let i = 1; i <= addScheduleCnt; i++) {
             if (i === 1) {
                 addScheduleArr.push(
-                    <div className='flex items-center gap-3 mb-5'  key={i}>
+                    <div className='flex items-center gap-3 mb-5' key={i}>
                         <div className='w-full'>
                             <StudioLectureCreateScheduleInput />
                         </div>
@@ -42,7 +45,7 @@ const StudioLectureCreatePage = () => {
                 )
             } else if (i !== addScheduleCnt) {
                 addScheduleArr.push(
-                    <div className='flex items-center gap-3 mb-5'  key={i}>
+                    <div className='flex items-center gap-3 mb-5' key={i}>
                         <div className='w-full'>
                             <StudioLectureCreateScheduleInput />
                         </div>
@@ -54,7 +57,7 @@ const StudioLectureCreatePage = () => {
                 )
             } else {
                 addScheduleArr.push(
-                    <div className='flex items-center gap-3 mb-5'  key={i}>
+                    <div className='flex items-center gap-3 mb-5' key={i}>
                         <div className='w-full'>
                             <StudioLectureCreateScheduleInput />
                         </div>
@@ -70,10 +73,21 @@ const StudioLectureCreatePage = () => {
         return addScheduleArr;
     }
 
+    //사이드바
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
+    const studio = useSelector(state => state.studio);
+    useEffect(() => {
+        dispatch(getStudioDetail(user.userId));
+        dispatch(getStudioLectureList(user.userId));
+        dispatch(getStudioLiveLecture(user.userId));
+    }, [])
+
+
     return (
         <>
             <div className="flex w-full">
-                {/* <StudioSidebar /> */}
+                <StudioSidebar studioDetail={studio.studioDetail} userId={user.userId} studioLiveLecture={studio.studioLiveLecture}/>
                 <div className="px-40 flex-auto overflow-hidden">
                     <form className="w-full mt-16">
                         {/* 재활용 */}

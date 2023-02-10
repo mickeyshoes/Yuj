@@ -30,7 +30,7 @@ const StudioSidebar = (props) => {
   const sidebarMenu = [
     {
       name: "강의 목록",
-      path: "/studio",
+      path: "/studioLectureListPage",
     },
     {
       name: "공지사항",
@@ -87,7 +87,7 @@ const StudioSidebar = (props) => {
               :
               <button className={Styles.liveBtn+' btn border-none mt-12 btn-accent'} onClick={() => startLiveClicked()}>Start Live</button>
             }
-            <ul className={Styles.myPageSidebar+" menu pt-16  text-base-content w-full"} >
+            <ul className={Styles.myPageSidebar+" menu pt-7 text-base-content w-full"} >
               {sidebarMenu.map((menu, index) => {
                 return (
                   <li key={index}>

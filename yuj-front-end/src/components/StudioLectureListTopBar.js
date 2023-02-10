@@ -8,7 +8,7 @@ import {
 
 const StudioLectureListTopBar = (props) => {
   const userAuth = props.userAuth;
-
+  const lectureCount = props.lectureCount;
   const navigate = useNavigate();
 
   let lectureOpeningButton;
@@ -41,7 +41,7 @@ const StudioLectureListTopBar = (props) => {
         ]}
       />
       <div className="flex justify-between items-center">
-        <span className="text-success">총 1개의 강의</span>
+        <span className="text-success">총 {lectureCount}개의 강의</span>
         <div className="flex items-center">
           <StudioLectureListCategorySelectBox />
           {lectureOpeningButton}
