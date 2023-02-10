@@ -61,7 +61,6 @@ public class Lecture {
             mappedBy = "lecture",
             fetch = EAGER
     )
-    @Builder.Default
     private List<LectureImage> lectureImages = new ArrayList<>();
     
     public void addLectureImage(LectureImage lectureImage) {
