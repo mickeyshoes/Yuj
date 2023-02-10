@@ -55,7 +55,7 @@ const StudioLectureDetailPage = () => {
         ]}
       />
       <div className="flex w-full">
-        <StudioSidebar />
+        {/* <StudioSidebar /> */}
         <div className="px-40 overflow-hidden">
           <div className="mt-5">
             <StudioLectureDetailCarousel />

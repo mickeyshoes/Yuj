@@ -73,7 +73,7 @@ const StudioLectureCreatePage = () => {
     return (
         <>
             <div className="flex w-full">
-                <StudioSidebar />
+                {/* <StudioSidebar /> */}
                 <div className="px-40 flex-auto overflow-hidden">
                     <form className="w-full mt-16">
                         {/* 재활용 */}
