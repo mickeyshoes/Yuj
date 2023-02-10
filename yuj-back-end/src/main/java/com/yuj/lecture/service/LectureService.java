@@ -7,6 +7,7 @@ import com.yuj.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +57,20 @@ public class LectureService {
     
     public List<LectureResponseDTO> searchLectureByName(String name) throws Exception{
     	List<LectureResponseDTO> result = new ArrayList<>();
-    	List<Lecture> list = lectureRepository.findLecture(name);
+    	LocalDate threshold = LocalDate.now();
+    	
+    	// 현재 진행하고 있는 강의 검색
+    	List<Lecture> list = lectureRepository.findLecture(name, threshold);
+    	
+    	// 현재 종료된 강의 검색
+    	List<Lecture> list2 = lectureRepository.findLecture2(name, threshold);
     	
     	for (Lecture lecture : list) {
 			result.add(entityToResponseDTO(lecture));
+		}
+    	
+    	for (Lecture lecture : list2) {
+    		result.add(entityToResponseDTO(lecture));
 		}
     	return result;
     }
