@@ -1,5 +1,6 @@
 package com.yuj.lecture.domain;
 
+import com.yuj.lectureimage.domain.LectureImage;
 import com.yuj.user.domain.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -43,6 +46,16 @@ public class Lecture {
     @ManyToOne
     @JoinColumn(name = "yoga_id")
     private Yoga yoga;
+
+    // 강의에서 이미지 파일 접근 가능하도록 참조자
+    @OneToMany(
+            mappedBy = "lecture"
+    )
+    private List<LectureImage> lectureImages = new ArrayList<>();
+    
+    public void addLectureImage(LectureImage lectureImage) {
+        this.lectureImages.add(lectureImage);
+    }
 
     @PrePersist
     public void registDate() {

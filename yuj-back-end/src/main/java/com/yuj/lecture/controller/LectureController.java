@@ -1,11 +1,17 @@
 package com.yuj.lecture.controller;
 
+import com.yuj.lecture.dto.request.LectureImageVO;
 import com.yuj.lecture.dto.request.LectureUpdateActiveRequestDTO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.service.LectureService;
+import com.yuj.lectureimage.handler.FileHandler;
+import com.yuj.lectureimage.service.LectureImageService;
 import com.yuj.response.ListResult;
 import com.yuj.response.ResponseService;
 
+import com.yuj.user.domain.User;
+import com.yuj.user.dto.response.UserResponseDTO;
+import com.yuj.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -20,7 +26,17 @@ import org.springframework.web.bind.annotation.*;
 public class LectureController {
 
     private final LectureService lectureService;
-    
+    private final UserService userService;
+    private final LectureImageService lectureImageService;
+
+    private final FileHandler fileHandler;
+
+//    @PostMapping
+//    public ResponseEntity<?> registLecture(LectureImageVO lectureImageVO) {
+//        //  강사 아이디로 강사 찾아내기
+//        UserResponseDTO userResponseDTO = userService.searchById(lectureImageVO.getUserId());
+//    }
+
     @GetMapping
     public ResponseEntity<?> searchLectureByName(@RequestParam("search") String name) throws Exception{
     	List<LectureResponseDTO> resultList = lectureService.searchLectureByName(name);
