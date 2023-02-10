@@ -4,7 +4,7 @@ import MainHeader from '../components/mainHeader/MainHeader';
 import Styles from './MainRouter.module.css';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './Home';
-import Login from './Login';
+import LoginPage from './LoginPage';
 import SignIn from './Signin';
 import ViduTeacher from '../utils/FunctionalizedViduTeacher'
 import ViduStudent from '../utils/FunctionalizedViduStudent'
@@ -35,7 +35,7 @@ const Test = () => {
       <div className={Styles.contentWrapper}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path='/viduTeacher' element={<ViduTeacher />} />
           <Route path='/viduStudent' element={<ViduStudent />} />
           <Route path="/signin" element={<SignIn />} />

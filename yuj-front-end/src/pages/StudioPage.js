@@ -26,7 +26,7 @@ const StudioPage = () => {
 
     return (
         <>
-            <div className={'flex'}>
+            <div className={'flex w-full'}>
                 <StudioSidebar studioDetail={studio.studioDetail} userId={user.userId} studioLiveLecture={studio.studioLiveLecture}/>
                 <div>
                     <StudioMainBanner studioBannerImage={studio.studioDetail.bannerImage}/>
