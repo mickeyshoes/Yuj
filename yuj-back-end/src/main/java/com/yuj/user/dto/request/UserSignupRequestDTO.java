@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.Collections;
 
 /**
  * 회원가입 요청 보내는 RequestDto
@@ -28,9 +27,11 @@ public class UserSignupRequestDTO {
     private LocalDate birthDate;
     private String gender;
     private String profileImagePath;
-    private String role;
+    private String roleName;
 
     public User toEntity(PasswordEncoder passwordEncoder) {
+//        Role role = this.role.equals("ROLE_USER") ? Role.USER : (this.role.equals("ROLE_TEACHER") ? Role.TEACHER : Role.ADMIN);
+
         return User.builder()
                 .id(id)
                 .password(passwordEncoder.encode(password))
@@ -41,7 +42,8 @@ public class UserSignupRequestDTO {
                 .birthDate(birthDate)
                 .gender(gender)
                 .profileImagePath(profileImagePath)
-                .roles(Collections.singletonList(role))
+//                .roles(Collections.singletonList(role))
+                .roleName(roleName)
                 .build();
     }
 

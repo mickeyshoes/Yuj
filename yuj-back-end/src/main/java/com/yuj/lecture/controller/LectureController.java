@@ -31,11 +31,18 @@ public class LectureController {
 
     private final FileHandler fileHandler;
 
-//    @PostMapping
-//    public ResponseEntity<?> registLecture(LectureImageVO lectureImageVO) {
-//        //  강사 아이디로 강사 찾아내기
-//        UserResponseDTO userResponseDTO = userService.searchById(lectureImageVO.getUserId());
-//    }
+    @PostMapping
+    public ResponseEntity<?> registLecture(@RequestBody LectureImageVO lectureImageVO) {
+        System.out.println("registLecture int Lecture Controller");
+        Long ret = lectureService.registLecture(lectureImageVO);
+        System.out.println("ret = " + ret);
+
+        if(ret == -1)
+            return new ResponseEntity<>(ret, HttpStatus.INTERNAL_SERVER_ERROR);
+
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<?> searchLectureByName(@RequestParam("search") String name) throws Exception{

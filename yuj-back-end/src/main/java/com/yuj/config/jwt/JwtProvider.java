@@ -25,7 +25,8 @@ import java.util.List;
 public class JwtProvider {
     @Value("spring.jwt.secret")
     private String secretKey;
-    private String ROLES = "roles";
+//    private String ROLES = "roles";
+    private String ROLES = "role";
     private final long ACCESS_TOKEN_VALID_MILLISECOND = 1 * 90 * 1000L;    //  access token 만료 시간 (1분 30초)
     private final long REFRESH_TOKEN_VALID_MILLISECOND = 24 * 60 * 60 * 1000L;  //  refresh token 만료 시간 (하루)
 
@@ -37,13 +38,14 @@ public class JwtProvider {
     }
 
     //  로그인 시 Jwt 생성
-    public TokenResponseDTO createTokenLoginResponseDto(String userPk, List<String> roles) {
+//    public TokenResponseDTO createTokenLoginResponseDto(String userPk, List<String> roles) {
+    public TokenResponseDTO createTokenLoginResponseDto(String userPk, String role) {
         System.out.println("In createTokenLoginResponseDto");
         System.out.println("userPk = " + userPk);
 
         //  User 구분을 위해 Claims에 User pk 및 authorities 목록 삽입
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
-        claims.put("roles", roles);
+        claims.put("role", role);
 
         //  생성 날짜, 만료 날짜를 위한 Date
         Date now = new Date();
@@ -71,13 +73,15 @@ public class JwtProvider {
     }
 
     //  로그인 시 Jwt 생성
-    public TokenResponseDTO createTokenReissueResponseDto(String userPk, List<String> roles, String refreshToken) {
+//    public TokenResponseDTO createTokenReissueResponseDto(String userPk, List<String> roles, String refreshToken) {
+    public TokenResponseDTO createTokenReissueResponseDto(String userPk, String role, String refreshToken) {
         System.out.println("In createTokenReissueResponseDto");
         System.out.println("userPk = " + userPk);
 
         //  User 구분을 위해 Claims에 User pk 및 authorities 목록 삽입
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
-        claims.put("roles", roles);
+//        claims.put("roles", roles);
+        claims.put("role", role);
 
         //  생성 날짜, 만료 날짜를 위한 Date
         Date now = new Date();

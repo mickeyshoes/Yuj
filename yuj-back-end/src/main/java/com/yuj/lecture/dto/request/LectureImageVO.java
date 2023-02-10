@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class LectureImageVO {
-    private String userId;      //  강사 아이디(PK를 받을 지 고민 중)
+    private Long userId;      //  강사 아이디(PK를 받을 지 고민 중)
     private String name;        //  강의 제목
     private String description; //  강의 상세 정보
     private LocalDate registDate;

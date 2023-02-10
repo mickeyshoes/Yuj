@@ -50,7 +50,8 @@ public class LoginService {
         System.out.println("222222222222222222222222222222222222222222222222222222222222222");
 
         //  AccessToken, RefreshToken 발급
-        TokenResponseDTO tokenLoginResponseDTO = jwtProvider.createTokenLoginResponseDto(user.getId(), user.getRoles());
+//        TokenResponseDTO tokenLoginResponseDTO = jwtProvider.createTokenLoginResponseDto(user.getId(), user.getRoles());
+        TokenResponseDTO tokenLoginResponseDTO = jwtProvider.createTokenLoginResponseDto(user.getId(), user.getRoleName());
 
 //        //  이전 토큰을 DB에서 제거
 //        tokenRepository.deleteByUserId(user.getUserId());
@@ -109,7 +110,8 @@ public class LoginService {
 //        //  Access Token, Refresh Token 재발급, Refresh Token 저장
 //        TokenResponseDTO newCreatedToken = jwtProvider.createTokenLoginResponseDto(user.getId(), user.getRoles());
         //  Access Token 재발급
-        TokenResponseDTO reissuedToken = jwtProvider.createTokenReissueResponseDto(user.getId(), user.getRoles(), tokenRequestDTO.getRefreshToken());
+//        TokenResponseDTO reissuedToken = jwtProvider.createTokenReissueResponseDto(user.getId(), user.getRoles(), tokenRequestDTO.getRefreshToken());
+        TokenResponseDTO reissuedToken = jwtProvider.createTokenReissueResponseDto(user.getId(), user.getRoleName(), tokenRequestDTO.getRefreshToken());
 
         System.out.println("******************** 4 ********************");
 
