@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "LogIn / LogOut")
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class LoginController {
     private final LoginService loginService;
     private final ResponseService responseService;
@@ -27,6 +29,7 @@ public class LoginController {
             @ApiParam(value = "로그인 요청 DTO", required = true)
             @RequestBody UserLoginRequestDTO userLoginRequestDTO
             ) {
+        log.info("Login API RequestDTO = {}",userLoginRequestDTO);
         TokenResponseDTO tokenLoginResponseDTO = loginService.login(userLoginRequestDTO);
         return responseService.getSingleResultSuccess(tokenLoginResponseDTO);
     }

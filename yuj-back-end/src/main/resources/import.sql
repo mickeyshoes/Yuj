@@ -2,6 +2,9 @@ USE YUJ;
 
 INSERT INTO `user` (user_id, id, password, name, nickname, phone, email, birth_date, gender, profile_image_path) VALUES(0, 'edward1234', '1234', '에드워드', '요가소년', '01043689273','edward777@naver.com',NOW(),'man','./profile1.jpg'),(1, 'jessica09', '1234', '제시카', 'jessicaQueen', '01034785412','jessicahello@gmail.com',NOW(),'woman','./profile2.jpg'),(2, 'james89', '1234', '제임스', 'JJJMMM', '01038726371','jvm1551@naver.com',NOW(),'man','./profile3.jpg'),(3, 'whyijk', '1234', '필립', '필립짱', '01038542345','phlfell@gmail.com',NOW(),'man','./profile4.jpg'),(4, 'nanana', '1234', '나미', '난나난나', '01096832236','nanana@naver.com',NOW(),'woman','./profile5.jpg'),(5, 'jarvan14', '1234', '자르반', '자르반14세', '01062554499','jarvan@naver.com',NOW(),'man','./profile6.jpg');
 
+UPDATE `user` SET is_teacher=1, role_name="ROLE_TEACHER" WHERE user_id IN (0,4);
+UPDATE `user` SET is_teacher=0, role_name="ROLE_USER" WHERE user_id NOT IN (0,4);
+
 INSERT INTO `studio`(studio_id, banner_image, description,user_id)VALUES(0, './banner1.jpg','※ 구독자분들과 함께 요가수련하는 요가 안내자입니다.※ 비즈니스 문의 | yogaboyofficial@gmail.com※ 하루10분, 요가로 찾은 내 몸의 선 | 클래스101 | https://101creator.page.link/eW3k※ 건강한 다이어트, 하루 30분 요가 챌린지 | 클래스유 | https://me2.do/GRAbFITs',0),(1, './banner2.jpg','눈누난나의 스튜디오에 오신것을 환영합니다. 저희 스튜디오에서는 세상에서 가장 다양한 강의들이 준비되어 있습니다. 가볍게 힐링하시고 싶으신 분들 망설이지 마시고 가볍게 수업에 들어와주시면 감사하겠습니다.',4);
 
 INSERT INTO `yoga`(yoga_id, name, english_name, description)VALUES(0, '라자','Raja','명상 요가'),(1, '가나','Jnana','철학적 요가'),(2, '카르마','Karma','행동 요가'),(3, '박티','Bhakti','헌신 요가'),(4, '하타','Hatha','생리 요가');

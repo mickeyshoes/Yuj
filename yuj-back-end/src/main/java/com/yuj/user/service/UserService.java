@@ -50,6 +50,13 @@ public class UserService {
         return entityToResponseDTO(user);
     }
 
+    @Transactional(readOnly = true)
+    public UserResponseDTO searchByUserId(String id) {
+        long userId = Long.parseLong(id);
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+
+        return entityToResponseDTO(user);
+    }
     @Transactional
     public boolean updateUser(String id, UserUpdateRequestDTO updateRequestDTO) {
         User modifiedUser = userRepository.findById(id).orElseThrow(CUserNotFoundException::new);

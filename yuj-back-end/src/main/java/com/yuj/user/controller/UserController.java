@@ -2,6 +2,7 @@ package com.yuj.user.controller;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -112,8 +114,9 @@ public class UserController {
 //        System.out.println("In searchById");
 //        String accessToken = request.getParameter("X-AUTH-TOKEN");
 //        System.out.println("accessToken = " + accessToken);
-        
-        UserResponseDTO userResponseDTO = userService.searchById(id);
+        log.info("path variable id = {}",id);
+//        UserResponseDTO userResponseDTO = userService.searchById(id);
+        UserResponseDTO userResponseDTO = userService.searchByUserId(id);
         return responseService.getSingleResultSuccess(userResponseDTO);
     }
 

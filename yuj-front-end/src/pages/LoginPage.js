@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginRequest } from '../stores/userSlice';
+import { loginRequest, getUserInfo } from '../stores/userSlice';
 import Styles from './LoginPage.module.css';
 
 const LoginPage = () => {
@@ -15,12 +15,13 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    console.log("handle submit");
-    dispatch(loginRequest(id, password));
+    e.preventDefault();
+    dispatch(loginRequest({id, password}));
   }
 
   useEffect(() => {
     if(user.userId != '') {
+      dispatch(getUserInfo({accessToken: user.tokenInfo.accessToken, userId: user.userId}))
       navigate('/');
     }
   }, [user.userId])

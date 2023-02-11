@@ -116,7 +116,8 @@ public class JwtProvider {
         System.out.println("claims.getSubject() = " + claims.getSubject());
         System.out.println("claims.getId() = " + claims.getId());
 
-        UserDetails userDetails = userDetailService.loadUserByUsername(claims.getSubject());
+        // UserDetails userDetails = userDetailService.loadUserByUsername(claims.getSubject());
+        UserDetails userDetails = userDetailService.loadUserByUserId(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

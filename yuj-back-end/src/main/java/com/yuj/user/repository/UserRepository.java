@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(String id);
     
  // 강사의 이름에 name 키워드가 들어있다면 모두 반환
-    @Query(value = "select user from User user where user.name like %:name% and isTeacher = true order by user.name")
+    @Query(value = "select user from User user where user.name like %:name% and user.isTeacher = true order by user.name")
     List<User> findUser(@Param("name") String name);
 }
