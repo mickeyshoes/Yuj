@@ -1,11 +1,13 @@
 package com.yuj.lecture.service;
 
 import com.yuj.exception.CUserNotFoundException;
+import com.yuj.exception.controller.CYogaNotFoundException;
 import com.yuj.lecture.domain.Lecture;
-import com.yuj.lecture.dto.request.LectureImageVO;
-import com.yuj.lecture.dto.request.LectureRegistRequestDTO;
+import com.yuj.lecture.domain.Yoga;
+import com.yuj.lecture.dto.request.LectureVO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.repository.LectureRepository;
+import com.yuj.lecture.repository.YogaRepository;
 import com.yuj.lectureimage.domain.LectureImage;
 import com.yuj.lectureimage.handler.FileHandler;
 import com.yuj.lectureimage.repository.LectureImageRepository;
@@ -13,11 +15,11 @@ import com.yuj.user.domain.User;
 import com.yuj.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,49 +27,61 @@ public class LectureService {
 
     private final LectureRepository lectureRepository;
     private final LectureImageRepository lectureImageRepository;
+    private final YogaRepository yogaRepository;
 
     private final UserRepository userRepository;    //  강의 등록 때 pk로 강사 찾아야 함
 
     private final FileHandler fileHandler;
 
-    public Long registLecture(LectureImageVO lectureImageVO) {
+    public Long registLecture(List<MultipartFile> files, LectureVO lectureVO) {
         //  강사 Entity 찾아내기
-        User teacher = userRepository.findById(lectureImageVO.getUserId()).orElseThrow(CUserNotFoundException::new);
+        System.out.println("in registLecture");
+        User teacher = userRepository.findById(lectureVO.getUserId()).orElseThrow(CUserNotFoundException::new);
+        Yoga yoga = yogaRepository.findById(lectureVO.getYogaId()).orElseThrow(CYogaNotFoundException::new);
+
+        System.out.println("teacher = " + teacher);
+        
         Lecture lecture = Lecture.builder()
                 .user(teacher)
-                .name(lectureImageVO.getName())
-                .description(lectureImageVO.getDescription())
-                .registDate(lectureImageVO.getRegistDate())
-                .startDate(lectureImageVO.getStartDate())
-                .endDate(lectureImageVO.getEndDate())
-                .limitStudents(lectureImageVO.getLimitStudents())
-                .fee(lectureImageVO.getFee())
-                .totalCount(lectureImageVO.getTotalCount())
+                .yoga(yoga)
+                .name(lectureVO.getName())
+                .description(lectureVO.getDescription())
+                .registDate(lectureVO.getRegistDate())
+                .startDate(lectureVO.getStartDate())
+                .endDate(lectureVO.getEndDate())
+                .limitStudents(lectureVO.getLimitStudents())
+                .fee(lectureVO.getFee())
+                .totalCount(lectureVO.getTotalCount())
                 .build();
 
         System.out.println("before");
         System.out.println("lecture = " + lecture);
         System.out.println("after");
 
+        Long ret = -1L;
+
         try {
-            List<LectureImage> lectureImageList = fileHandler.parseLectureImageInfo(lectureImageVO.getFiles());
+            List<LectureImage> lectureImageList = fileHandler.parseLectureImageInfo(files);
+
+            ret = lectureRepository.save(lecture).getLectureId();
 
             //  파일이 존재하면 처리
             if(!lectureImageList.isEmpty()) {
                 for(LectureImage lectureImage : lectureImageList) {
                     //  파일을 DB에 저장
+                    lectureImage.setLecture(lecture);
                     lecture.addLectureImage(lectureImageRepository.save(lectureImage));
                 }
             }
         } catch(Exception e) {
             e.printStackTrace();
-//            return -1L;
+        } finally {
+            return ret;
         }
 
-        Long ret = lectureRepository.save(lecture).getLectureId();
+
 
 //        System.out.println("lectureRepository = " + lectureRepository.findAll());
-        return ret;
     }
 
 

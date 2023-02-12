@@ -69,9 +69,9 @@ public class FileHandler {
                     break;
                 else {  //  확장자가 jpeg, jpg, png인 파일들만 받아서 처리
                     if(contentType.contains("image/jpeg") || contentType.contains("image/jpg") )
-                        originalFileExtension = "jpg";
+                        originalFileExtension = ".jpg";
                     else if(contentType.contains("image/png"))
-                        originalFileExtension = "png";
+                        originalFileExtension = ".png";
                     else break;
                 }
 
@@ -84,6 +84,8 @@ public class FileHandler {
                         .filePath(path + File.separator + newFileName)
                         .fileSize(multipartFile.getSize())
                         .build();
+
+                System.out.println("filePath = " + lectureImageDto.getFilePath());
 
                 //  파일 DTO를 이용하여 LectureImage 엔티티를 생성
                 LectureImage lectureImage = new LectureImage(lectureImageDto.getOrigFileName(), lectureImageDto.getFilePath(), lectureImageDto.getFileSize());

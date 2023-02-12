@@ -32,6 +32,10 @@ public class LectureImage {
     //  lecture 정보 저장
     public void setLecture(Lecture lecture) {
         this.lecture = lecture;
+        System.out.println("In setLecture");
+        System.out.println("lecture = " + lecture);
+
+        System.out.println("lecture = " + lecture);
 
         //  lecture에 현재 이미지 파일이 존재하지 않는다면
         if(!lecture.getLectureImages().contains(this)) {
