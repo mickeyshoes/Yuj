@@ -9,7 +9,7 @@ import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.dto.response.LectureScheduleResponseDTO;
 import com.yuj.lecture.repository.LectureRepository;
 import com.yuj.lecture.repository.LectureScheduleRepository;
-import com.yuj.lectureimage.domain.LectureImage;
+//import com.yuj.lectureimage.domain.LectureImage;
 import com.yuj.lecture.repository.YogaRepository;
 import com.yuj.lectureimage.domain.ImageFile;
 import com.yuj.lectureimage.handler.FileHandler;

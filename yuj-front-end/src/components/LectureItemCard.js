@@ -36,7 +36,7 @@ const LectureItemCard = (props) => {
 
     return (
         <div>
-            <div className='card w-72 bg-base-100 shadow-xl'>
+            <div className='card w-72 bg-base-100 shadow-xl min-h-full '>
                 <figure className='relative'>
                     {/* a 태그는 차후 Link 태그 등으로 교체 */}
                     <Link to="/studioLectureDetailPage" onClick={() => {
