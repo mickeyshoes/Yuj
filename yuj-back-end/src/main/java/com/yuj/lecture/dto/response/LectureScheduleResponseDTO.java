@@ -15,5 +15,5 @@ public class LectureScheduleResponseDTO {
     private LocalTime startTime;
     private LocalTime endTime;
     private int day;
-    private Lecture lecture;
+//    private Lecture lecture;
 }

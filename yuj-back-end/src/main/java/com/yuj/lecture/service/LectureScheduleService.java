@@ -7,6 +7,7 @@ import com.yuj.lecture.repository.LectureScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,18 +17,26 @@ public class LectureScheduleService {
     private final LectureScheduleRepository lectureScheduleRepository;
 
     // 강의별 스케줄 반환
-    public List<LectureSchedule> getLectureScheduleByLectureId(long lectureId){
-        return lectureScheduleRepository.findAllByLecture_LectureId(lectureId);
+    public List<LectureScheduleResponseDTO> getLectureScheduleByLectureId(long lectureId){
+        List<LectureSchedule> LectureScheduleList = lectureScheduleRepository.findAllByLecture_LectureId(lectureId);
+
+        List<LectureScheduleResponseDTO> returnList = new ArrayList<>();
+
+        for(LectureSchedule lectureSchedule: LectureScheduleList) {
+            returnList.add(entityToResponseDTO(lectureSchedule));
+        }
+
+        return returnList;
     }
 
     private LectureScheduleResponseDTO entityToResponseDTO(LectureSchedule lectureSchedule) {
-        Lecture lecture = lectureSchedule.getLecture();
+//        Lecture lecture = lectureSchedule.getLecture();
         return LectureScheduleResponseDTO.builder()
                 .scheduleId(lectureSchedule.getScheduleId())
                 .startTime(lectureSchedule.getStartTime())
                 .endTime(lectureSchedule.getEndTime())
                 .day(lectureSchedule.getDay())
-                .lecture(lectureSchedule.getLecture())
+//                .lecture(lectureSchedule.getLecture())
                 .build();
     }
 }
