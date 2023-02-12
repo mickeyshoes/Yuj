@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from '../stores/studioSlice';
+import { useNavigate, useLocation } from 'react-router-dom';
 import StudioSidebar from '../components/StudioSidebar';
 import MainHeader from './../components/mainHeader/MainHeader';
 import MainFooter from "../components/mainFooter/MainFooter";
@@ -8,7 +9,6 @@ import StudioMainBanner from '../components/StudioMainBanner';
 import StudioMainDescription from '../components/StudioMainDescription';
 import ListTitle from '../components/ListTitle';
 import LectureItemCard from '../components/LectureItemCard';
-import { useNavigate } from 'react-router-dom';
 
 
 const StudioPage = () => {
@@ -17,12 +17,22 @@ const StudioPage = () => {
     const studio = useSelector(state => state.studio);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        dispatch(getStudioDetail(user.userId));
-        dispatch(getStudioLectureList(user.userId));
-        dispatch(getStudioLiveLecture(user.userId));
+        console.log(location.state);
+        if(location.state != null){
+            getStudioData(location.state.teacherId);
+        }else if(studio.studioDetail.studioId == null) {
+            navigate(-1);
+        }
     },[])
+
+    const getStudioData = (teacherId) => {
+        dispatch(getStudioDetail(teacherId));
+        dispatch(getStudioLectureList(teacherId));
+        dispatch(getStudioLiveLecture(teacherId));
+    }
 
     return (
         <>
@@ -32,7 +42,7 @@ const StudioPage = () => {
                     <StudioMainBanner studioBannerImage={studio.studioDetail.bannerImage}/>
                     <div className={'px-40'}>
                         <StudioMainDescription studioDetail={studio.studioDetail}/>
-                        <ListTitle titleText={'강의 목록'} onClickEvent={() => { navigate("/studioLectureListPage")}}/>
+                        <ListTitle className={'text-2xl font-bold'} titleText={'강의 목록'} onClickEvent={() => { navigate("/studioLectureListPage")}}/>
                         <div className={'mt-20 my-48  flex justify-evenly'}>
                             {studio.studioLectureList.map((lecture, index) => 
                                 index < 3 ? <LectureItemCard key={lecture.lectureId} thisLecture={lecture}/> : null

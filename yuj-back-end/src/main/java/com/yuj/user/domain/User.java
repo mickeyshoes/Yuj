@@ -1,6 +1,7 @@
 package com.yuj.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.yuj.studio.domain.Studio;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -81,8 +82,8 @@ public class User implements UserDetails {
 //    @JoinColumn(name = "token_id")
 //    private Token token;
 
-//    @OneToOne(mappedBy = "user")
-//    private Studio studio;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Studio studio;
 
 
 

@@ -122,9 +122,9 @@ public class LectureService {
     }
 
     public LectureResponseDTO getActiveLectureByUserId(Long userId) throws Exception {
-        Lecture lecture = lectureRepository.findByUser_UserIdAndIsActiveTrue(userId).orElseThrow(() -> new Exception("수업이 존재하지 않습니다."));
+        List<Lecture> lectures = lectureRepository.findByUser_UserIdAndIsActiveTrue(userId).orElseThrow(() -> new Exception("수업이 존재하지 않습니다."));
 
-        return entityToResponseDTO(lecture);
+        return entityToResponseDTO(lectures.get(0));
     }
     
     public List<LectureResponseDTO> searchLectureByName(String name) throws Exception{

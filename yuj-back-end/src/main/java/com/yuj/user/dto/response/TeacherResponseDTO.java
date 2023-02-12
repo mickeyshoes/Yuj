@@ -1,11 +1,8 @@
 package com.yuj.user.dto.response;
 
-import com.yuj.user.domain.User;
-
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -14,8 +11,9 @@ import java.time.LocalDate;
  */
 
 @Getter
+@Setter
 @Builder
-public class UserResponseDTO {
+public class TeacherResponseDTO {
     private String id;
     private String name;
     private String nickname;
@@ -26,5 +24,7 @@ public class UserResponseDTO {
     private String profileImage;
     private boolean isTeacher;
     private float rating;
+    private String description;
+    private long userId;
 
 }

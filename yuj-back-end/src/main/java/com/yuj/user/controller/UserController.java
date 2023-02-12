@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import com.yuj.user.dto.response.TeacherResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yuj.lecture.dto.request.LectureVO;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class UserController {
     
     @GetMapping
     public ResponseEntity<?> searchTeacherByName(@RequestParam("search") String name){
-    	List<UserResponseDTO> resultList = userService.searchTeacherByName(name);
+    	List<TeacherResponseDTO> resultList = userService.searchTeacherByName(name);
     	
     	return new ResponseEntity<>(resultList, HttpStatus.OK);
     }

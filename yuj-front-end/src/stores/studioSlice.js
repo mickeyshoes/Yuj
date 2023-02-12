@@ -26,6 +26,14 @@ const getStudioLiveLecture = createAsyncThunk("GET_STUDIO_LIVE_LECTURE", async(u
 	return response.data;
 })
 
+const searchTeachers = createAsyncThunk("SEARCH_TEACHERS", async(keyword) => {
+
+	const response = await axios.get(`https://i8a504.p.ssafy.io/api/users?search=${keyword}`);
+	console.log("SEARCH_TEACHERS", response);
+
+	return response.data;
+})
+
 
 const studioSlice = createSlice({
 	name:'studioSlice',
@@ -44,6 +52,7 @@ const studioSlice = createSlice({
 		},
 		studioLectureList: [],
 		studioLiveLecture: {},
+		teachersSearched: [],
 	},
 
 	reducers: {
@@ -70,6 +79,9 @@ const studioSlice = createSlice({
 		},
 		[getStudioLiveLecture.fulfilled]: (state, {payload}) => {
 			state.studioLiveLecture = payload;
+		},
+		[searchTeachers.fulfilled]: (state, {payload}) => {
+			state.teachersSearched = payload;
 		}
 	}
 });
@@ -79,4 +91,4 @@ export default studioSlice;
 
 export const { changeStudioDetail, changeStudioLectureList, addStudioLectureList } = studioSlice.actions;
 
-export { getStudioDetail, getStudioLectureList, getStudioLiveLecture };
+export { getStudioDetail, getStudioLectureList, getStudioLiveLecture, searchTeachers };

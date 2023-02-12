@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
 
-    Optional<Lecture> findByUser_UserIdAndIsActiveTrue(Long userId);
+    Optional<List<Lecture>> findByUser_UserIdAndIsActiveTrue(Long userId);
     @Query(value = "select l from Lecture l join l.user u where u.userId = :userId and l.endDate >= :threshold order by l.registDate desc")
     List<Lecture> findLectureByUserId(@Param("userId") Long userId, @Param("threshold") LocalDate threshold);
 

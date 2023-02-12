@@ -19,7 +19,7 @@ const reducers = combineReducers({
 const persistConfig = {
     key: 'yuj',
     storage,
-    blacklist: ['studio', 'lecture', 'studioSample'],
+    blacklist: ['studioSample'],
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers);
