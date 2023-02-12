@@ -12,8 +12,15 @@ const getStudioDetail = createAsyncThunk("GET_STUDIO_DETAIL", async(userId) => {
 
 const getStudioLectureList = createAsyncThunk("GET_STUDIO_LECTURE_LIST", async(userId) => {
 
-	const response = await axios.get(`https://i8a504.p.ssafy.io/api/studio/${userId}/lectures`);
+	const response = await axios.get(`http://localhost:5000/studio/${userId}/lectures`);
 	console.log("GET_STUDIO_LECTURE_LIST: ",response);
+
+	return response.data;
+})
+
+const getStudioSelectedLectureList = createAsyncThunk("GET_STUDIO_SELECTED_LECTURE_LIST", async({userId, yogaId}) => {
+	const response = await axios.get(`http://localhost:5000/studio/${userId}/lectures/${yogaId}`);
+	console.log("GET_STUDIO_SELECTED_LECTURE_LIST: ",response);
 
 	return response.data;
 })
@@ -52,6 +59,7 @@ const studioSlice = createSlice({
 		},
 		studioLectureList: [],
 		studioLiveLecture: {},
+		studioLectureDetailItem: {},
 		teachersSearched: [],
 	},
 
@@ -67,6 +75,14 @@ const studioSlice = createSlice({
 		addStudioLectureList:(state, action) => {
 			const newStudioLecture = action.payload;
 			state.studioLectureList = [...state.studioLectureList, newStudioLecture];
+		},
+		changeSelectedCategory:(state, action) => {
+			const newSelectedCategery = action.payload;
+			state.selectedCategory = newSelectedCategery;
+		},
+		changeStudioLectureDetailItem:(state, action) => {
+			const newItem = action.payload;
+			state.studioLectureDetailItem = newItem;
 		}
 	},
 
@@ -80,15 +96,18 @@ const studioSlice = createSlice({
 		[getStudioLiveLecture.fulfilled]: (state, {payload}) => {
 			state.studioLiveLecture = payload;
 		},
+		[getStudioSelectedLectureList.fulfilled]: (state, {payload}) => {
+			state.studioLectureList = payload;
+		},
 		[searchTeachers.fulfilled]: (state, {payload}) => {
 			state.teachersSearched = payload;
-		}
+		},
 	}
 });
 
 
 export default studioSlice;
 
-export const { changeStudioDetail, changeStudioLectureList, addStudioLectureList } = studioSlice.actions;
+export const { changeStudioDetail, changeStudioLectureList, addStudioLectureList, changeSelectedCategory, changeStudioLectureDetailItem } = studioSlice.actions;
 
-export { getStudioDetail, getStudioLectureList, getStudioLiveLecture, searchTeachers };
+export { getStudioDetail, getStudioLectureList, getStudioLiveLecture, getStudioSelectedLectureList, searchTeachers };

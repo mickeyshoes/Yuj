@@ -6,7 +6,10 @@ import com.yuj.lecture.domain.Lecture;
 import com.yuj.lecture.domain.Yoga;
 import com.yuj.lecture.dto.request.LectureVO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
+import com.yuj.lecture.dto.response.LectureScheduleResponseDTO;
 import com.yuj.lecture.repository.LectureRepository;
+import com.yuj.lecture.repository.LectureScheduleRepository;
+import com.yuj.lectureimage.domain.LectureImage;
 import com.yuj.lecture.repository.YogaRepository;
 import com.yuj.lectureimage.domain.ImageFile;
 import com.yuj.lectureimage.handler.FileHandler;
@@ -105,6 +108,21 @@ public class LectureService {
             returnList.add(entityToResponseDTO(lecture));
         }
 
+        return returnList;
+    }
+
+    public List<LectureResponseDTO> getLecturesByUserIdAndYogaId(Long userId, Long yogaId) throws Exception {
+        List<Lecture> LectureList = lectureRepository.findLectureByUserIdAndYogaId(userId, yogaId, LocalDate.now());
+        List<Lecture> LectureEndList = lectureRepository.findLectureEndByUserIdAndYogaId(userId,yogaId, LocalDate.now());
+
+        List<LectureResponseDTO> returnList = new ArrayList<>();
+
+        for(Lecture lecture : LectureList) {
+            returnList.add(entityToResponseDTO(lecture));
+        }
+        for(Lecture lecture : LectureEndList) {
+            returnList.add(entityToResponseDTO(lecture));
+        }
         return returnList;
     }
 
