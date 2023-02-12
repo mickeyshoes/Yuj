@@ -43,8 +43,8 @@ public class LoginController {
             @ApiParam(value = "토큰 재발급 요청 DTO", required = true)
             @RequestBody TokenRequestDTO tokenRequestDTO
             ) {
-        System.out.println("tokenRequestDTO.getAccessToken() = " + tokenRequestDTO.getAccessToken());
-        System.out.println("tokenRequestDTO.getRefreshToken() = " + tokenRequestDTO.getRefreshToken());
+        log.info("tokenRequestDTO.getAccessToken() = " + tokenRequestDTO.getAccessToken());
+        log.info("tokenRequestDTO.getRefreshToken() = " + tokenRequestDTO.getRefreshToken());
         
         return responseService.getSingleResultSuccess(loginService.reissue(tokenRequestDTO));
     }

@@ -21,16 +21,16 @@ public class CustomUserDetailService implements UserDetailsService  {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return userRepository.findById(Long.parseLong(username)).orElseThrow(CUserNotFoundException::new);
             Long pk = Long.parseLong(username);
 
-            System.out.println("in loadUserByUsername");
+            log.info("in loadUserByUsername");
             List<User> userList = userRepository.findAll();
-            System.out.println("userRepository = " + userList);
-            System.out.println("size = " + userList.size());
 
-            System.out.println("username = " + username);
-            System.out.println("pk = " + pk);
+            log.info("userRepository = " + userList);
+            log.info("size = " + userList.size());
+            log.info("username = " + username);
+            log.info("pk = " + pk);
+
             return userRepository.findById(pk).orElseThrow(CUserNotFoundException::new);
     }
 

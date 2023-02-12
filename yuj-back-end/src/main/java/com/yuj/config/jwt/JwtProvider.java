@@ -25,7 +25,6 @@ import java.util.List;
 public class JwtProvider {
     @Value("spring.jwt.secret")
     private String secretKey;
-//    private String ROLES = "roles";
     private String ROLES = "role";
     private final long ACCESS_TOKEN_VALID_MILLISECOND = 1 * 90 * 1000L;    //  access token 만료 시간 (1분 30초)
     private final long REFRESH_TOKEN_VALID_MILLISECOND = 24 * 60 * 60 * 1000L;  //  refresh token 만료 시간 (하루)
@@ -38,10 +37,9 @@ public class JwtProvider {
     }
 
     //  로그인 시 Jwt 생성
-//    public TokenResponseDTO createTokenLoginResponseDto(String userPk, List<String> roles) {
     public TokenResponseDTO createTokenLoginResponseDto(Long userPk, String role) {
-        System.out.println("In createTokenLoginResponseDto");
-        System.out.println("userPk = " + userPk);
+        log.info("In createTokenLoginResponseDto");
+        log.info("userPk = " + userPk);
 
         //  User 구분을 위해 Claims에 User pk 및 authorities 목록 삽입
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
@@ -73,14 +71,12 @@ public class JwtProvider {
     }
 
     //  로그인 시 Jwt 생성
-//    public TokenResponseDTO createTokenReissueResponseDto(String userPk, List<String> roles, String refreshToken) {
     public TokenResponseDTO createTokenReissueResponseDto(Long userPk, String role, String refreshToken) {
-        System.out.println("In createTokenReissueResponseDto");
-        System.out.println("userPk = " + userPk);
+        log.info("In createTokenReissueResponseDto");
+        log.info("userPk = " + userPk);
 
         //  User 구분을 위해 Claims에 User pk 및 authorities 목록 삽입
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
-//        claims.put("roles", roles);
         claims.put("role", role);
 
         //  생성 날짜, 만료 날짜를 위한 Date
@@ -112,11 +108,10 @@ public class JwtProvider {
             throw new CAuthenticationEntryPointException();
         }
 
-        System.out.println("in getAuthentication()");
-        System.out.println("claims.getSubject() = " + claims.getSubject());
-        System.out.println("claims.getId() = " + claims.getId());
+        log.info("in getAuthentication()");
+        log.info("claims.getSubject() = " + claims.getSubject());
+        log.info("claims.getId() = " + claims.getId());
 
-        // UserDetails userDetails = userDetailService.loadUserByUsername(claims.getSubject());
         UserDetails userDetails = userDetailService.loadUserByUserId(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

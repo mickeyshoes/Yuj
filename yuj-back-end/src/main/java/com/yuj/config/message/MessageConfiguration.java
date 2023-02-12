@@ -32,8 +32,6 @@ public class MessageConfiguration implements WebMvcConfigurer {
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
-
-//        System.out.println("lci.getParamName() = " + lci.getParamName());
         return lci;
     }
 
@@ -46,16 +44,10 @@ public class MessageConfiguration implements WebMvcConfigurer {
     public MessageSource messageSource(
             @Value("${spring.messages.basename}") String basename,
             @Value("${spring.messages.encoding}") String encoding) {
-//        System.out.println("basename = " + basename);
-//        System.out.println("encoding = " + encoding);
 
         YamlMessageSource ms = new YamlMessageSource();
         ms.setBasename(basename);
         ms.setDefaultEncoding(encoding);
-
-//        System.out.println("******************************************************");
-//        System.out.println("ms.getBasenameSet() = " + ms.getBasenameSet());
-//        System.out.println("******************************************************");
 
         ms.setAlwaysUseMessageFormat(true);
         ms.setUseCodeAsDefaultMessage(true);

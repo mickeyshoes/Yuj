@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const SignupForm = () => {
+const SignUp = () => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -10,10 +11,84 @@ const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [profileImg, setProfileImg] = useState(null);
+  const [isTeacher, setIsTeacher] = useState(false);
+
+  const handleRadioChange = (event) => {
+    setIsTeacher(event.target.value === "teacher");
+
+    console.log("isTeacher = " + isTeacher);
+  };
 
   const handleSubmit = (event) => {
+    let role = "";
+
     event.preventDefault();
     // Submit the form data to the server here
+    console.log("userId = " + userId);
+    console.log("password = " + password);
+    console.log("username = " + username);
+
+    if(isTeacher)
+      role = "ROLE_TEACHER";
+    else
+      role = "ROLE_USER";
+    
+    if(gender === 'male') {
+      console.log("남자!!!!!!");
+      setGender("남자");
+    } else {
+      console.log("여자");
+      setGender("여자");
+    }
+    
+    console.log("gender = " + gender);
+    console.log("birthday = " + birthday);
+    console.log("nickname = " + nickname);
+    console.log("email = " + email);
+    console.log("phone = " + phone);
+    console.log("profileImg = " + profileImg);
+
+    let signUpDto = {
+      id: userId,
+      password: password,
+      name: username,
+      gender: gender,
+      birthDate: birthday,
+      nickname: nickname,
+      email: email,
+      phone: phone,
+      profileImagePath: null,
+      roleName: role
+    }
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    };
+
+    const dtoString = JSON.stringify(signUpDto);
+
+    let sendData = {
+      files : profileImg,
+      dto: dtoString
+    }
+
+    console.log("sendData.files = ", sendData.files);
+    console.log("sendData.dto = ", sendData.dto);
+
+    // axios.post('https://i8a504.p.ssafy.io/api/users', signUpDto)
+    axios.post('http://localhost:5000/users', sendData, config)
+      .then(response => {
+      console.log("OK!!!!");
+      console.log(response.data);
+      window.location.replace("/"); //  로그인 성공 시 화면 이동
+    })
+    .catch(error => {
+      console.log("Error!!!!!!!!!!!!!");
+      console.error(error);
+    });
+    
   };
 
   return (
@@ -38,7 +113,7 @@ const SignupForm = () => {
       <br />
       <br />
 
-      <label htmlFor="username">Username:</label>
+      <label htmlFor="username">이름:</label>
       <input
         type="text"
         id="username"
@@ -48,7 +123,7 @@ const SignupForm = () => {
       <br />
       <br />
 
-      <label htmlFor="gender">Gender:</label>
+      <label htmlFor="gender">성별:</label>
       <input
         type="radio"
         id="male"
@@ -57,7 +132,7 @@ const SignupForm = () => {
         checked={gender === 'male'}
         onChange={(event) => setGender(event.target.value)}
       />
-      <label htmlFor="male">Male</label>
+      <label htmlFor="male">남성</label>
       <input
         type="radio"
         id="female"
@@ -66,11 +141,11 @@ const SignupForm = () => {
         checked={gender === 'female'}
         onChange={(event) => setGender(event.target.value)}
       />
-      <label htmlFor="female">Female</label>
+      <label htmlFor="female">여성</label>
       <br />
       <br />
 
-      <label htmlFor="birthday">Birthday:</label>
+      <label htmlFor="birthday">생년월일:</label>
       <input
         type="date"
         id="birthday"
@@ -80,7 +155,7 @@ const SignupForm = () => {
       <br />
       <br />
 
-      <label htmlFor="nickname">Nickname:</label>
+      <label htmlFor="nickname">닉네임:</label>
       <input
         type="text"
         id="nickname"
@@ -119,9 +194,34 @@ const SignupForm = () => {
       <br />
       <br />
 
+      <div>
+<label>
+<input
+         type="radio"
+         name="role"
+         value="student"
+         checked={!isTeacher}
+         onChange={handleRadioChange}
+       />
+수강생
+</label>
+<label>
+<input
+         type="radio"
+         name="role"
+         value="teacher"
+         checked={isTeacher}
+         onChange={handleRadioChange}
+       />
+강사
+</label>
+</div>
+       <br/>
+       <br/>
+
       <button type="submit">Submit</button>
     </form>
   );
 };
 
-export default SignupForm;
+export default SignUp;

@@ -1,21 +1,18 @@
 package com.yuj.user.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yuj.lecture.dto.request.LectureVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.yuj.response.ListResult;
 import com.yuj.response.ResponseService;
 import com.yuj.response.SingleResult;
 import com.yuj.user.dto.request.UserSignupRequestDTO;
@@ -29,6 +26,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 //@CrossOrigin(origins = "*")
 @Api(tags = {"User"})
@@ -55,47 +53,45 @@ public class UserController {
     @ApiOperation(value = "회원가입", notes = "회원가입을 합니다.")
     @PostMapping
     public SingleResult<String> signup(
+            @RequestPart(value="files", required = false) List<MultipartFile> files
 //            @ApiParam(value = "회원 가입 프로필 이미지", required = false)
 //            @RequestPart(value = "file", required = false) MultipartFile files,
-            @ApiParam(value = "회원 가입 요청 DTO", required = true)
-            @RequestBody UserSignupRequestDTO userSignupRequestDto) {
+            , @ApiParam(value = "회원 가입 요청 DTO", required = true)
+            @RequestParam(value = "dto") String userSignupRequestDtoString
+    ) {
+        log.info("files : " + files);
+        log.info("userSignupRequestDtoString : " + userSignupRequestDtoString);
 
-//        try {
-//            String origFileName = files.getOriginalFilename();
-//            System.out.println("origFileName = " + origFileName);
-//            String fileName = new MD5Generator(origFileName).toString();
-//            System.out.println("fileName = " + fileName);
-//
-//            /* 파일이 저장되는 폴더가 없으면 폴더를 생성합니다. */
-//            if(!new File(savePath).exists()) {
-//                try {
-//                    new File(savePath).mkdir();
-//                } catch (Exception e) {
-//                    e.getStackTrace();
-//                }
-//            }
-//
-//            String filePath = savePath + "\\" + fileName + ".jpg";
-//            files.transferTo(new File(filePath));
-//            userSignupRequestDto.setProfileImagePath(filePath);
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            JSONParser jsonParser = new JSONParser(userSignupRequestDtoString);
+            Object obj = jsonParser.parse();
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> map = mapper.convertValue(obj, Map.class);
+            log.info("obj = " + obj);
 
-//        boolean success = userService.signUp(userSignupRequestDto);
-//        HttpStatus ret = success ? HttpStatus.ACCEPTED : HttpStatus.CONFLICT;
-//        return responseService.getSingleResult(ret);
+            for(String key : map.keySet()) {
+                log.info(key + " : " + String.valueOf(map.get(key)));
+            }
+            UserSignupRequestDTO userSignupRequestDTO = UserSignupRequestDTO.builder()
+                    .id(String.valueOf(map.get("id")))
+                    .password(String.valueOf(map.get("password")))
+                    .name(String.valueOf(map.get("name")))
+                    .nickname(String.valueOf(map.get("nickname")))
+                    .phone(String.valueOf(map.get("phone")))
+                    .email(String.valueOf(map.get("email")))
+                    .birthDate(LocalDate.parse(String.valueOf(map.get("birthDate")), DateTimeFormatter.ISO_DATE))
+                    .gender(String.valueOf(map.get("gender")))
+                    .profileImagePath(String.valueOf(map.get("profileImagePath")))
+                    .roleName(String.valueOf(map.get("roleName")))
+                    .build();
+            log.info("userSignupRequestDTO = " + userSignupRequestDTO);
 
-//        if(success) {
-//            return responseService.getSingleResultSuccess(ret);
-//        }
-//        else {
-//            return responseService.getSingleResultFail(ret, ret.value(), ret.getReasonPhrase());
-//        }
-
-        String id = userService.signUp(userSignupRequestDto);
-
-        return responseService.getSingleResultSuccess("가입한 아이디 : " + id);
+            String id = userService.signUp(files, userSignupRequestDTO);
+            return responseService.getSingleResultSuccess("가입한 아이디 : " + id);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return responseService.getSingleResultFail("Fail", -1234, "회원 가입 실패");
+        }
     }
 
     @ApiImplicitParams({
@@ -111,11 +107,7 @@ public class UserController {
             @ApiParam(value = "회원 id", required = true)
             @PathVariable("id")String id
             ) {
-//        System.out.println("In searchById");
-//        String accessToken = request.getParameter("X-AUTH-TOKEN");
-//        System.out.println("accessToken = " + accessToken);
         log.info("path variable id = {}",id);
-//        UserResponseDTO userResponseDTO = userService.searchById(id);
         UserResponseDTO userResponseDTO = userService.searchByUserId(id);
         return responseService.getSingleResultSuccess(userResponseDTO);
     }

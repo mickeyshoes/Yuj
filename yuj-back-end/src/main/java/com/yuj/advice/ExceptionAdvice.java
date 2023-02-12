@@ -28,8 +28,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult defaultException(HttpServletRequest request, Exception e) {
-        System.out.println("알 수 없는 오류");
-        log.info(String.valueOf(e));
+        log.info("알 수 없는 오류 = " + String.valueOf(e));
         return responseService.getFailResult
                 (Integer.parseInt(getMessage("unKnown.code")), getMessage("unKnown.msg"));
     }
@@ -40,8 +39,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CUserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult userNotFoundException(HttpServletRequest request, CUserNotFoundException e) {
-        System.out.println("없는 유저 찾기 오류");
-//        System.out.println("getMessage = " + getMessage("userNotFound.code"));
+        log.info("없는 유저 찾기 오류");
 
         return responseService.getFailResult
                 (Integer.parseInt(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
@@ -53,7 +51,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(CLoginFailedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult emailLoginFailedException(HttpServletRequest request, CLoginFailedException e) {
-        System.out.println("이메일 로그인 실패 오류");
+        log.info("이메일 로그인 실패 오류");
+
         return responseService.getFailResult(Integer.parseInt(getMessage("emailLoginFailed.code")),
                 getMessage("emailLoginFailed.msg"));
     }
@@ -64,7 +63,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CPasswordNotCorrectException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult passwordNotCorrectException(HttpServletRequest request, CPasswordNotCorrectException e) {
-        System.out.println("비밀번호 불일치 오류");
+        log.info("비밀번호 불일치 오류");
 
         return responseService.getFailResult(Integer.parseInt(getMessage("passwordNotCorrect.code")),
                 getMessage("passwordNotCorrect.msg"));
@@ -76,7 +75,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CSignUpFailedCException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult SignupFailedException(HttpServletRequest request, CSignUpFailedCException e) {
-        System.out.println("이미 로그인된 로그인 오류");
+        log.info("이미 로그인된 로그인 오류");
         return responseService.getFailResult(Integer.parseInt(getMessage("signupFailed.code")), getMessage("signupFailed.msg"));
     }
 
@@ -86,9 +85,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CAuthenticationEntryPointException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult authenticationEntrypointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
-        System.out.println("잘못된 토큰 전달 오류");
-//        System.out.println("getMessage = " + getMessage("authenticationEntrypoint.code"));
-
+        log.info("잘못된 토큰 전달 오류");
         return responseService.getFailResult(Integer.parseInt(getMessage("authenticationEntrypoint.code")), getMessage("authenticationEntrypoint.msg"));
     }
 
@@ -98,7 +95,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult accessDeniedException(HttpServletRequest request, AccessDeniedException e) {
-        System.out.println("권한이 부족한 오류!");
+        log.info("권한이 부족한 오류");
         return responseService.getFailResult(Integer.parseInt(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
     }
 
@@ -108,7 +105,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CRefreshTokenException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected  CommonResult refreshTokenException(HttpServletRequest request, CRefreshTokenException e) {
-        System.out.println("refresh token 오류");
+        log.info("refresh token 오류");
         return responseService.getFailResult(Integer.parseInt(getMessage("refreshTokenInValid.code")), getMessage("refreshTokenInValid.msg"));
     }
 
@@ -118,7 +115,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CExpiredAccessTokenException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected  CommonResult expiredAccessTokenException(HttpServletRequest request, CExpiredAccessTokenException e) {
-        System.out.println("access token 만료 오류");
+        log.info("access token 만료 오류");
         return responseService.getFailResult(Integer.parseInt(getMessage("expiredAccessToken.code")), getMessage("expiredAccessToken.msg"));
     }
 
@@ -127,7 +124,6 @@ public class ExceptionAdvice {
     }
 
     private String getMessage(String code, Object[] args) {
-//        System.out.println("코드!! = " + code);
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
 }

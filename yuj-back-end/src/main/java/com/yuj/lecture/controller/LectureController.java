@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/lectures")
 @RequiredArgsConstructor
+@Slf4j
 public class LectureController {
 
     private final LectureService lectureService;
@@ -34,22 +36,22 @@ public class LectureController {
     private final FileHandler fileHandler;
 
     @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<?> registLecture(@RequestPart(value="files") List<MultipartFile> files, @RequestParam(value = "vo")String lectureImageVO) {
-        System.out.println("registLecture in Lecture Controller");
-        System.out.println("files = " + files);
-        System.out.println(" lectureImageVO = " + lectureImageVO);
+    public ResponseEntity<?> registLecture(
+            @RequestPart(value="files", required = false) List<MultipartFile> files,
+            @RequestParam(value = "vo")String lectureVOString
+          ) {
+        log.info("registLecture in Lecture Controller");
+        log.info("files = " + files);
+        log.info("lectureVOString = " + lectureVOString);
 
         try {
-            JSONParser jsonParser = new JSONParser(lectureImageVO);
+            JSONParser jsonParser = new JSONParser(lectureVOString);
             Object obj = jsonParser.parse();
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> map = mapper.convertValue(obj, Map.class);
-            System.out.println("obj = " + obj);
+            log.info("obj = " + obj);
 
-            for(String key : map.keySet()) {
-                System.out.println(key + " : " + String.valueOf(map.get(key)));
-            }
-            LectureVO lectureVO1 = LectureVO.builder()
+            LectureVO lectureVO = LectureVO.builder()
                     .userId(Long.parseLong(String.valueOf(map.get("userId"))))
                     .yogaId(Long.parseLong(String.valueOf(map.get("yogaId"))))
                     .name(String.valueOf(map.get("name")))
@@ -61,18 +63,14 @@ public class LectureController {
                     .totalCount(Integer.parseInt(String.valueOf(map.get("totalCount"))))
                     .build();
 
-            System.out.println("VO = " + lectureVO1);
+            log.info("VO = " + lectureVO);
 
-            Long ret = lectureService.registLecture(files, lectureVO1);
-            if(ret == -1)
-            return new ResponseEntity<>(ret, HttpStatus.INTERNAL_SERVER_ERROR);
-
+            Long ret = lectureService.registLecture(files, lectureVO);
+            return new ResponseEntity<>("강의 개설 성공\n강의 번호 : " + ret, HttpStatus.OK);
         } catch(Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(-1, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("강의 개설 오류", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>(1, HttpStatus.OK);
     }
 
     @GetMapping

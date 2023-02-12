@@ -3,6 +3,8 @@ package com.yuj.user.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yuj.lectureimage.domain.ImageFile;
+import com.yuj.lectureimage.handler.FileHandler;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import com.yuj.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -26,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FileHandler fileHandler;
     private final JwtProvider jwtProvider;
     private final TokenRepository tokenRepository;
 
@@ -36,11 +40,28 @@ public class UserService {
     }
 
     @Transactional
-    public String signUp(UserSignupRequestDTO userSignupRequestDTO) {
+    public String signUp(List<MultipartFile> files, UserSignupRequestDTO userSignupRequestDTO) {
+        String ret = "";
+
         //  이미 존재하는 아이디인 경우
         if(isExist(userSignupRequestDTO.getId()))
             throw new CSignUpFailedCException("이미 존재하는 아이디입니다.");
-        return userRepository.save(userSignupRequestDTO.toEntity(passwordEncoder)).getId();
+
+        try {
+            List<ImageFile> imageFileList = fileHandler.parseLectureImageInfo(files);
+
+            //  파일이 존재하면 처리
+            if(!imageFileList.isEmpty()) {
+                ImageFile imageFile = imageFileList.get(0);
+                userSignupRequestDTO.setProfileImagePath(imageFile.getFilePath());
+            }
+
+            ret = userRepository.save(userSignupRequestDTO.toEntity(passwordEncoder)).getId();
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            return ret;
+        }
     }
 
     @Transactional(readOnly = true)

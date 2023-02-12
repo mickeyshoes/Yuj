@@ -5,7 +5,7 @@ import Styles from './MainRouter.module.css';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './Home';
 import LoginPage from './LoginPage';
-import SignIn from './Signin';
+import SignUp from './SignUp';
 import ViduTeacher from '../utils/FunctionalizedViduTeacher'
 import ViduStudent from '../utils/FunctionalizedViduStudent'
 import StudioPage from './StudioPage';
@@ -38,7 +38,7 @@ const Test = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path='/viduTeacher' element={<ViduTeacher />} />
           <Route path='/viduStudent' element={<ViduStudent />} />
-          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/studio" element={<StudioPage />}/>
           <Route path="/studioModify" element={<StudioModifyPage />} />
           <Route path="/mypage/dashboard" element={<MyPageDashBoard />}/>

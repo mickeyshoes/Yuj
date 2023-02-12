@@ -40,7 +40,7 @@ const LoginBox = () => {
             </Link>
           </li>
           <li><Link to="/login" className={styles.menu + ""}>로그인</Link></li>
-          <li><Link to="/signin" className={styles.menu + " mr-7"}>회원가입</Link></li>
+          <li><Link to="/signup" className={styles.menu + " mr-7"}>회원가입</Link></li>
         </>
 
       }

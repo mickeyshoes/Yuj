@@ -8,13 +8,15 @@ import com.yuj.lecture.dto.request.LectureVO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.repository.LectureRepository;
 import com.yuj.lecture.repository.YogaRepository;
-import com.yuj.lectureimage.domain.LectureImage;
+import com.yuj.lectureimage.domain.ImageFile;
 import com.yuj.lectureimage.handler.FileHandler;
 import com.yuj.lectureimage.repository.LectureImageRepository;
 import com.yuj.user.domain.User;
 import com.yuj.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -23,6 +25,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class LectureService {
 
     private final LectureRepository lectureRepository;
@@ -35,11 +39,11 @@ public class LectureService {
 
     public Long registLecture(List<MultipartFile> files, LectureVO lectureVO) {
         //  강사 Entity 찾아내기
-        System.out.println("in registLecture");
+        log.info("in registLecture");
         User teacher = userRepository.findById(lectureVO.getUserId()).orElseThrow(CUserNotFoundException::new);
         Yoga yoga = yogaRepository.findById(lectureVO.getYogaId()).orElseThrow(CYogaNotFoundException::new);
 
-        System.out.println("teacher = " + teacher);
+        log.info("teacher = " + teacher);
         
         Lecture lecture = Lecture.builder()
                 .user(teacher)
@@ -54,23 +58,23 @@ public class LectureService {
                 .totalCount(lectureVO.getTotalCount())
                 .build();
 
-        System.out.println("before");
-        System.out.println("lecture = " + lecture);
-        System.out.println("after");
+        log.info("before");
+        log.info("lecture = " + lecture);
+        log.info("after");
 
         Long ret = -1L;
 
         try {
-            List<LectureImage> lectureImageList = fileHandler.parseLectureImageInfo(files);
+            List<ImageFile> imageFileList = fileHandler.parseLectureImageInfo(files);
 
             ret = lectureRepository.save(lecture).getLectureId();
 
             //  파일이 존재하면 처리
-            if(!lectureImageList.isEmpty()) {
-                for(LectureImage lectureImage : lectureImageList) {
+            if(!imageFileList.isEmpty()) {
+                for(ImageFile imageFile : imageFileList) {
                     //  파일을 DB에 저장
-                    lectureImage.setLecture(lecture);
-                    lecture.addLectureImage(lectureImageRepository.save(lectureImage));
+                    imageFile.setLecture(lecture);
+                    lecture.addLectureImage(lectureImageRepository.save(imageFile));
                 }
             }
         } catch(Exception e) {
@@ -78,10 +82,6 @@ public class LectureService {
         } finally {
             return ret;
         }
-
-
-
-//        System.out.println("lectureRepository = " + lectureRepository.findAll());
     }
 
 

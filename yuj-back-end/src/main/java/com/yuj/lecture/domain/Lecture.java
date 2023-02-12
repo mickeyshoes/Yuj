@@ -1,6 +1,6 @@
 package com.yuj.lecture.domain;
 
-import com.yuj.lectureimage.domain.LectureImage;
+import com.yuj.lectureimage.domain.ImageFile;
 import com.yuj.user.domain.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -62,10 +62,10 @@ public class Lecture {
             fetch = EAGER
     )
     @Builder.Default
-    private List<LectureImage> lectureImages = new ArrayList<>();
+    private List<ImageFile> imageFiles = new ArrayList<>();
     
-    public void addLectureImage(LectureImage lectureImage) {
-        this.lectureImages.add(lectureImage);
+    public void addLectureImage(ImageFile imageFile) {
+        this.imageFiles.add(imageFile);
     }
 
     @PrePersist

@@ -1,9 +1,7 @@
 package com.yuj.lectureimage.handler;
 
-import com.yuj.lecture.domain.Lecture;
-import com.yuj.lectureimage.domain.LectureImage;
+import com.yuj.lectureimage.domain.ImageFile;
 import com.yuj.lectureimage.dto.LectureImageDto;
-import com.yuj.lectureimage.service.LectureImageService;
 import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +25,9 @@ public class FileHandler {
      * @return                  : 입력 받은 다중 파일 리스트에서 파일 각각을 LectureImage entity로 변환 후 리스트에 저장해서 그 리스트 반환
      * @throws Exception
      */
-    public List<LectureImage> parseLectureImageInfo(List<MultipartFile> multipartFileList) throws Exception {
+    public List<ImageFile> parseLectureImageInfo(List<MultipartFile> multipartFileList) throws Exception {
         //  반환할 파일 리스트
-        List<LectureImage> retList = new ArrayList<>(); //  반환할 Entity List
+        List<ImageFile> retList = new ArrayList<>(); //  반환할 Entity List
         
         //  전달된 파일이 존재함
         if(!Collections.isEmpty(multipartFileList)) {
@@ -85,13 +83,13 @@ public class FileHandler {
                         .fileSize(multipartFile.getSize())
                         .build();
 
-                System.out.println("filePath = " + lectureImageDto.getFilePath());
+                log.info("filePath = " + lectureImageDto.getFilePath());
 
                 //  파일 DTO를 이용하여 LectureImage 엔티티를 생성
-                LectureImage lectureImage = new LectureImage(lectureImageDto.getOrigFileName(), lectureImageDto.getFilePath(), lectureImageDto.getFileSize());
+                ImageFile imageFile = new ImageFile(lectureImageDto.getOrigFileName(), lectureImageDto.getFilePath(), lectureImageDto.getFileSize());
 
                 //  생성 후 리스트에 추가
-                retList.add(lectureImage);
+                retList.add(imageFile);
 
                 //  업로드한 파일 데이터를 지정한 파일에 저장
                 file = new File(absolutePath + path + File.separator + newFileName);

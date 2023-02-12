@@ -4,14 +4,16 @@ import com.yuj.lecture.domain.Lecture;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 
+@Slf4j
 @Entity
 @Getter
 @NoArgsConstructor
 @Table(name = "lecture_image")
-public class LectureImage {
+public class ImageFile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "lecture_image_id")
@@ -32,20 +34,20 @@ public class LectureImage {
     //  lecture 정보 저장
     public void setLecture(Lecture lecture) {
         this.lecture = lecture;
-        System.out.println("In setLecture");
-        System.out.println("lecture = " + lecture);
+        log.info("In setLecture");
+        log.info("lecture = " + lecture);
 
-        System.out.println("lecture = " + lecture);
+        log.info("lecture = " + lecture);
 
         //  lecture에 현재 이미지 파일이 존재하지 않는다면
-        if(!lecture.getLectureImages().contains(this)) {
+        if(!lecture.getImageFiles().contains(this)) {
             //  파일 추가
-            lecture.getLectureImages().add(this);
+            lecture.getImageFiles().add(this);
         }
     }
 
     @Builder
-    public LectureImage(String origFileName, String filePath, Long fileSize) {
+    public ImageFile(String origFileName, String filePath, Long fileSize) {
         this.origFileName = origFileName;
         this.filePath = filePath;
         this.fileSize = fileSize;
