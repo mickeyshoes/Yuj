@@ -12,11 +12,11 @@ import { Link } from 'react-router-dom';
 
 const MyPageDashBoard = () => {
 
-    //HH:MM:SS 시간 표시를 HH:MM으로 표시하는 함수
-    // function convertToHM(time) {
-    //     let [hours, minutes, _] = time.split(":");
-    //     return `${hours}:${minutes}`;
-    // }
+    // HH:MM:SS 시간 표시를 HH:MM으로 표시하는 함수
+    function convertToHM(time) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+        let [hours, minutes, _] = time.split(":");
+        return `${hours}:${minutes}`;
+    }
 
     // backend URL
     const MYPAGE_URL = "http://localhost:5000/mypage/dashboard/3" //뒤에 유저Id입력
@@ -47,7 +47,6 @@ const MyPageDashBoard = () => {
             url: MYPAGE_URL
         }).then(response => {
             setCompletedLectures(response.data)
-            // console.log(response.data);
         })
             .catch(error => {
                 console.log(error.response);
@@ -68,8 +67,7 @@ const MyPageDashBoard = () => {
 
     return (
         <>
-            <MainHeader />
-            <container className="flex ml-100">
+            <container className="flex ml-100 w-full">
                 <MyPageSidebar />
                 <main>
                     <div className="mx-28 mt-16 w-full">
@@ -78,9 +76,7 @@ const MyPageDashBoard = () => {
                             <div className={Styles[`dashboard-box`]}>
                                 <div className="flex m-5 justify-between" >
                                     <div className={Styles[`box-font`]}>
-                                        <div>현재</div>
-                                        <div>수강중인</div>
-                                        <div>강의</div>
+                                        <div>수강중</div>
                                     </div>
                                     <Link to="/mypage/lecture">전체보기 &gt;</Link>
                                 </div>
@@ -94,15 +90,18 @@ const MyPageDashBoard = () => {
                                         {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}
                                         {/* post 내부에 있는 post.lecture.lectureId를 이용해서 lectureSchdule 데이터 findby해오고
                                         그안의 Day, startTime 이용해야함  */}
+                                        {console.log("현재 수강중인강의 ")}
+                                        {console.log(post)}
                                         <Link to="/studio" className="h-20 my-2 flex">
                                             <div className="h-full w-32 mx-5">
                                                 {/* 강의 thumbnail_image */}
-                                                <img src={post.lecture.thumbnailImage}></img>
+                                                <img src={post.thumbnailImage}></img>
                                             </div>
                                             {/* 강의 name */}
-                                            <div className="leading-loose truncate">{post.lecture.name}
+                                            <div className="leading-loose truncate">{post.name}
+                                            {console.log(lectureSchedule)}
                                                 {/* lecture의 start_date, end_date , lectureschedule의 start_time, day를 활용 다음 수업시작날짜, 시간 연산 필요 */}
-                                                <div className="break-keep">수업 예정 : {post.lecture.startDate} {lectureSchedule.startTime} </div>
+                                                <div className="break-keep">예정 : {post.startDate} {convertToHM(lectureSchedule[0].startTime)} </div>
                                             </div>
                                         </Link>
                                     </>
@@ -113,19 +112,19 @@ const MyPageDashBoard = () => {
                             <div className={Styles[`dashboard-box`]}>
                                 <div className="flex m-5 justify-between" >
                                     <div className={Styles[`box-font`]}>
-                                        <div>수강</div>
-                                        <div>완료한</div>
-                                        <div>강의</div>
+                                        <div>수강 완료</div>
                                     </div>
                                     <Link to="/mypage/lecture">전체보기 &gt;</Link>
                                 </div>
                                 <div>
                                     {
                                         completedLectures
-                                            .sort((a, b) => new Date(b.lecture.endDate) - new Date(a.lecture.endDate))  //가장 최근 수강완료된것부터 정렬
+                                            .sort((a, b) => new Date(b.endDate) - new Date(a.endDate))  //가장 최근 수강완료된것부터 정렬
                                             .slice(0, 3)
                                             .map(post => (
                                                 <>
+                                                {console.log("수강완료한강의 post ")}
+                                                {console.log(post)}
                                                     {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}
                                                     <Link to="/studio" className="h-20 my-2 flex">
                                                         <div className="h-full w-32 mx-5">
@@ -134,9 +133,9 @@ const MyPageDashBoard = () => {
                                                         </div>
                                                         {/* 강의 name */}
                                                         <div className="leading-loose truncate">
-                                                            {post.lecture.name}
+                                                            {post.name}
                                                             {/* 강의 end_date */}
-                                                            <div>완료 수강일 : {post.lecture.endDate}</div>
+                                                            <div>완료일 : {post.endDate}</div>
                                                         </div>
                                                     </Link>
                                                 </>
@@ -154,7 +153,7 @@ const MyPageDashBoard = () => {
                                     <MyPageWeeklyStudyChart />
                                 </div>
                                 <div className="pl-5">
-                                    주간 학습 : 5 / 9회 참여하였습니다.
+                                    5 / 9회 참여하였습니다.
                                 </div>
                             </div>
                         </div>
@@ -167,11 +166,6 @@ const MyPageDashBoard = () => {
                     </div>
                 </main>
             </container>
-            <div>
-                <MainFooter />
-            </div>
-
-
         </>
     );
 }

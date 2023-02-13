@@ -22,7 +22,7 @@ public class UserLecture {
 
     private LocalDate registDate;
     @Column(nullable = true)
-    private int score;
+    private Integer score;
     private String review;
     private LocalDateTime reviewUpdateDate;
 

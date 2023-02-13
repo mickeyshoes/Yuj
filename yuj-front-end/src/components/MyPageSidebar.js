@@ -26,12 +26,12 @@ function MyPageSidebar() {
 
     <div className="drawer-side">
       <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-      <ul className={"flex justify-between menu p-5  bg-primary text-base-content " + Styles.myPageSidebar}>
+      <ul className={"flex items-start justify-between menu p-5  bg-primary text-base-content " + Styles.myPageSidebar}>
         <div>
           {/* 사이드바 내용물 map이용 출력 */}
-          {sidebarMenu.map((menu) => {
+          {sidebarMenu.map((menu, index) => {
             return (
-              <li>
+              <li key={index}>
                 <Link to={menu.path} className={Styles.sidebarMenu}>
                   {menu.name}
                 </Link>

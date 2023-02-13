@@ -14,21 +14,21 @@ const LectureItemCard = (props) => {
     const thumbnail = './assets/Sample.jpg';
 
     const teacherProfile = '/assets/YujMainLogo.svg';
-    
+
     // 강의 종료 날짜와 현재 날짜를 비교하여 '완료'를 띄워줄지 체크
     const date = new Date();
     const endDate = new Date(lecture.endDate);
 
     function complete() {
-        if(endDate < date) {
-             return <div className='badge badge-outline bg-success p-4 text-xs font-semibold rounded-xl' style={{ color: '#fff', border: '0' }}>완료</div>;
+        if (endDate < date) {
+            return <div className='badge badge-outline bg-success p-4 text-xs font-semibold rounded-xl' style={{ color: '#fff', border: '0' }}>완료</div>;
         }
     }
 
     const yogaCategory = useSelector(state => state.common.yogaCategory);
     function yogaCategorySearch(lecture) {
-        for(let i = 0; i < yogaCategory.length; i++) {
-            if(yogaCategory[i].yogaId === lecture.yoga.yogaId) {
+        for (let i = 0; i < yogaCategory.length; i++) {
+            if (yogaCategory[i].yogaId === lecture.yoga.yogaId) {
                 return yogaCategory[i].englishName;
             }
         }
@@ -64,7 +64,7 @@ const LectureItemCard = (props) => {
                         {lecture.name}
                     </p>
                     <p className='text-xs line-clamp-3 text-ellipsis'>
-                        {lecture.description}    
+                        {lecture.description}
                     </p>
 
                 </div>
