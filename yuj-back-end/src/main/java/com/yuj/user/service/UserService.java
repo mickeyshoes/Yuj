@@ -77,15 +77,22 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponseDTO searchById(String id) {
+        log.info("searchById(" + id + ")");
+
         User user = userRepository.findById(id).orElseThrow(CUserNotFoundException::new);
-        
+        log.info("user = " + user);
+
         return entityToResponseDTO(user);
     }
 
     @Transactional(readOnly = true)
     public UserResponseDTO searchByUserId(String id) {
         long userId = Long.parseLong(id);
+
+        log.info("searchById(" + userId + ")");
+
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        log.info("user = " + user);
 
         return entityToResponseDTO(user);
     }

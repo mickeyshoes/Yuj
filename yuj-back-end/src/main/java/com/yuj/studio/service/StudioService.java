@@ -50,6 +50,8 @@ public class StudioService {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Studio studio = user.getStudio();
         String ret = "";
+
+        studio.setDescription(description);
         try {
             List<ImageFile> imageFileList = fileHandler.parseLectureImageInfo(files);
 

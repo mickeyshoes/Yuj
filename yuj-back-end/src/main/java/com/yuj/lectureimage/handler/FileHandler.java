@@ -27,8 +27,8 @@ public class FileHandler {
      * @throws Exception
      */
 
-    @Value("${spring.servlet.multipart.location}")
-    private String publicPath;
+//    @Value("${spring.servlet.multipart.location}")
+    private String publicPath = "";
     private String webPath;
 
     public List<ImageFile> parseLectureImageInfo(List<MultipartFile> multipartFileList) throws Exception {
@@ -49,8 +49,8 @@ public class FileHandler {
             log.info("absolutePath = " + absolutePath);
 
             //  파일을 저장할 세부 경로 지정
-            String path = absolutePath + "images" + File.separator +  currentDate;
-            webPath = "images" + "/" + currentDate;
+            String path = absolutePath + File.separator +  currentDate;
+            webPath = currentDate;
             log.info("path = " + path);
             log.info("webPath = " + webPath);
 
