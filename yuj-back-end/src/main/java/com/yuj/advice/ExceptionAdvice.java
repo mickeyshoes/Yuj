@@ -51,7 +51,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CLoginFailedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult emailLoginFailedException(HttpServletRequest request, CLoginFailedException e) {
-        log.info("이메일 로그인 실패 오류");
+        log.info("로그인 실패 오류");
 
         return responseService.getFailResult(Integer.parseInt(getMessage("emailLoginFailed.code")),
                 getMessage("emailLoginFailed.msg"));
@@ -67,6 +67,18 @@ public class ExceptionAdvice {
 
         return responseService.getFailResult(Integer.parseInt(getMessage("passwordNotCorrect.code")),
                 getMessage("passwordNotCorrect.msg"));
+    }
+
+    /**
+     * 스튜디오가 존재하지 않을 때 발생하는 예외
+     */
+    @ExceptionHandler(CStudioNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult studioNotFoundException(HttpServletRequest request, CPasswordNotCorrectException e) {
+        log.info("존재하지 않는 스튜디오 오류");
+
+        return responseService.getFailResult(Integer.parseInt(getMessage("studioNotFound.code")),
+                getMessage("studioNotFound.msg"));
     }
 
     /**

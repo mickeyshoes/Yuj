@@ -26,3 +26,6 @@ expiredAccessToken:
 passwordNotCorrect:
   code: "-1007"
   msg: "비밀번호가 일치하지 않습니다."
+studioNotFound:
+  code: "-1008"
+  msg: "스튜디오가 존재하지 않습니다."

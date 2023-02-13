@@ -12,8 +12,14 @@ import javax.persistence.*;
 @Setter
 @Builder
 public class Studio {
+    @SequenceGenerator(
+            name="STUDIO_SEQ_GEN",
+            sequenceName = "STUDIO_SEQ",
+            initialValue = 100,
+            allocationSize = 1
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDIO_SEQ_GEN")
     @Column(name = "studio_id")
     private Long studioId;
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yuj.studio.domain.Studio;
+import com.yuj.studio.service.StudioService;
 import com.yuj.user.dto.response.TeacherResponseDTO;
 import com.yuj.lectureimage.domain.ImageFile;
 import com.yuj.lectureimage.handler.FileHandler;
@@ -30,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final StudioService studioService;
     private final PasswordEncoder passwordEncoder;
     private final FileHandler fileHandler;
     private final JwtProvider jwtProvider;
@@ -44,6 +46,7 @@ public class UserService {
     @Transactional
     public String signUp(List<MultipartFile> files, UserSignupRequestDTO userSignupRequestDTO) {
         String ret = "";
+        Long userId = -1L;
 
         //  이미 존재하는 아이디인 경우
         if(isExist(userSignupRequestDTO.getId()))
@@ -58,7 +61,13 @@ public class UserService {
                 userSignupRequestDTO.setProfileImagePath(imageFile.getFilePath());
             }
 
-            ret = userRepository.save(userSignupRequestDTO.toEntity(passwordEncoder)).getId();
+            userId = userRepository.save(userSignupRequestDTO.toEntity(passwordEncoder)).getUserId();
+            ret += "회원가입한 id = " + userSignupRequestDTO.getId();
+            
+            if(userSignupRequestDTO.getRoleName().equals("ROLE_TEACHER")) { //  강사일 경우 studio 생성
+                Long studioId = studioService.createStudio(userId);
+                ret += "\n스튜디오 번호 = " + studioId;
+            }
         } catch(Exception e) {
             e.printStackTrace();
         } finally {

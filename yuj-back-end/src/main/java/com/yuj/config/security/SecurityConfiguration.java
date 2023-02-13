@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/openvidu/**").permitAll()          //  토큰 재발행은 토큰 없이 가능
                 .antMatchers(HttpMethod.GET, "/mypage/**").permitAll()          //테스트용 마이페이지 임시허용(추후삭제)
                 .antMatchers(HttpMethod.GET, "/studio/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/studio/**").permitAll()
                 .antMatchers("/lectures/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()                     // CORS 해결을 위해 추가
 //                .antMatchers("https://i8a504.p.ssafy.io/**").permitAll()

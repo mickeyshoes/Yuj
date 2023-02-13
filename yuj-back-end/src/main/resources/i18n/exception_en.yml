@@ -26,3 +26,6 @@ expiredAccessToken:
 passwordNotCorrect:
   code: "-1007"
   msg: "Password is not correct."
+studioNotFound:
+  code: "-1008"
+  msg: "Studio does not exits."
