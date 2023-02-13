@@ -21,6 +21,8 @@ import MyPageDashBoard from './MyPageDashBoard';
 import StudioModifyPage from './StudioModifyPage';
 import StudioReview from './StudioReview';
 import MainSearchPage from './MainSearchPage';
+import MainSearchLecture from '../components/MainSearchLecture';
+import MainSearchTeacher from '../components/MainSearchTeacher'
 import HomePage from './HomePage';
 
 const Test = () => {
@@ -53,7 +55,9 @@ const Test = () => {
           <Route path="/fileInput" element={<FileInput initialLabelText={'확장자: png, jp,g jpeg / 용량 100MB 이하'} onChangeEvent={(file) => {console.log(file)}}/>} />
           <Route path="/studio/reviews" element={<StudioReview/>}></Route>
           <Route path="/userlive" element={<UserLivePage/>}/>
-          <Route path="/search" element={<MainSearchPage/>}/>
+          <Route path="/search" element={<MainSearchPage />} />
+          <Route path="/searchLecture" element={<MainSearchLecture />} />
+          <Route path="/searchTeacher" element={<MainSearchTeacher />} />
         </Routes>
       </div> 
       {location.pathname !== '/viduTeacher' ? location.pathname !== '/viduStudent' ? <MainFooter /> : null : null}

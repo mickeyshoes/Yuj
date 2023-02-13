@@ -16,7 +16,6 @@ const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io';
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const OPENVIDU_SERVER_URL = 'http://localhost:4443';
 const OPENVIDU_SERVER_SECRET = '123123';
-
 const OPENVIDU_PRO_SPEECH_TO_TEXT = 'vosk';
 
 class Vidu extends Component {
@@ -183,7 +182,6 @@ class Vidu extends Component {
             });
         }
     }
-leaveSession
     async getSessions() {
         let Sessions = await axios.get(
             OPENVIDU_SERVER_URL + '/openvidu/api/sessions',
@@ -346,7 +344,6 @@ leaveSession
     }
     async videoControl() { 
         // 비디오 출력 여부를 관리하는 상태변수
-        // console.log(this.state.publisher.properties.publishVideo);
         const { publisher } = this.state;
         if (publisher.properties.publishVideo === false) {
             publisher.properties.publishVideo = true;
@@ -385,7 +382,7 @@ leaveSession
         if (this.state.liston === false) {
             this.setState({ listMessage: '참가자 끄기' });
             let Sessions = await axios.get(
-                '/openvidu/api/sessions',
+                APPLICATION_SERVER_URL + '/openvidu/api/sessions',
                 {
                     headers: {
                         'Authorization': 'Basic ' + Base64.encode('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
@@ -533,7 +530,7 @@ leaveSession
     }
 
     async createSession(sessionId) {
-        const response = await axios.post('/api/openvidu/sessions', { customSessionId: sessionId }, {
+        const response = await axios.post(APPLICATION_SERVER_URL + '/api/openvidu/sessions', { customSessionId: sessionId }, {
             headers: { 'Content-Type': 'application/json', },
         });
         console.log("createSession 함수 호출", response.data);
@@ -542,7 +539,7 @@ leaveSession
     
     // 백앤드로부터 토큰 요청 (백앤드에서 오픈비두로부터 토큰 받음)
     async createToken(sessionId) {
-        const response = await axios.post('/api/openvidu/sessions/' + sessionId + '/connections', {}, {
+        const response = await axios.post(APPLICATION_SERVER_URL + '/api/openvidu/sessions/' + sessionId + '/connections', {}, {
             headers: { 'Content-Type': 'application/json', },
         });
         return response.data; // The token
