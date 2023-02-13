@@ -20,6 +20,7 @@ import MyPageInfo from './MyPageInfo';
 import MyPageLecture from './MyPageLecture';
 import MyPageDashBoard from './MyPageDashBoard';
 import StudioModifyPage from './StudioModifyPage';
+import StudioReview from './StudioReview';
 import MainSearchPage from './MainSearchPage';
 
 const Test = () => {
@@ -51,6 +52,7 @@ const Test = () => {
           <Route path="/studioLectureCreatePage" element={<StudioLectureCreatePage />} />
           <Route path="/studioLectureUpdatePage" element={<StudioLectureUpdatePage />} />
           <Route path="/fileInput" element={<FileInput initialLabelText={'확장자: png, jp,g jpeg / 용량 100MB 이하'} onChangeEvent={(file) => {console.log(file)}}/>} />
+          <Route path="/studio/reviews" element={<StudioReview/>}></Route>
           <Route path="/userlive" element={<UserLivePage/>}/>
           <Route path="/search" element={<MainSearchPage/>}/>
         </Routes>
