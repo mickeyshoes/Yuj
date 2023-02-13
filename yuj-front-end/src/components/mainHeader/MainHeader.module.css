@@ -6,14 +6,30 @@
     /* font-family: 'nanum Gothic'; */
     padding: 0.50rem;
 }
-
 .menu:hover {
     background-color: #F8F6F3;
-    font-weight: 900;
+    font-weight: 700;
     /* text-decoration: underline; */
     /* text-shadow:3px 5px 5px #bdbdbd; */
 }
 .menu:focus {
+    background-color: #F8F6F3;
+}
+
+.login {
+    font-size: 14px;
+    font-weight: 500;
+    color: accent;
+    /* font-family: 'nanum Gothic'; */
+    padding: 0.50rem;
+}
+.login:hover {
+    background-color: #F8F6F3;
+    font-weight: 700;
+    /* text-decoration: underline; */
+    /* text-shadow:3px 5px 5px #bdbdbd; */
+}
+.login:focus {
     background-color: #F8F6F3;
 }
 

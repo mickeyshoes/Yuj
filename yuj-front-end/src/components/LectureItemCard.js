@@ -11,7 +11,7 @@ const LectureItemCard = (props) => {
 
     const lecture = props.thisLecture;
 
-    const thumbnail = './assets/Sample.jpg';
+    const thumbnail = '/assets/Sample.jpg';
 
     const teacherProfile = '/assets/YujMainLogo.svg';
 
@@ -55,17 +55,19 @@ const LectureItemCard = (props) => {
                     <div className='flex'>
                         <Link to='' className='flex align-center'>
                             <img className='h-3.5 pr-2' src={teacherProfile} />
-                            <div className='text-xs font-bold'>요가소년</div>
+                            <div className='text-xs font-bold hover:text-accent'>{lecture.nickname}</div>
                         </Link>
                         <div></div>
                     </div>
-                    <p className='text-sm font-bold truncate text-ellipsis'>
-                        {/* 글자수 제한 및 대체 기능 구현 */}
-                        {lecture.name}
-                    </p>
-                    <p className='text-xs line-clamp-3 text-ellipsis'>
-                        {lecture.description}
-                    </p>
+                    <Link to='' className=''>
+                        <p className='text-sm font-bold truncate text-ellipsis hover:underline decoration-1.5 decoration-dashed'>
+                            {/* 글자수 제한 및 대체 기능 구현 */}
+                            {lecture.name}
+                        </p>
+                        <p className='text-xs line-clamp-3 text-ellipsis hover:underline decoration-1 decoration-dashed'>
+                            {lecture.description}
+                        </p>
+                    </Link>
 
                 </div>
             </div>
