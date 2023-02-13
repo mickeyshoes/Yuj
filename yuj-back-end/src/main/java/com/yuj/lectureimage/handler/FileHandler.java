@@ -49,7 +49,7 @@ public class FileHandler {
             log.info("absolutePath = " + absolutePath);
 
             //  파일을 저장할 세부 경로 지정
-            String path = absolutePath + File.separator +  currentDate;
+            String path = absolutePath + File.separator + "images" + File.separator + currentDate;
             webPath = currentDate;
             log.info("path = " + path);
             log.info("webPath = " + webPath);
