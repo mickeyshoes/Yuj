@@ -76,9 +76,10 @@ const SignUp = () => {
 
     console.log("sendData.files = ", sendData.files);
     console.log("sendData.dto = ", sendData.dto);
+    console.log(`${process.env.REACT_APP_API_URL}/users`);
 
-    axios.post('https://i8a504.p.ssafy.io/api/users', sendData, config)
-    // axios.post('http://localhost:5000/users', sendData, config)
+    // axios.post('${process.env.REACT_APP_API_URL}/users', sendData, config)
+    axios.post(`${process.env.REACT_APP_API_URL}/users`, sendData, config)
       .then(response => {
       console.log("OK!!!!");
       console.log(response.data);

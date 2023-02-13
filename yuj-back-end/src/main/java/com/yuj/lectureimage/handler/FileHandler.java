@@ -5,6 +5,7 @@ import com.yuj.lectureimage.dto.LectureImageDto;
 import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,10 +26,16 @@ public class FileHandler {
      * @return                  : 입력 받은 다중 파일 리스트에서 파일 각각을 LectureImage entity로 변환 후 리스트에 저장해서 그 리스트 반환
      * @throws Exception
      */
+
+    @Value("${spring.servlet.multipart.location}")
+    private String publicPath;
+    private String webPath;
+
     public List<ImageFile> parseLectureImageInfo(List<MultipartFile> multipartFileList) throws Exception {
         //  반환할 파일 리스트
         List<ImageFile> retList = new ArrayList<>(); //  반환할 Entity List
-        
+        log.info("publicPath = " + publicPath);
+
         //  전달된 파일이 존재함
         if(!Collections.isEmpty(multipartFileList)) {
             //  파일명을 업로드한 날짜로 변환하여 저장
@@ -38,10 +45,15 @@ public class FileHandler {
 
             //  프로젝트 디렉토리 내의 저장을 위한 절대 경로 설정
             //  경로 구분자 File.seperator 사용
-            String absolutePath = new File("").getAbsolutePath() + File.separator + File.separator;
+            String absolutePath = new File(publicPath).getAbsolutePath() + File.separator;
+            log.info("absolutePath = " + absolutePath);
 
             //  파일을 저장할 세부 경로 지정
-            String path = "images" + File.separator +  currentDate;
+            String path = absolutePath + "images" + File.separator +  currentDate;
+            webPath = "images" + "/" + currentDate;
+            log.info("path = " + path);
+            log.info("webPath = " + webPath);
+
             File file = new File(path);
 
             //  디렉토리가 존재하지 않을 경우
@@ -79,11 +91,11 @@ public class FileHandler {
                 //  파일 DTO 생성
                 LectureImageDto lectureImageDto = LectureImageDto.builder()
                         .origFileName(multipartFile.getOriginalFilename())
-                        .filePath(path + File.separator + newFileName)
+                        .filePath(webPath + "/" + newFileName)
                         .fileSize(multipartFile.getSize())
                         .build();
 
-                log.info("filePath = " + lectureImageDto.getFilePath());
+                log.info("webFilePath = " + lectureImageDto.getFilePath());
 
                 //  파일 DTO를 이용하여 LectureImage 엔티티를 생성
                 ImageFile imageFile = new ImageFile(lectureImageDto.getOrigFileName(), lectureImageDto.getFilePath(), lectureImageDto.getFileSize());
@@ -92,7 +104,7 @@ public class FileHandler {
                 retList.add(imageFile);
 
                 //  업로드한 파일 데이터를 지정한 파일에 저장
-                file = new File(absolutePath + path + File.separator + newFileName);
+                file = new File(path + File.separator + newFileName);
                 multipartFile.transferTo(file);
 
                 //  파일 권한 설정(쓰기, 읽기)

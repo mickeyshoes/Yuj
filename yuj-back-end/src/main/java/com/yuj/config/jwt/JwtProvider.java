@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class JwtProvider {
-    @Value("spring.jwt.secret")
+    @Value("${spring.jwt.secret}")
     private String secretKey;
     private String ROLES = "role";
     private final long ACCESS_TOKEN_VALID_MILLISECOND = 1 * 90 * 1000L;    //  access token 만료 시간 (1분 30초)

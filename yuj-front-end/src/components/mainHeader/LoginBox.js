@@ -21,7 +21,8 @@ const LoginBox = () => {
         <>
           <li>
             <Link to="/mypage/dashboard" className={styles.menu}>
-              <img src={'https://i8a504.p.ssafy.io/'+user.userInfo.profileImage}/>
+              {/* <img src={'https://i8a504.p.ssafy.io/'+user.userInfo.profileImage}/> */}
+              <img src={user.userInfo.profileImage}/>
             </Link>
           </li>
           <li><Link to="/mypage/dashboard" className={styles.menu + ""}>{user.userInfo.nickname}님 환영합니다.</Link></li>

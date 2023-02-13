@@ -1,5 +1,6 @@
 package com.yuj.config.jwt;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -10,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
@@ -34,12 +36,17 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         //  검증
         log.info("[Verifying token]");
         log.info(((HttpServletRequest)request).getRequestURL().toString());
+        
+        try {
+            if (token != null && jwtProvider.validationToken(token)) {
+                Authentication authentication = jwtProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        if(token != null && jwtProvider.validationToken(token)) {
-            Authentication authentication = jwtProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            log.info("authentication.getName() = " + authentication.getName());
+                log.info("authentication.getName() = " + authentication.getName());
+            }
+        } catch(ExpiredJwtException e) {
+            System.out.println("response = " + response);
+//            ((HttpServletResponse)response).sendRedirect("localhost:5000/reissue");
         }
         filterChain.doFilter(request, response);
     }
