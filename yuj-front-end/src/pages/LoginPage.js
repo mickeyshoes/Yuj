@@ -55,7 +55,7 @@ const LoginPage = () => {
 
           <div className='flex flex-col justify-end items-end mt-5'>
               <button className={"btn btn-xs btn-accent " + Styles[`mypage-save-button`]}>로그인</button>
-              <p className={'text-xs mt-3'}>YUJ 계정이 없으신가요? <Link to={'/studio'} className={'text-black font-bold'} > 회원등록</Link></p>
+              <p className={'text-xs mt-3'}>YUJ 계정이 없으신가요? <Link to={'/signup'} className={'text-black font-bold'} > 회원등록</Link></p>
           </div>
           <hr className={'my-5'}/>
         </form>

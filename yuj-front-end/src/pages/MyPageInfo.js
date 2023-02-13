@@ -1,11 +1,11 @@
 import React from "react";
 import MyPageSidebar from './../components/MyPageSidebar';
-import MainFooter from './../components/mainFooter/MainFooter';
-import MainHeader from './../components/mainHeader/MainHeader';
 import Styles from './MyPages.module.css';
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { CommonModal, CommonModalBtn } from '../components/CommonModal';
+
+const LOCAL_URL = "http://localhost:5000";
+const URL = LOCAL_URL;
 
 //핸드폰 번호를 11자로 제한하기 위한 함수
 function phoneLengthLimit(e) {
@@ -25,10 +25,9 @@ const MyPageInfo = () => {
 
     useEffect(() => {
         const getUserInfo = async () => {
-            let userId = 1;//지울예정
             try {
                 // 로그인한 유저 정보 가져오기
-                const response = await axios.get(`http://localhost:5000/mypage/info/${userId}`);
+                const response = await axios.get(`${URL}/users/3`); //id로 회원정보 조회하는 API
                 const userData = response.data;
 
                 // 유저 기본 정보 넣어주기
@@ -158,7 +157,7 @@ const MyPageInfo = () => {
                                 </label>
                             </div>
                             <div class='flex justify-end'>
-                                <button className={"btn btn-accent " + Styles[`mypage-save-button`]}>저장하기</button>
+                                <button className={"btn btn-accent " + Styles[`mypage-save-button`]}>변경하기</button>
 
                             </div>
                         </form>

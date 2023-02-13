@@ -8,7 +8,8 @@ import { changeStudioLectureDetailItem } from '../stores/studioSlice';
 const LectureItemCard = (props) => {
 
     const dispatch = useDispatch();
-
+    console.log("props.thisLecture는 ")
+    console.log(props.thisLecture);
     const lecture = props.thisLecture;
 
     const thumbnail = '/assets/Sample.jpg';
@@ -27,9 +28,16 @@ const LectureItemCard = (props) => {
 
     const yogaCategory = useSelector(state => state.common.yogaCategory);
     function yogaCategorySearch(lecture) {
-        for (let i = 0; i < yogaCategory.length; i++) {
-            if (yogaCategory[i].yogaId === lecture.yoga.yogaId) {
-                return yogaCategory[i].englishName;
+        if ("englishName" in lecture) { //마이페이지 수강목록에서 사용합니다.
+            for (let i = 0; i < yogaCategory.length; i++) {
+                return lecture.englishName
+            }
+        }
+        else {
+            for (let i = 0; i < yogaCategory.length; i++) { // 기존에 있던 LectureItemCard방식입니다.
+                if (yogaCategory[i].yogaId === lecture.yoga.yogaId) {
+                    return yogaCategory[i].englishName;
+                }
             }
         }
     }
