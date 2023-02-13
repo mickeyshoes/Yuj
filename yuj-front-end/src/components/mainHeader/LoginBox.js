@@ -25,8 +25,8 @@ const LoginBox = () => {
               <img src={`${process.env.REACT_APP_IMAGE_URL}/${user.userInfo.profileImage}`} style={{width:"24px", height:"24px"}}/>
             </Link>
           </li>
-          <li  className='text-accent'><Link to="/mypage/dashboard" className={styles.login + ""}>{user.userInfo.nickname} 님 환영합니다.</Link></li>
-          <li className='mr-5'><a onClick={() => dispatch(clearUserState())} className={styles.menu + ""}>로그아웃</a></li>
+          <li  className='text-accent'><Link to="/mypage/dashboard" className={styles.menu + ""}>{user.userInfo.nickname} 님 환영합니다.</Link></li>
+          <li className='mr-5 text-accent'><a onClick={() => dispatch(clearUserState())} className={styles.menu + ""}>로그아웃</a></li>
         </>
 
         :

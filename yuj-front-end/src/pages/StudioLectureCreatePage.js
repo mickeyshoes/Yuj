@@ -14,6 +14,8 @@ import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from '../
 
 const StudioLectureCreatePage = () => {
 
+    const dispatch = useDispatch();
+
     // useHistory의 기능을 모두 useNavigate가 대체 -> 뒤로가기, 앞으로가기 등
     const navigate = useNavigate();
     // 스케줄 입력 컴포넌트 생성을 위한 카운트
@@ -74,7 +76,6 @@ const StudioLectureCreatePage = () => {
     }
 
     //사이드바
-    const dispatch = useDispatch();
     const user = useSelector(state => state.user);
     const studio = useSelector(state => state.studio);
     useEffect(() => {

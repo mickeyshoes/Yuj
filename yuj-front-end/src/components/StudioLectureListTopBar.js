@@ -7,12 +7,12 @@ import {
 } from "./StudioLectureOpeningModal";
 
 const StudioLectureListTopBar = (props) => {
-  const userAuth = props.userAuth;
+  const userRole = props.userRole;
   const lectureCount = props.lectureCount;
   const navigate = useNavigate();
 
   let lectureOpeningButton;
-  if (userAuth === "teacher") {
+  if (userRole === "teacher") {
     lectureOpeningButton = (
       <StudioLectureOpeningModalBtn
         text="강의 개설"

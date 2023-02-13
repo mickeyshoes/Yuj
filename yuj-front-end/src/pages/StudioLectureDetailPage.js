@@ -21,30 +21,39 @@ import {
 import { getLectureSchedule } from "../stores/lectureSlice";
 
 const StudioLectureDetailPage = () => {
-
   const dispatch = useDispatch();
 
   //현재 탐색하고 있는 강의 불러오기 //리덕스 퍼시스트로 유지
   let lecture = useSelector((state) => state.studio.studioLectureDetailItem);
 
-  const [userAuth, setUserAuth] = useState("teacher");
-
   //강의 종료 날짜와 현재 날짜를 비교하여 강의가 종료된 상태인지를 확인
   const date = new Date();
   const endDate = new Date(lecture.endDate);
   function endCheck() {
-    if(date > endDate) {
+    if (date > endDate) {
       return true;
-    } else{
+    } else {
       return false;
     }
   }
 
-  //수강생 -> 수강 신청(수강 취소), 목록으로
-  //강사 -> 수정하기, 폐강하기, 목록으로
-  //단, endCheck가 true이면 목록으로 버튼만
+  // 수강생 -> 수강 신청(수강 취소), 목록으로
+  // 강사 -> 수정하기, 폐강하기, 목록으로
+  // 단, endCheck가 true이면 목록으로 버튼만
+  let isTeacher = useSelector(state => state.user.userInfo.teacher);
+  let userId = useSelector(state => state.user.userId);
+  function userRole() {
+    if (isTeacher) return "teacher";
+    else return "user";
+  }
+
   let lectureDetailButtons;
-  if (userAuth === "user" && !endCheck()) {
+  if(userId === '') {
+    //로그인한 유저 정보가 없는 경우 목록으로 버튼만
+    lectureDetailButtons = (
+      <></>
+    )
+  } else if (userRole() === "user" && !endCheck()) {
     lectureDetailButtons = (
       <div>
         <StudioLectureDetailLectureRegistModalBtn
@@ -53,7 +62,7 @@ const StudioLectureDetailPage = () => {
         />
       </div>
     );
-  } else if (userAuth === "teacher" && !endCheck()) {
+  } else if (userRole() === "teacher" && !endCheck()) {
     lectureDetailButtons = (
       <div className="flex flex-wrap gap-2">
         <button className="btn btn-accent text-white px-12">수정하기</button>
@@ -68,8 +77,8 @@ const StudioLectureDetailPage = () => {
   //강의 스케줄 가져오기
   useEffect(() => {
     dispatch(getLectureSchedule(lecture.lectureId));
-  }, [])
-  let lectureSchedule = useSelector(state => state.lecture.lectureSchedule);
+  }, []);
+  let lectureSchedule = useSelector((state) => state.lecture.lectureSchedule);
 
   //사이드바
   const user = useSelector((state) => state.user);
@@ -119,10 +128,13 @@ const StudioLectureDetailPage = () => {
             <StudioLectureDetailCarousel />
           </div>
           <div className="mt-5">
-            <StudioLectureDetailInfoBox lecture={lecture} endCheck={endCheck()}/>
+            <StudioLectureDetailInfoBox
+              lecture={lecture}
+              endCheck={endCheck()}
+            />
           </div>
           <div className="mt-3">
-            <StudioLectureDetailSchedule lectureSchedule={lectureSchedule}/>
+            <StudioLectureDetailSchedule lectureSchedule={lectureSchedule} />
           </div>
           {/* 강사 및 수강생 별로 버튼 다르게 해야함*/}
           <div className="flex justify-end flex-wrap gap-2 pt-5 pb-8">

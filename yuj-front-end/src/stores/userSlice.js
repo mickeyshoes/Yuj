@@ -61,15 +61,15 @@ const userSlice = createSlice({
 		},
 		userId: '',
 		userInfo: {
-			id: "",
-			name: "",
-			nickname: "",
-			phone: "",
-			email: "",
-			birthDate: "",
-			gender: "",
-			profileImage: "",
-			isTeacher: "",
+			// id: "",
+			// name: "",
+			// nickname: "",
+			// phone: "",
+			// email: "",
+			// birthDate: "",
+			// gender: "",
+			// profileImage: "",
+			// isTeacher: "",
 		}
 	},
 
@@ -89,6 +89,7 @@ const userSlice = createSlice({
 			state.userId = decodeJwtToken(tokenInfo.accessToken);
 		},
 		[getUserInfo.fulfilled]: (state, {payload}) => {
+			console.log(payload);
 			state.userInfo = payload;
 		},
 	}

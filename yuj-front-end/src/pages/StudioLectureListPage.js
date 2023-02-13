@@ -36,7 +36,11 @@ const StudioLectureListPage = () => {
   });
 
   //유저의 권한이 강사일 때 강의개설 버튼 생성
-  const [userAuth, setUserAuth] = useState("teacher");
+  const isTeacher = useSelector(state => state.user.userInfo.teacher);
+  function userRole() {
+    if(isTeacher) return "teacher";
+    else return "user"
+  };
 
   //사이드바
   const user = useSelector(state => state.user);
@@ -53,7 +57,7 @@ const StudioLectureListPage = () => {
         <StudioSidebar studioDetail={studio.studioDetail} userId={user.userId} studioLiveLecture={studio.studioLiveLecture}/>
         <div className="flex-auto px-40 pt-20">
           <p className="text-3xl font-bold text-accent mb-6 mr-3">강의 목록</p>
-          <StudioLectureListTopBar userAuth={userAuth} lectureCount={lectureCount}/>
+          <StudioLectureListTopBar userRole={userRole()} lectureCount={lectureCount}/>
           <div className="flex py-12 px-0">
             <div className="flex flex-wrap justify-start gap-9">
              {lectureList.map((lecture) => (
