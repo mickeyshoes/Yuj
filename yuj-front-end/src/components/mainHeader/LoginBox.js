@@ -22,7 +22,7 @@ const LoginBox = () => {
           <li>
             <Link to="/mypage/dashboard" className={styles.menu}>
               {/* <img src={'https://i8a504.p.ssafy.io/'+user.userInfo.profileImage}/> */}
-              <img src={`${process.env.REACT_APP_IMAGE_URL}/${user.userInfo.profileImage}`} style={{width:"24px", height:"24px"}}/>
+              <img src={`${process.env.REACT_APP_IMAGE_URL}/${user.userInfo.profileImage}`} style={{width:"24px", height:"24px", borderRadius:"100%"}}/>
             </Link>
           </li>
           <li  className='text-accent'><Link to="/mypage/dashboard" className={styles.menu + ""}>{user.userInfo.nickname} 님 환영합니다.</Link></li>

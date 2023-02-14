@@ -91,7 +91,7 @@ const LectureItemCard = (props) => {
               </button>
             </div>
             <div className="text-xs font-bold">
-              {lecture.limitStudents} / {lecture.totalCount}
+              {lecture.totalCount} / {lecture.limitStudents}
             </div>
           </div>
           <Link
