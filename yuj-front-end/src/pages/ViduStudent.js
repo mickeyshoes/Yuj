@@ -390,7 +390,7 @@ class Vidu extends Component {
             this.setState({ listMessage: '참가자 끄기' });
             let Sessions = await axios.get(
                 '/openvidu/api/sessions',
-                //APPLICATION_SERVER_URL + '/openvidu/api/sessions',
+                // APPLICATION_SERVER_URL + '/openvidu/api/sessions',
                 {
                     headers: {
                         'Authorization': 'Basic ' + Base64.encode('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
@@ -533,29 +533,31 @@ class Vidu extends Component {
     }
 
     async getToken() {
-        const sessionId = await this.createSession(this.state.mySessionId);
+        // const sessionId = await this.createSession(this.state.mySessionId);
+        const sessionId = this.state.mySessionId;
         return await this.createToken(sessionId);
-    }
-
-    async createSession(sessionId) {
-        const response = await axios.post(
-            //APPLICATION_SERVER_URL + '/api/openvidu/sessions', 
-            '/api/openvidu/sessions', 
-            { customSessionId: sessionId }, {
-            headers: { 'Content-Type': 'application/json', },
-        });
-        console.log("createSession 함수 호출", response.data);
-        return response.data; // The sessionId
     }
     
     // 백앤드로부터 토큰 요청 (백앤드에서 오픈비두로부터 토큰 받음)
     async createToken(sessionId) {
-        const response = await axios.post(
-            //APPLICATION_SERVER_URL + '/api/openvidu/sessions/' + sessionId + '/connections', {}, {
-            '/api/openvidu/sessions/' + sessionId + '/connections', {}, {
-            headers: { 'Content-Type': 'application/json', },
-        });
-        return response.data; // The token
+        let response = undefined;
+        try {
+            response = await axios.post(
+                // APPLICATION_SERVER_URL + '/api/openvidu/sessions/' + sessionId + '/connections', {}, {
+                '/api/openvidu/sessions/' + sessionId + '/connections', {}, {
+                headers: { 'Content-Type': 'application/json', },
+            });
+        } catch (e) { 
+            if (e.response.request.status === 500) { 
+                alert('아직 세션이 생성되지 않았습니다');
+                this.setState({
+                    session: undefined
+                });
+            }
+        }
+        if (response != undefined) {
+            return response.data; // The token
+        }
     }
 }
 
