@@ -89,8 +89,8 @@ public class LectureController {
 //            }
 
             List<LectureScheduleRegistDTO> lsrDtos = new ArrayList<>();
-            JSONArray jsonArray = new JSONArray(scheduleArr);
-            log.info("jsonArray = " + jsonArray);
+//            JSONArray jsonArray = new JSONArray(scheduleArr);
+//            log.info("jsonArray = " + jsonArray);
 
             if (scheduleArr != null) {
                 JSONArray jsonArray = new JSONArray(scheduleArr);
@@ -99,16 +99,16 @@ public class LectureController {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObj = jsonArray.getJSONObject(i);
 //                log.info("jsonObj : " + jsonObj);
-                LectureScheduleRegistDTO dto = LectureScheduleRegistDTO.builder()
-                        .startTime(LocalTime.parse(String.valueOf(jsonObj.get("startTime"))))
-                        .endTime(LocalTime.parse(String.valueOf(jsonObj.get("endTime"))))
-                        .day(Integer.parseInt(String.valueOf(jsonObj.get("day"))))
-                        .build();
+                    LectureScheduleRegistDTO dto = LectureScheduleRegistDTO.builder()
+                            .startTime(LocalTime.parse(String.valueOf(jsonObj.get("startTime"))))
+                            .endTime(LocalTime.parse(String.valueOf(jsonObj.get("endTime"))))
+                            .day(Integer.parseInt(String.valueOf(jsonObj.get("day"))))
+                            .build();
 
-                log.info("dto : " + dto);
-                lsrDtos.add(dto);
+                    log.info("dto : " + dto);
+                    lsrDtos.add(dto);
+                }
             }
-
             Long ret = lectureService.registLecture(files, lectureVO, lsrDtos);
             return new ResponseEntity<>("강의 개설 성공\n강의 번호 : " + ret, HttpStatus.OK);
         } catch (Exception e) {
@@ -140,16 +140,16 @@ public class LectureController {
 
         return ResponseEntity.status(HttpStatus.OK).body(lectureResponseDTO);
     }
-    
+
     @GetMapping("/yoga/{yogaId}")
-    public ResponseEntity<?> searchLectureByNameAndYoga(@PathVariable long yogaId, @RequestParam("search") String name) throws Exception{
-    	List<LectureResponseDTO> resultList = lectureService.searchLectureByNameAndYoga(name, yogaId);
-    	return new ResponseEntity<>(resultList, HttpStatus.OK);
+    public ResponseEntity<?> searchLectureByNameAndYoga(@PathVariable long yogaId, @RequestParam("search") String name) throws Exception {
+        List<LectureResponseDTO> resultList = lectureService.searchLectureByNameAndYoga(name, yogaId);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
-    
+
     @GetMapping("/{userId}/review")
-    public ResponseEntity<?> getReviewByUserIdAndLectureId(@PathVariable long userId, @RequestParam("lectureId") long lectureId){
-    	List<LectureReviewResponseDTO> resultList = lectureService.getReviewByUserIdAndLectureId(userId, lectureId);
-    	return new ResponseEntity<>(resultList, HttpStatus.OK);
+    public ResponseEntity<?> getReviewByUserIdAndLectureId(@PathVariable long userId, @RequestParam("lectureId") long lectureId) {
+        List<LectureReviewResponseDTO> resultList = lectureService.getReviewByUserIdAndLectureId(userId, lectureId);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 }

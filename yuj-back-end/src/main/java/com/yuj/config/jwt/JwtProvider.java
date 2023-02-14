@@ -2,6 +2,7 @@ package com.yuj.config.jwt;
 
 import com.yuj.exception.CAuthenticationEntryPointException;
 import com.yuj.config.security.CustomUserDetailService;
+import com.yuj.exception.CExpiredAccessTokenException;
 import com.yuj.user.dto.response.TokenResponseDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.Base64UrlCodec;
@@ -139,6 +140,9 @@ public class JwtProvider {
             log.error("잘못된 Jwt 서명입니다.");
         } catch (ExpiredJwtException e) {
             log.error("만료된 토큰입니다.");
+
+            Claims claims = parseClaims(token);
+            log.info("claims.getSubject() = " + claims.getSubject());
         } catch (UnsupportedJwtException e) {
             log.error("지원하지 않는 토큰입니다.");
         } catch (IllegalArgumentException e) {
