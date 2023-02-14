@@ -27,8 +27,8 @@ public class UserLectureService {
     @Transactional
     public Long registUserLecture(Long userId, Long lectureId) {
         // 강의, 유저 Entity 찾기
-        Lecture lecture = lectureRepository.findById(userId).orElseThrow(CLectureNotFoundException::new);
-        User user = userRepository.findById(lectureId).orElseThrow(CUserNotFoundException::new);
+        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(CLectureNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
         Long ret = -1L;
 
