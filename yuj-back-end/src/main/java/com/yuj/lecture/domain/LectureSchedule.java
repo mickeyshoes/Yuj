@@ -14,8 +14,15 @@ import java.time.LocalTime;
 @Builder
 @ToString
 public class LectureSchedule {
+    @SequenceGenerator(
+            name="LECTURE_SCHEDULE_SEQ_GEN",
+            sequenceName = "LECTURE_SCHEDULE_SEQ",
+            initialValue = 100,
+            allocationSize = 1
+    )
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LECTURE_SCHEDULE_SEQ_GEN")
     @Column(name = "schedule_id")
     private Long scheduleId;
 

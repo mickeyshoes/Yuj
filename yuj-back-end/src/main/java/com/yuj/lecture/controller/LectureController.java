@@ -1,6 +1,8 @@
 package com.yuj.lecture.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yuj.lecture.dto.request.LectureRegistRequestDTO;
+import com.yuj.lecture.dto.request.LectureScheduleRegistDto;
 import com.yuj.lecture.dto.request.LectureVO;
 import com.yuj.lecture.dto.request.LectureUpdateActiveRequestDTO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
@@ -12,12 +14,16 @@ import com.yuj.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.json.JSONParser;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +44,13 @@ public class LectureController {
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<?> registLecture(
             @RequestPart(value="files", required = false) List<MultipartFile> files,
-            @RequestParam(value = "vo")String lectureVOString
+            @RequestParam(value = "vo")String lectureVOString,
+            @RequestParam(value = "scheduleArr", required = false)String scheduleArr
           ) {
         log.info("registLecture in Lecture Controller");
         log.info("files = " + files);
         log.info("lectureVOString = " + lectureVOString);
+        log.info("scheduleArr = " + scheduleArr);
 
         try {
             JSONParser jsonParser = new JSONParser(lectureVOString);
@@ -65,7 +73,40 @@ public class LectureController {
 
             log.info("VO = " + lectureVO);
 
-            Long ret = lectureService.registLecture(files, lectureVO);
+//            List<LectureScheduleRegistDto> lsrDtos = new ArrayList<>();
+//            for(String schedulVOString :scheduleArr) {
+//                jsonParser = new JSONParser(schedulVOString);
+//                obj = jsonParser.parse();
+//                mapper = new ObjectMapper();
+//                map = mapper.convertValue(obj, Map.class);
+//
+//                LectureScheduleRegistDto dto = LectureScheduleRegistDto.builder()
+//                        .startTime(LocalTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE))
+//                        .endTime(LocalTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME))
+//                        .day(Integer.parseInt(String.valueOf(map.get("day"))))
+//                        .build();
+//
+//                lsrDtos.add(dto);
+//            }
+
+            List<LectureScheduleRegistDto> lsrDtos = new ArrayList<>();
+            JSONArray jsonArray = new JSONArray(scheduleArr);
+            log.info("jsonArray = " + jsonArray);
+
+            for(int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObj = jsonArray.getJSONObject(i);
+//                log.info("jsonObj : " + jsonObj);
+                LectureScheduleRegistDto dto = LectureScheduleRegistDto.builder()
+                        .startTime(LocalTime.parse(String.valueOf(jsonObj.get("startTime"))))
+                        .endTime(LocalTime.parse(String.valueOf(jsonObj.get("endTime"))))
+                        .day(Integer.parseInt(String.valueOf(jsonObj.get("day"))))
+                        .build();
+
+                log.info("dto : " + dto);
+                lsrDtos.add(dto);
+            }
+
+            Long ret = lectureService.registLecture(files, lectureVO, lsrDtos);
             return new ResponseEntity<>("강의 개설 성공\n강의 번호 : " + ret, HttpStatus.OK);
         } catch(Exception e) {
             e.printStackTrace();
