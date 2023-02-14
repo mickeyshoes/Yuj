@@ -175,6 +175,26 @@ public class LectureService {
 		}
     	return result;
     }
+    
+    public List<LectureResponseDTO> searchLectureByNameAndYoga(String name, long yogaId) {
+    	List<LectureResponseDTO> result = new ArrayList<>();
+    	LocalDate threshold = LocalDate.now();
+//    	
+//    	// 현재 진행하고 있는 강의 검색
+    	List<Lecture> list = lectureRepository.findLectureByYoga(name, yogaId, threshold);
+//    	
+//    	// 현재 종료된 강의 검색
+    	List<Lecture> list2 = lectureRepository.findLectureEndByYoga(name, yogaId, threshold);
+    	
+    	for (Lecture lecture : list) {
+			result.add(entityToResponseDTO(lecture));
+		}
+    	
+    	for (Lecture lecture : list2) {
+    		result.add(entityToResponseDTO(lecture));
+		}
+    	return result;
+	}
 
     private LectureResponseDTO entityToResponseDTO(Lecture lecture) {
         User user = lecture.getUser();

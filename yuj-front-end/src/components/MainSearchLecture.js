@@ -3,7 +3,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import LectureItemCard from "./LectureItemCard";
 import { searchLectures } from '../stores/lectureSlice';
 import SearchIcon from '@mui/icons-material/Search';
-import StudioLectureListCategorySelectBox from "./StudioLectureListCategorySelectBox";
+import MainSearchLectureListCategorySelectBox from "./MainSearchLectureListCategorySelectBox";
 
 const MainSearchTeacher = () => {
     const [keyword, setKeyword] = useState('');
@@ -19,7 +19,7 @@ const MainSearchTeacher = () => {
         if (e.key === 'Enter') {
             doSearch();
         }
-    }
+    } 
     
     return (
         <>
@@ -28,7 +28,7 @@ const MainSearchTeacher = () => {
                     <div className="flex justify-between items-center">
                         <p className="text-3xl font-bold text-accent mb-6 mr-3">강사 목록</p>
                         <div className="flex items-center">
-                            <StudioLectureListCategorySelectBox />
+                            <MainSearchLectureListCategorySelectBox keyword={ keyword} />
                         </div>
                         <div className="form-control" style={{ position: 'relative', paddingRight: '0px' }}>
                             <input onKeyPress={handleOnKeyPress} value={keyword} onChange={(e) => setKeyword(e.target.value)} type="text" placeholder="검색어를 입력해주세요" className={"input w-60 text-black text-xs rounded-xl input-sm bg-secondary"} />

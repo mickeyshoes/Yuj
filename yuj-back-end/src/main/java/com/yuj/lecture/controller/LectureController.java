@@ -137,4 +137,10 @@ public class LectureController {
 
         return ResponseEntity.status(HttpStatus.OK).body(lectureResponseDTO);
     }
+    
+    @GetMapping("/yoga/{yogaId}")
+    public ResponseEntity<?> searchLectureByNameAndYoga(@PathVariable long yogaId, @RequestParam("search") String name) throws Exception{
+    	List<LectureResponseDTO> resultList = lectureService.searchLectureByNameAndYoga(name, yogaId);
+    	return new ResponseEntity<>(resultList, HttpStatus.OK);
+    }
 }

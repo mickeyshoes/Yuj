@@ -19,6 +19,13 @@ const searchLectures = createAsyncThunk("SEARCH_LECTURES", async(keyword) => {
     return response.data;
 })
 
+const getSelectedLectureList = createAsyncThunk("GET_SELECTED_LECTURE_LIST", async({keyword, yogaId}) => {
+	const response = await axios.get(`${process.env.REACT_APP_API_URL}/lectures/yoga/${yogaId}?search=${keyword}`);
+    console.log("GET_SELECTED_LECTURE_LIST: ", response);
+
+	return response.data;
+})
+
 const lectureSlice = createSlice({
     name: 'lectureSlice',
 
@@ -45,9 +52,12 @@ const lectureSlice = createSlice({
             console.log("search lectures", payload);
             state.lecturesSearched = payload;
         },
+        [getSelectedLectureList.fulfilled]: (state, { payload}) => { 
+            state.lecturesSearched = payload;
+        }
     }
 })
 
 export default lectureSlice;
 
-export {getLecture, getLectureSchedule, searchLectures};
+export {getLecture, getLectureSchedule, searchLectures, getSelectedLectureList};
