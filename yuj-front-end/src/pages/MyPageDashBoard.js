@@ -5,6 +5,7 @@ import MyPageWeeklyStudyChart from '../components/MyPageWeeklyStudyChart';
 import MyPageCalendar from "../components/MyPageCalendar";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const LOCAL_URL = "http://localhost:5000";
 const URL = LOCAL_URL;
@@ -31,6 +32,145 @@ const MyPageDashBoard = () => {
     const [completedLectures, setCompletedLectures] = useState([]);
     //강의 시간 정보
     const [lectureSchedule, setLectureSchedule] = useState([]);
+    //강의 일정 배열(1일 단위)
+    const [lectureEvents, setLectureEvents] = useState([]);
+    //수강 참여 내역
+    const [userLectureSchedules, setUserLectureSchedules] = useState([]);
+    //이번주 강의 수강 퍼센트
+    const [percentage, setPercentage] = useState(50);
+    //이번주 강의 참여 횟수
+    const [maxAttandance, setMaxAttandance] = useState(0);
+    //이번주 강의 참여 횟수 최대치
+    const [currAttandance, setCurrAttandance] = useState(0);
+
+
+    //이번주 수강 퍼센트 계산하는 함수
+    const calcPercentage = () => {
+        const weekStart = dayjs().startOf('week');
+        const weekEnd = dayjs().endOf('week');
+
+        console.log("week start & end : ",weekStart.format(),weekEnd.format());
+
+        let maxCnt = 0;
+        let currCnt = 0;
+
+        lectureEvents.forEach(event => {
+            const classDate = dayjs(event.date);
+            const isAfter = classDate.isSame(weekStart) || classDate.isAfter(weekStart);
+            const isBefore = classDate.isSame(weekEnd) || classDate.isBefore(weekEnd);
+            
+            if(isAfter && isBefore){
+                maxCnt++;
+            }
+        })
+        // console.log('calcPercentage userLectureSchedules: ',userLectureSchedules);
+        userLectureSchedules.forEach(schedule => {
+            const classDate = dayjs(schedule.attendanceDate);
+            const isAfter = classDate.isSame(weekStart) || classDate.isAfter(weekStart);
+            const isBefore = classDate.isSame(weekEnd) || classDate.isBefore(weekEnd);
+
+            if(isAfter && isBefore){
+                currCnt++;
+            }
+        })
+
+        setMaxAttandance(maxCnt);
+        setCurrAttandance(currCnt);
+
+        console.log('maxcnt, currcnt : ', maxCnt, currCnt)
+
+        setPercentage(maxCnt != 0 ? currCnt/maxCnt*100 : 100);
+    }
+
+    useEffect(() => {
+        if(currentLectures.length != 0) {
+            //강의 일정 만들기
+            makeLectureEvents();
+        }
+    }, [currentLectures])
+
+    useEffect(() => {
+        if(lectureEvents.length != 0 && userLectureSchedules.length != 0) {
+            //그래프 퍼센트 계산하기
+            calcPercentage();
+        }
+    }, [lectureEvents, userLectureSchedules])
+
+
+    //현재 수강중인 모든 강의 일정을 계산해 합치는 함수
+    const makeLectureEvents = async() => {
+        let events = [];
+        for(const lecture of currentLectures){
+            const schedules = await getLectureScheduleByLectureId(lecture.lectureId);
+            const { calcEvents, calcEventCloseTime } = calcEventsWithUserLectureAndSchedules(lecture, schedules);
+            events = events.concat(calcEvents);
+            lecture.closeTime = calcEventCloseTime;
+            console.log("foreach lecture res: ",lecture)
+        }
+        setLectureEvents(events);
+    }
+
+    //특정 강의와 스케줄을 가지고 일정을 생성하는 함수
+    const calcEventsWithUserLectureAndSchedules = (userLecture, schedules) => {
+        console.log("calcEventsWithUserLectureAndSchedules : ",userLecture, schedules)
+        const calcEvents = [];
+        let calcEventCloseTime = '';
+
+
+        //시작날, 끝날, 수업요일 저장하기
+        let { endDate, startDate, name } = userLecture;
+        const days = schedules.map(schedule => schedule.day - 1);
+        console.log('days : ',days)
+
+        endDate = dayjs(endDate);
+        startDate = dayjs(startDate);
+
+        //시작날부터 끝날까지 날짜를 1씩 추가하며 해당날짜가 수업하는 요일일 경우 배열에 집어넣기
+        while(!startDate.isAfter(endDate)) {
+            startDate = startDate.add(1, "d");
+            schedules.map(schedule => {
+
+                if(schedule.day-1 == startDate.get("day")){
+                    calcEvents.push({
+                        title: name,
+                        date: startDate.format("YYYY-MM-DD"),
+                    })
+
+                    if(!calcEventCloseTime) {
+                        let getEventDateTime = startDate.format("YYYY-MM-DD") + schedule.startTime;
+                        calcEventCloseTime = elapsedTime(getEventDateTime);
+                    }
+                }
+            })
+        }
+        return { calcEvents, calcEventCloseTime };
+    }
+
+    //~분전, ~일전 계산하는 함수
+    function elapsedTime(date) {
+        const start = dayjs();
+        const end = dayjs(date);
+        
+        const diff = end.diff(start) / 1000;
+        
+        const times = [
+          { name: '년', milliSeconds: 60 * 60 * 24 * 365 },
+          { name: '개월', milliSeconds: 60 * 60 * 24 * 30 },
+          { name: '일', milliSeconds: 60 * 60 * 24 },
+          { name: '시간', milliSeconds: 60 * 60 },
+          { name: '분', milliSeconds: 60 },
+        ];
+      
+        for (const value of times) {
+          const betweenTime = Math.floor(diff / value.milliSeconds);
+      
+          if (betweenTime > 0) {
+            return `${betweenTime}${value.name} 후`;
+          }
+        }
+        return '잠시 후';
+      }
+
 
     useEffect(() => {
         // 수강했던 모든 강의 가져와야하는부분 현재 임시
@@ -82,8 +222,43 @@ const MyPageDashBoard = () => {
             .catch(e => {
                 console.log(e.response);
             })
+
+        // 강의 몇번 수강했는지 내역 가져오기
+        getUserLectureScheduleByUserId(0)
+            .then(res => setUserLectureSchedules(res));
+        // setUserLectureSchedules(getUserLectureScheduleByUserId(0));
     }, [])
 
+
+    //강의id로 해당 스케줄 목록 가져오는 api 함수
+    const getLectureScheduleByLectureId = (lectureId) => {
+        return axios({
+                method: "GET",
+                url: `${process.env.REACT_APP_API_URL}/mypage/dashboard/lectureSchedule/${lectureId}`
+            })
+            .then(response => {
+                return response.data;
+            })
+            .catch(e => {
+                console.log(e.response);
+            })
+    }
+
+    //유저id로 강의 참여 내역을 가져오는 api 함수
+    const getUserLectureScheduleByUserId = (userId) => {
+        return axios({
+                method: "GET",
+                // url: `${process.env.REACT_APP_API_URL}/mypage/dashboard/userlectureSchedule/${userId}`
+                url: `http://localhost:5000/mypage/dashboard/userLectureSchedule/${userId}`
+            })
+            .then(response => {
+                console.log('getUserLectureScheduleByUserId : ',response.data)
+                return response.data;
+            })
+            .catch(e => {
+                console.log(e.response);
+            })
+    }
 
     return (
         <>
@@ -110,8 +285,8 @@ const MyPageDashBoard = () => {
                                         {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}
                                         {/* post 내부에 있는 post.lecture.lectureId를 이용해서 lectureSchdule 데이터 findby해오고
                                         그안의 Day, startTime 이용해야함  */}
-                                        {console.log("현재 수강중인강의 ")}
-                                        {console.log(post)}
+                                        {/* {console.log("현재 수강중인강의 ")} */}
+                                        {/* {console.log(post)} */}
                                         <Link to="/studio" className="h-20 my-2 flex">
                                             <div className="h-full w-32 mx-5">
                                                 {/* 강의 thumbnail_image */}
@@ -121,7 +296,8 @@ const MyPageDashBoard = () => {
                                             <div className="leading-loose truncate">{post.name}
                                                 {console.log(lectureSchedule)}
                                                 {/* lecture의 start_date, end_date , lectureschedule의 start_time, day를 활용 다음 수업시작날짜, 시간 연산 필요 */}
-                                                <div className="break-keep">예정 : {post.startDate} {convertToHM(lectureSchedule[0].startTime)} </div>
+                                                {/* <div className="break-keep">예정 : {post.startDate} {convertToHM(lectureSchedule[0].startTime)} </div> */}
+                                                <div className="break-keep">예정 : {post.closeTime? post.closeTime: null} </div>
                                             </div>
                                         </Link>
                                     </>
@@ -170,17 +346,17 @@ const MyPageDashBoard = () => {
                             <div className={Styles[`dashboard-box`]}>
                                 <div className={"pl-5 pt-5 " + Styles[`box-font`]}>주간 학습 달성률</div>
                                 <div>
-                                    <MyPageWeeklyStudyChart />
+                                    <MyPageWeeklyStudyChart percentage={percentage}/>
                                 </div>
                                 <div className="pl-5">
-                                    5 / 9회 참여하였습니다.
+                                    {currAttandance} / {maxAttandance}회 참여하였습니다.
                                 </div>
                             </div>
                         </div>
                         <div className="m-14">
                             <div>학습 일정</div>
                             <div>
-                                <MyPageCalendar />
+                                <MyPageCalendar lectureEvents={lectureEvents} />
                             </div>
                         </div>
                     </div>

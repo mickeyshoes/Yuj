@@ -7,7 +7,7 @@ class MyPageWeeklyStudyChart extends React.Component {
 
         this.state = {
 
-            series: [85],
+            series: [props.percentage? props.percentage : 0],
             options: {
                 chart: {
                     height: 350,
@@ -53,7 +53,11 @@ class MyPageWeeklyStudyChart extends React.Component {
         };
     }
 
-
+    componentDidUpdate(prevProps) {
+        if(this.props.percentage != prevProps.percentage){
+            this.setState({series: [this.props.percentage]});
+        }
+    }
 
     render() {
         return (

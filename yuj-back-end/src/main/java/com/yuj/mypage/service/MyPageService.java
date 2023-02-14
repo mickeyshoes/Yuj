@@ -1,17 +1,16 @@
 package com.yuj.mypage.service;
 
-import com.yuj.lecture.domain.Lecture;
-import com.yuj.lecture.domain.LectureSchedule;
-import com.yuj.lecture.domain.UserLecture;
-import com.yuj.lecture.domain.Yoga;
+import com.yuj.lecture.domain.*;
 import com.yuj.lecture.repository.LectureRepository;
 import com.yuj.lecture.repository.LectureScheduleRepository;
 
 import com.yuj.mypage.dto.request.MyPageUserInfoRequestDTO;
 import com.yuj.mypage.dto.response.MyPageLectureScheduleResponseDTO;
 import com.yuj.mypage.dto.response.MyPageUserLectureResponseDTO;
+import com.yuj.mypage.dto.response.MyPageUserLectureScheduleResponseDTO;
 import com.yuj.mypage.repository.MyPageUserInfoRepository;
 import com.yuj.mypage.repository.MyPageUserLectureRepository;
+import com.yuj.mypage.repository.MyPageUserLectureScheduleRepository;
 import com.yuj.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,8 @@ import java.util.*;
 public class MyPageService {
 
     private final MyPageUserLectureRepository myPageUserLectureRepository;
-
     private final LectureScheduleRepository lectureScheduleRepository;
+    private final MyPageUserLectureScheduleRepository myPageUserLectureScheduleRepository;
 
     private final MyPageUserInfoRepository myPageUserInfoRepository;
 
@@ -101,6 +100,22 @@ public class MyPageService {
         return myPageLectureScheduleResponseDTOS;
     }
 
+    public List<MyPageUserLectureScheduleResponseDTO> getUserLectureScheduleByUserId(long userId){
+        List<UserLectureSchedule> userLectureSchedules = myPageUserLectureScheduleRepository.findAllByUser_UserId(userId);
+
+        List<MyPageUserLectureScheduleResponseDTO> DTOList = new ArrayList<>();
+
+        for(UserLectureSchedule userLectureSchedule : userLectureSchedules){
+            DTOList.add(entityToUserLectureScheduleResponseDTO(userLectureSchedule));
+        }
+
+        return DTOList;
+
+    }
+
+
+    private MyPageUserLectureResponseDTO entityToUserLectureResponseDTO(UserLecture userLecture){
+        User user = userLecture.getUser();
 //    유저 정보 수정
 
     public Optional<User> updateUser(Long userId, MyPageUserInfoRequestDTO myPageUserInfoRequestDTO) {
@@ -126,20 +141,7 @@ public class MyPageService {
         });
         return user;
     }
-//    public updateUser(MyPageRequestDTO){
-//        User user = MyPageRepository.findById(userDto.getId()).orElse(null);
-//        if (user == null) {
-//            throw new RuntimeException("User not found");
-//        }
-//
-//        user.setProfileImage(userDto.getProfileImage());
-//        user.setNickname(userDto.getNickname());
-//        user.setPassword(userDto.getPassword());
-//        user.setPhone(userDto.getPhone());
-//        user.setEmail(userDto.getEmail());
-//
-//        return userRepository.save(user);
-//    }
+
 
     private MyPageUserLectureResponseDTO entityToUserLectureResponseDTO(UserLecture userLecture) {
 
@@ -181,4 +183,13 @@ public class MyPageService {
                 build();
     }
 
+    private MyPageUserLectureScheduleResponseDTO entityToUserLectureScheduleResponseDTO(UserLectureSchedule userlectureSchedule){
+        return MyPageUserLectureScheduleResponseDTO.builder()
+                .userLectureScheduleId(userlectureSchedule.getUserLectureScheduleId())
+                .attendanceDate(userlectureSchedule.getAttendanceDate())
+                .isAttendance(userlectureSchedule.isAttendance())
+                .userId(userlectureSchedule.getUser().getUserId())
+                .lectureId(userlectureSchedule.getLecture().getLectureId())
+                .build();
+    }
 }
