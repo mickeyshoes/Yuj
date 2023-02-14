@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MyPageSidebar from "../components/MyPageSidebar";
 import Styles from "./MyPages.module.css";
-import MainHeader from './../components/mainHeader/MainHeader';
-import MainFooter from "../components/mainFooter/MainFooter";
 import MyPageWeeklyStudyChart from '../components/MyPageWeeklyStudyChart';
 import MyPageCalendar from "../components/MyPageCalendar";
 import axios from "axios";
@@ -14,15 +12,19 @@ const URL = LOCAL_URL;
 const MyPageDashBoard = () => {
 
     // HH:MM:SS 시간 표시를 HH:MM으로 표시하는 함수
-    function convertToHM(time) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+    function convertToHM(time) {
         let [hours, minutes, _] = time.split(":");
         return `${hours}:${minutes}`;
     }
-
+    const tempId=3
     // backend URL
-    const MYPAGE_URL = `${URL}/mypage/dashboard/3` //뒤에 유저Id입력
-    const LECTURE_SCHEDULE_URL = `${URL}/mypage/dashboard/lectureSchedule/3` //이 뒤에 lectureId입력
+    const GET_ALL_LECTURES_USERID = `${URL}/mypage/dashboard/${tempId}` //뒤에 유저Id입력
+    const GET_CURRENT_LECTURES = `${URL}/mypage/dashboard/currentlectures/${tempId}` //뒤에 유저Id입력
+    const GET_COMPLETED_LECTURES = `${URL}/mypage/dashboard/completedlectures/${tempId}` //뒤에 유저Id입력
+    const LECTURE_SCHEDULE_URL = `${URL}/mypage/dashboard/lectureSchedule/${tempId}` //이 뒤에 lectureId입력
 
+    //신청한 모든 강의
+    const [allLectures, setAllLectures] = useState([]);
     //현재 수강중인 강의
     const [currentLectures, setCurrentLectures] = useState([]);
     //수강 완료한 강의
@@ -31,12 +33,27 @@ const MyPageDashBoard = () => {
     const [lectureSchedule, setLectureSchedule] = useState([]);
 
     useEffect(() => {
-        //현재 수강중인 강의 가져와야하는부분 현재 임시데이터
+        // 수강했던 모든 강의 가져와야하는부분 현재 임시
         axios({
             method: "GET",
-            url: MYPAGE_URL
+            url: GET_ALL_LECTURES_USERID
+        }).then(response => {
+            setAllLectures(response.data)
+            console.log("모든 강의입니다")
+            console.log(allLectures);
+        })
+            .catch(error => {
+                console.log(error.response);
+            })
+
+        //수강 중인 강의 가져와야하는부분 현재 임시데이터
+        axios({
+            method: "GET",
+            url: GET_CURRENT_LECTURES
         }).then(response => {
             setCurrentLectures(response.data)
+            console.log("수강중인강의입니다")
+            console.log(currentLectures)
         })
             .catch(error => {
                 console.log(error.response);
@@ -45,9 +62,11 @@ const MyPageDashBoard = () => {
         //수강 완료한 강의 가져와야하는부분 현재 임시데이터
         axios({
             method: "GET",
-            url: MYPAGE_URL
+            url: GET_COMPLETED_LECTURES
         }).then(response => {
             setCompletedLectures(response.data)
+            console.log("수강완료한강의입니다")
+            console.log(completedLectures)
         })
             .catch(error => {
                 console.log(error.response);
@@ -100,7 +119,7 @@ const MyPageDashBoard = () => {
                                             </div>
                                             {/* 강의 name */}
                                             <div className="leading-loose truncate">{post.name}
-                                            {console.log(lectureSchedule)}
+                                                {console.log(lectureSchedule)}
                                                 {/* lecture의 start_date, end_date , lectureschedule의 start_time, day를 활용 다음 수업시작날짜, 시간 연산 필요 */}
                                                 <div className="break-keep">예정 : {post.startDate} {convertToHM(lectureSchedule[0].startTime)} </div>
                                             </div>
@@ -124,8 +143,8 @@ const MyPageDashBoard = () => {
                                             .slice(0, 3)
                                             .map(post => (
                                                 <>
-                                                {console.log("수강완료한강의 post ")}
-                                                {console.log(post)}
+                                                    {console.log("수강완료한강의 post ")}
+                                                    {console.log(post)}
                                                     {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}
                                                     <Link to="/studio" className="h-20 my-2 flex">
                                                         <div className="h-full w-32 mx-5">

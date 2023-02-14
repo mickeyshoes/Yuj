@@ -3,6 +3,7 @@ import MyPageSidebar from './../components/MyPageSidebar';
 import Styles from './MyPages.module.css';
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const LOCAL_URL = "http://localhost:5000";
 const URL = LOCAL_URL;
@@ -22,33 +23,36 @@ const MyPageInfo = () => {
 
     // 내 정보의 input상자 클래스를 한번에 관리하기 위한 inputClassName
     const inputClassName = "rounded-[5px] pl-2 h-6 input-bordered w-full text-base " + Styles[`myPageInput`];
+    //현재 로그인한 유저
+    const user = useSelector(state => state.user);
 
-    useEffect(() => {
-        const getUserInfo = async () => {
-            try {
-                // 로그인한 유저 정보 가져오기
-                const response = await axios.get(`${URL}/users/3`); //id로 회원정보 조회하는 API
-                const userData = response.data;
 
-                // 유저 기본 정보 넣어주기
-                setProfileImage(userData.profileImage);
-                setNickname(userData.nickname);
-                setPassword(userData.password);
-                setPhone(userData.phone);
-                setEmail(userData.email);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        getUserInfo();
-    }, []);
+    // useEffect(() => {
+    //     const getUserInfo = async () => {
+    //         try {
+    //             // 로그인한 유저 정보 가져오기
+    //             const response = await axios.get(`${URL}/users/3`); //id로 회원정보 조회하는 API
+    //             const userData = response.data;
 
-    const [profileImage, setProfileImage] = useState("");
-    const [nickname, setNickname] = useState("");
+    //             // 유저 기본 정보 넣어주기
+    //             setProfileImage(userData.profileImage);
+    //             setNickname(userData.nickname);
+    //             setPassword(userData.password);
+    //             setPhone(userData.phone);
+    //             setEmail(userData.email);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+    //     getUserInfo();
+    // }, []);
+
+    const [profileImage, setProfileImage] = useState(user.userInfo.profileImage);
+    const [nickname, setNickname] = useState(user.userInfo.nickname);
     const [password, setPassword] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [userId, setUserId] = useState("");
+    const [phone, setPhone] = useState(user.userInfo.phone);
+    const [email, setEmail] = useState(user.userInfo.email);
+    const [userId, setUserId] = useState(user.userId);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -61,9 +65,10 @@ const MyPageInfo = () => {
             phone,
             email,
         };
+        console.log("url")
 
-        axios
-            .patch(`/mypage/info/${userId}`, updateUser)
+        console.log(`${LOCAL_URL}/mypage/info/${userId}`)
+        axios.patch(`${LOCAL_URL}/mypage/info/${userId}`, updateUser)
             .then((res) => console.log(res))
             .catch((err) => console.error(err));
     };
@@ -87,7 +92,7 @@ const MyPageInfo = () => {
                                 <div className="avatar">
                                     <div className="w-24 rounded-full">
                                         {/* 이 아래 현재 로그인한 유저의 이미지파일을 받아와야함 */}
-                                        <img src='/assets/tempProfilePicture.jpg' />
+                                        <img src={`${process.env.REACT_APP_IMAGE_URL}/${profileImage}`} />
                                     </div>
                                     {/* 이전 사용하던 인풋박스 */}
                                     {/* <input type="file" className="file-input file-input-bordered file-input-accent w-full profileInput myPageInput" /> */}
@@ -99,7 +104,7 @@ const MyPageInfo = () => {
                                 <label className="label">
                                     <span className="label-text">닉네임</span>
                                 </label>
-                                <input type="text" name="nickname" placeholder="닉네임을 입력하세요." defaultValue={"현재 닉네임"} className={inputClassName} maxLength={16} onChange={(e) => setNickname(e.target.value)} />
+                                <input type="text" name="nickname" placeholder="닉네임을 입력하세요." defaultValue={nickname} className={inputClassName} maxLength={16} onChange={(e) => setNickname(e.target.value)} />
                                 <label className="label">
                                     <span className="label-text-alt"></span>
                                     <span className="label-text-alt"></span>
@@ -112,8 +117,6 @@ const MyPageInfo = () => {
                                 </label>
                                 <input type="password" placeholder="현재 비밀번호" className={inputClassName} minLength={6} maxLength={16} />
                                 <label className="label">
-                                    <span className="label-text-alt"></span>
-                                    <span className="label-text-alt"></span>
                                 </label>
                             </div>
 
@@ -138,7 +141,7 @@ const MyPageInfo = () => {
                                 <label className="label">
                                     <span className="label-text">휴대폰 번호</span>
                                 </label>
-                                <input type="number" name="phone" placeholder="휴대폰 번호를 입력하세요" defaultValue={"01011223456"} className={inputClassName} onInput={(e) => phoneLengthLimit(e)} onChange={(e) => setPhone(e.target.value)} />
+                                <input type="number" name="phone" placeholder="휴대폰 번호를 입력하세요" defaultValue={phone} className={inputClassName} onInput={(e) => phoneLengthLimit(e)} onChange={(e) => setPhone(e.target.value)} />
 
                                 <label className="label">
                                     <span className="label-text-alt"></span>
@@ -150,7 +153,7 @@ const MyPageInfo = () => {
                                 <label className="label">
                                     <span className="label-text">이메일</span>
                                 </label>
-                                <input type="email" name="email" placeholder="이메일을 입력하세요" defaultValue={"yuj@google.com"} className={inputClassName} maxLength={64} onChange={(e) => setEmail(e.target.value)} />
+                                <input type="email" name="email" placeholder="이메일을 입력하세요" defaultValue={email} className={inputClassName} maxLength={64} onChange={(e) => setEmail(e.target.value)} />
                                 <label className="label">
                                     <span className="label-text-alt"></span>
                                     <span className="label-text-alt"></span>
@@ -158,7 +161,6 @@ const MyPageInfo = () => {
                             </div>
                             <div class='flex justify-end'>
                                 <button className={"btn btn-accent " + Styles[`mypage-save-button`]}>변경하기</button>
-
                             </div>
                         </form>
                     </div>
