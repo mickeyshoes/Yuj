@@ -1,11 +1,8 @@
 package com.yuj.lecture.domain;
 
 import com.yuj.user.domain.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -20,14 +17,18 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@ToString(of = {"userLectureId"})
 public class UserLecture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userLectureId;
 
     private LocalDate registDate;
-    @Column(nullable = true)
-    private Integer score;
+
+    @Builder.Default
+    @ColumnDefault("0")
+    private int score = 0;
+
     private String review;
     private LocalDateTime reviewUpdateDate;
 
@@ -43,9 +44,8 @@ public class UserLecture {
     public void registDate() {
         this.registDate = LocalDate.now();
     }
-    
+
     @Builder.Default
     @ColumnDefault("1")
     private boolean state = true;
-
 }

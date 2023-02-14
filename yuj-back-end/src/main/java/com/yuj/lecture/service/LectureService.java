@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yuj.exception.CUserNotFoundException;
-import com.yuj.exception.controller.CYogaNotFoundException;
+import com.yuj.exception.CYogaNotFoundException;
 import com.yuj.lecture.domain.Lecture;
 import com.yuj.lecture.domain.LectureSchedule;
 import com.yuj.lecture.domain.UserLecture;
 import com.yuj.lecture.domain.Yoga;
-import com.yuj.lecture.dto.request.LectureScheduleRegistDto;
+import com.yuj.lecture.dto.request.LectureScheduleRegistDTO;
 import com.yuj.lecture.dto.request.LectureVO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.dto.response.LectureReviewResponseDTO;
@@ -46,7 +46,7 @@ public class LectureService {
     private final FileHandler fileHandler;
 
     @Transactional
-    public Long registLecture(List<MultipartFile> files, LectureVO lectureVO, List<LectureScheduleRegistDto> lsrDtos) {
+    public Long registLecture(List<MultipartFile> files, LectureVO lectureVO, List<LectureScheduleRegistDTO> lsrDtos) {
         //  강사 Entity 찾아내기
         log.info("in registLecture");
         User teacher = userRepository.findById(lectureVO.getUserId()).orElseThrow(CUserNotFoundException::new);
@@ -89,7 +89,7 @@ public class LectureService {
             }
 
             if(!lsrDtos.isEmpty()) {
-                for(LectureScheduleRegistDto dto : lsrDtos) {
+                for(LectureScheduleRegistDTO dto : lsrDtos) {
                     //  일정을 DB에 저장
                     LectureSchedule lectureSchedule = dto.toEntity(lecture);
                     log.info("lectureSchedule : " + lectureSchedule);

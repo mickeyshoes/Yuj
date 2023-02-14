@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Builder
 @ToString
-public class LectureScheduleRegistDto {
+public class LectureScheduleRegistDTO {
     LocalTime startTime;
     LocalTime endTime;
     int day;
