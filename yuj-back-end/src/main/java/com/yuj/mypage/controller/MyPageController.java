@@ -105,13 +105,13 @@ public class MyPageController {
 
     }
     //    유저정보수정
-    @PatchMapping("/info/{userId}")
-    public ResponseEntity<User> userUpdate(@RequestBody MyPageUserInfoRequestDTO myPageUserInfoRequestDTO, @PathVariable Long userId) {
-        Optional<User> user = this.myPageService.updateUser(userId, myPageUserInfoRequestDTO);
-        System.out.println("userUpdate 컨트롤러에 도착");
-        System.out.println(user);
-
-        return new ResponseEntity(user, HttpStatus.OK);
-    }
+//    @PatchMapping("/info/{userId}")
+//    public ResponseEntity<User> userUpdate(@RequestBody MyPageUserInfoRequestDTO myPageUserInfoRequestDTO, @PathVariable Long userId) {
+//        Optional<User> user = this.myPageService.updateUser(userId, myPageUserInfoRequestDTO);
+//        System.out.println("userUpdate 컨트롤러에 도착");
+//        System.out.println(user);
+//
+//        return new ResponseEntity(user, HttpStatus.OK);
+//    }
 
 }

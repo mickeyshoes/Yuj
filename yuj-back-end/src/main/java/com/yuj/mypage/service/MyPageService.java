@@ -114,33 +114,33 @@ public class MyPageService {
     }
 
 
-    private MyPageUserLectureResponseDTO entityToUserLectureResponseDTO(UserLecture userLecture){
-        User user = userLecture.getUser();
-//    유저 정보 수정
-
-    public Optional<User> updateUser(Long userId, MyPageUserInfoRequestDTO myPageUserInfoRequestDTO) {
-        Optional<User> user = this.myPageUserInfoRepository.findById(userId);
-
-        user.ifPresent(u -> {
-            if (myPageUserInfoRequestDTO.getProfileImage() != null) {
-                u.setProfileImagePath(myPageUserInfoRequestDTO.getProfileImage());
-            }
-            if (myPageUserInfoRequestDTO.getNickname() != null) {
-                u.setNickname(myPageUserInfoRequestDTO.getNickname());
-            }
-            if (myPageUserInfoRequestDTO.getPassword() != null) {
-                u.setPassword(myPageUserInfoRequestDTO.getPassword());
-            }
-            if (myPageUserInfoRequestDTO.getPhone() != null) {
-                u.setPhone(myPageUserInfoRequestDTO.getPhone());
-            }
-            if (myPageUserInfoRequestDTO.getEmail() != null) {
-                u.setEmail(myPageUserInfoRequestDTO.getEmail());
-            }
-            this.myPageUserInfoRepository.save(u);
-        });
-        return user;
-    }
+//    private MyPageUserLectureResponseDTO entityToUserLectureResponseDTO(UserLecture userLecture){
+//        User user = userLecture.getUser();
+////    유저 정보 수정
+//
+//    public Optional<User> updateUser(Long userId, MyPageUserInfoRequestDTO myPageUserInfoRequestDTO) {
+//        Optional<User> user = this.myPageUserInfoRepository.findById(userId);
+//
+//        user.ifPresent(u -> {
+//            if (myPageUserInfoRequestDTO.getProfileImage() != null) {
+//                u.setProfileImagePath(myPageUserInfoRequestDTO.getProfileImage());
+//            }
+//            if (myPageUserInfoRequestDTO.getNickname() != null) {
+//                u.setNickname(myPageUserInfoRequestDTO.getNickname());
+//            }
+//            if (myPageUserInfoRequestDTO.getPassword() != null) {
+//                u.setPassword(myPageUserInfoRequestDTO.getPassword());
+//            }
+//            if (myPageUserInfoRequestDTO.getPhone() != null) {
+//                u.setPhone(myPageUserInfoRequestDTO.getPhone());
+//            }
+//            if (myPageUserInfoRequestDTO.getEmail() != null) {
+//                u.setEmail(myPageUserInfoRequestDTO.getEmail());
+//            }
+//            this.myPageUserInfoRepository.save(u);
+//        });
+//        return user;
+//    }
 
 
     private MyPageUserLectureResponseDTO entityToUserLectureResponseDTO(UserLecture userLecture) {
