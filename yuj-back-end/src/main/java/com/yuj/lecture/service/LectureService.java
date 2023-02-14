@@ -58,6 +58,7 @@ public class LectureService {
                 .registDate(lectureVO.getRegistDate())
                 .startDate(lectureVO.getStartDate())
                 .endDate(lectureVO.getEndDate())
+                .registDate(lectureVO.getRegistDate())
                 .limitStudents(lectureVO.getLimitStudents())
                 .fee(lectureVO.getFee())
                 .totalCount(lectureVO.getTotalCount())

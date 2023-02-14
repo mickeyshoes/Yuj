@@ -43,10 +43,10 @@ public class LectureController {
 
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<?> registLecture(
-            @RequestPart(value="files", required = false) List<MultipartFile> files,
-            @RequestParam(value = "vo")String lectureVOString,
-            @RequestParam(value = "scheduleArr", required = false)String scheduleArr
-          ) {
+            @RequestPart(value = "files", required = false) List<MultipartFile> files,
+            @RequestParam(value = "vo") String lectureVOString,
+            @RequestParam(value = "scheduleArr", required = false) String scheduleArr
+    ) {
         log.info("registLecture in Lecture Controller");
         log.info("files = " + files);
         log.info("lectureVOString = " + lectureVOString);
@@ -66,6 +66,7 @@ public class LectureController {
                     .description(String.valueOf(map.get("description")))
                     .startDate(LocalDate.parse(String.valueOf(map.get("startDate")), DateTimeFormatter.ISO_DATE))
                     .endDate(LocalDate.parse(String.valueOf(map.get("endDate")), DateTimeFormatter.ISO_DATE))
+                    .registDate(LocalDate.parse(String.valueOf(map.get("registDate")), DateTimeFormatter.ISO_DATE))
                     .limitStudents(Integer.parseInt(String.valueOf(map.get("limitStudents"))))
                     .fee(Integer.parseInt(String.valueOf(map.get("fee"))))
                     .totalCount(Integer.parseInt(String.valueOf(map.get("totalCount"))))
@@ -90,36 +91,39 @@ public class LectureController {
 //            }
 
             List<LectureScheduleRegistDto> lsrDtos = new ArrayList<>();
-            JSONArray jsonArray = new JSONArray(scheduleArr);
-            log.info("jsonArray = " + jsonArray);
 
-            for(int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObj = jsonArray.getJSONObject(i);
+            if (scheduleArr != null) {
+                JSONArray jsonArray = new JSONArray(scheduleArr);
+                log.info("jsonArray = " + jsonArray);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObj = jsonArray.getJSONObject(i);
 //                log.info("jsonObj : " + jsonObj);
-                LectureScheduleRegistDto dto = LectureScheduleRegistDto.builder()
-                        .startTime(LocalTime.parse(String.valueOf(jsonObj.get("startTime"))))
-                        .endTime(LocalTime.parse(String.valueOf(jsonObj.get("endTime"))))
-                        .day(Integer.parseInt(String.valueOf(jsonObj.get("day"))))
-                        .build();
+                    LectureScheduleRegistDto dto = LectureScheduleRegistDto.builder()
+                            .startTime(LocalTime.parse(String.valueOf(jsonObj.get("startTime"))))
+                            .endTime(LocalTime.parse(String.valueOf(jsonObj.get("endTime"))))
+                            .day(Integer.parseInt(String.valueOf(jsonObj.get("day"))))
+                            .build();
 
-                log.info("dto : " + dto);
-                lsrDtos.add(dto);
+                    log.info("dto : " + dto);
+                    lsrDtos.add(dto);
+                }
             }
 
             Long ret = lectureService.registLecture(files, lectureVO, lsrDtos);
             return new ResponseEntity<>("강의 개설 성공\n강의 번호 : " + ret, HttpStatus.OK);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("강의 개설 오류", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> searchLectureByName(@RequestParam("search") String name) throws Exception{
-    	List<LectureResponseDTO> resultList = lectureService.searchLectureByName(name);
-    	return new ResponseEntity<>(resultList, HttpStatus.OK);
+    public ResponseEntity<?> searchLectureByName(@RequestParam("search") String name) throws Exception {
+        List<LectureResponseDTO> resultList = lectureService.searchLectureByName(name);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
-    
+
     @GetMapping("/{lectureId}")
     public ResponseEntity<LectureResponseDTO> getLectureById(@PathVariable long lectureId) throws Exception {
         LectureResponseDTO lectureResponseDTO = lectureService.getLectureById(lectureId);

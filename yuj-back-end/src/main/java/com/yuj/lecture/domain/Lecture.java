@@ -45,8 +45,8 @@ public class Lecture {
     private int fee;
     private int totalCount;
     @Builder.Default
-    @ColumnDefault("1")
-    private boolean isActive = true;
+    @ColumnDefault("0")
+    private boolean isActive = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
