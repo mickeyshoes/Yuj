@@ -6,6 +6,7 @@ import com.yuj.lecture.dto.request.LectureScheduleRegistDto;
 import com.yuj.lecture.dto.request.LectureVO;
 import com.yuj.lecture.dto.request.LectureUpdateActiveRequestDTO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
+import com.yuj.lecture.dto.response.LectureReviewResponseDTO;
 import com.yuj.lecture.service.LectureService;
 import com.yuj.lectureimage.handler.FileHandler;
 import com.yuj.lectureimage.service.LectureImageService;
@@ -145,6 +146,12 @@ public class LectureController {
     @GetMapping("/yoga/{yogaId}")
     public ResponseEntity<?> searchLectureByNameAndYoga(@PathVariable long yogaId, @RequestParam("search") String name) throws Exception{
     	List<LectureResponseDTO> resultList = lectureService.searchLectureByNameAndYoga(name, yogaId);
+    	return new ResponseEntity<>(resultList, HttpStatus.OK);
+    }
+    
+    @GetMapping("/{userId}/review")
+    public ResponseEntity<?> getReviewByUserIdAndLectureId(@PathVariable long userId, @RequestParam("lectureId") long lectureId){
+    	List<LectureReviewResponseDTO> resultList = lectureService.getReviewByUserIdAndLectureId(userId, lectureId);
     	return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 }
