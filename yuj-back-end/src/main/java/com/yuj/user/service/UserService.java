@@ -48,6 +48,8 @@ public class UserService {
         String ret = "";
         Long userId = -1L;
 
+        log.info("userSignupRequestDTO = " + userSignupRequestDTO);
+
         //  이미 존재하는 아이디인 경우
         if(isExist(userSignupRequestDTO.getId()))
             throw new CSignUpFailedCException("이미 존재하는 아이디입니다.");
@@ -61,7 +63,11 @@ public class UserService {
                 userSignupRequestDTO.setProfileImagePath(imageFile.getFilePath());
             }
 
-            userId = userRepository.save(userSignupRequestDTO.toEntity(passwordEncoder)).getUserId();
+            User user = userRepository.save(userSignupRequestDTO.toEntity(passwordEncoder));
+//            userId = userRepository.save(userSignupRequestDTO.toEntity(passwordEncoder)).getUserId();
+            userId = user.getUserId();
+            log.info("User = " + user);
+
             ret += "회원가입한 id = " + userSignupRequestDTO.getId();
             
             if(userSignupRequestDTO.getRoleName().equals("ROLE_TEACHER")) { //  강사일 경우 studio 생성

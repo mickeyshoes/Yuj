@@ -1,26 +1,47 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { Link, useNavigate } from "react-router-dom";
+import Styles from "./LoginPage.module.css";
 
 const SignUp = () => {
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [gender, setGender] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [gender, setGender] = useState("");
+
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
+  const [day, setDay] = useState("");
+
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [profileImg, setProfileImg] = useState(null);
-  const [isTeacher, setIsTeacher] = useState(false);
+  const [roleName, setRoleName] = useState("ROLE_USER");
 
-  const handleRadioChange = (event) => {
-    setIsTeacher(event.target.value === "teacher");
-
-    console.log("isTeacher = " + isTeacher);
+  const getDaysInMonth = (year, month) => {
+    if (month === 2) {
+      if (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
+        return 29;
+      } else {
+        return 28;
+      }
+    } else if ([4, 6, 9, 11].includes(month)) {
+      return 30;
+    } else {
+      return 31;
+    }
   };
 
+  // const handleRadioChange = (event) => {
+  //   setIsTeacher(event.target.value === "teacher");
+
+  //   console.log("isTeacher = " + isTeacher);
+  // };
+
   const handleSubmit = (event) => {
-    let role = "";
+    let birthday = year + "-" + month + "-" + day;
 
     event.preventDefault();
     // Submit the form data to the server here
@@ -28,19 +49,9 @@ const SignUp = () => {
     console.log("password = " + password);
     console.log("username = " + username);
 
-    if(isTeacher)
-      role = "ROLE_TEACHER";
-    else
-      role = "ROLE_USER";
-    
-    if(gender === 'male') {
-      console.log("남자!!!!!!");
-      setGender("남자");
-    } else {
-      console.log("여자");
-      setGender("여자");
-    }
-    
+    // if (isTeacher) role = "ROLE_TEACHER";
+    // else role = "ROLE_USER";
+
     console.log("gender = " + gender);
     console.log("birthday = " + birthday);
     console.log("nickname = " + nickname);
@@ -58,170 +69,359 @@ const SignUp = () => {
       email: email,
       phone: phone,
       profileImagePath: null,
-      roleName: role
-    }
+      roleName: roleName,
+    };
 
     const config = {
       headers: {
-        "content-type": "multipart/form-data"
-      }
+        "content-type": "multipart/form-data",
+      },
     };
 
     const dtoString = JSON.stringify(signUpDto);
 
     let sendData = {
-      files : profileImg,
-      dto: dtoString
-    }
+      files: profileImg,
+      dto: dtoString,
+    };
 
     console.log("sendData.files = ", sendData.files);
     console.log("sendData.dto = ", sendData.dto);
     console.log(`${process.env.REACT_APP_API_URL}/users`);
 
-    // axios.post('${process.env.REACT_APP_API_URL}/users', sendData, config)
-    axios.post(`${process.env.REACT_APP_API_URL}/users`, sendData, config)
-      .then(response => {
-      console.log("OK!!!!");
-      console.log(response.data);
-      // window.location.replace("/"); //  로그인 성공 시 화면 이동
-    })
-    .catch(error => {
-      console.log("Error!!!!!!!!!!!!!");
-      console.error(error);
-    });
-    
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/users`, sendData, config)
+      .then((response) => {
+        console.log("OK!!!!");
+        console.log(response.data);
+        // window.location.replace("/"); //  로그인 성공 시 화면 이동
+      })
+      .catch((error) => {
+        console.log("Error!!!!!!!!!!!!!");
+        console.error(error);
+      });
   };
 
+  const daysInSelectedMonth =
+    month && year ? getDaysInMonth(year, Number(month)) : null;
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="userId">ID:</label>
-      <input
-        type="text"
-        id="userId"
-        value={userId}
-        onChange={(event) => setUserId(event.target.value)}
-      />
-      <br />
-      <br />
+    <div className={"px-60 w-full"}>
+      <div
+        className={
+          Styles[`info-background-image`] +
+          " w-full flex items-center justify-center"
+          // "w-full"
+        }
+      >
+        <form onSubmit={handleSubmit}>
+          <div className="flex">
+            <span
+              className={
+                "py-8 px-8 rounded-xl card bg-base-200 max-w-sm " +
+                Styles[`info-container`]
+              }
+            >
+              <p className={"text-2xl mb-3 text-black font-bold"}>회원가입</p>
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    아이디 :{" "}
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  name="id"
+                  placeholder=""
+                  className={" input rounded-xl input-sm"}
+                  maxLength={16}
+                  onChange={(e) => setUserId(e.target.value)}
+                />
+                <label className="label">
+                  <span className="label-text-alt"></span>
+                  <span className="label-text-alt"></span>
+                </label>
+              </div>
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    비밀번호 :{" "}
+                  </span>
+                </label>
+                <input
+                  type="password"
+                  placeholder=""
+                  className={" input rounded-xl input-sm"}
+                  minLength={6}
+                  maxLength={16}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <label className="label">
+                  <span className="label-text-alt"></span>
+                  <span className="label-text-alt"></span>
+                </label>
+              </div>
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    이름 :{" "}
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  placeholder=""
+                  id="username"
+                  value={username}
+                  className={" input rounded-xl input-sm"}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <label className="label">
+                  <span className="label-text-alt"></span>
+                  <span className="label-text-alt"></span>
+                </label>
+              </div>
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    성별 :{" "}
+                  </span>
+                </label>
+                <select
+                  id="gender-select"
+                  className={" input rounded-xl input-sm"}
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option className={" input rounded-xl input-sm"} value="">
+                    선택해주세요
+                  </option>
+                  <option className={" input rounded-xl input-sm"} value="남성">
+                    남성
+                  </option>
+                  <option className={" input rounded-xl input-sm"} value="여성">
+                    여성
+                  </option>
+                </select>
+                <label className="label">
+                  <span className="label-text-alt"></span>
+                  <span className="label-text-alt"></span>
+                </label>
+              </div>
 
-      <label htmlFor="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      <br />
-      <br />
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    생년월일 :{" "}
+                  </span>
+                </label>
+                <span>
+                  <select
+                    className={" input rounded-xl input-sm"}
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option className={" input rounded-xl input-sm"} value="">
+                      --년도--
+                    </option>
+                    {Array.from(
+                      { length: 50 },
+                      (_, i) => new Date().getFullYear() - i
+                    ).map((y) => (
+                      <option
+                        className={" input rounded-xl input-sm"}
+                        key={y}
+                        value={y}
+                      >
+                        {y}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className={" input rounded-xl input-sm"}
+                    value={month}
+                    onChange={(e) => setMonth(e.target.value)}
+                  >
+                    <option className={" input rounded-xl input-sm"} value="">
+                      --월--
+                    </option>
+                    {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                      <option
+                        className={" input rounded-xl input-sm"}
+                        key={m}
+                        value={m.toString().padStart(2, "0")}
+                      >
+                        {m.toString().padStart(2, "0")}
+                      </option>
+                    ))}
+                  </select>
+                  {
+                    <select
+                      className={" input rounded-xl input-sm"}
+                      value={day}
+                      onChange={(e) => setDay(e.target.value)}
+                    >
+                      <option value="">--일--</option>
+                      {Array.from(
+                        { length: daysInSelectedMonth },
+                        (_, i) => i + 1
+                      ).map((d) => (
+                        <option key={d} value={d.toString().padStart(2, "0")}>
+                          {d.toString().padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                  }
+                </span>
+              </div>
 
-      <label htmlFor="username">이름:</label>
-      <input
-        type="text"
-        id="username"
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
-      />
-      <br />
-      <br />
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    강사여부 :{" "}
+                  </span>
+                </label>
+                <select
+                  id="rolename-select"
+                  className={" input rounded-xl input-sm"}
+                  value={roleName}
+                  onChange={(e) => setRoleName(e.target.value)}
+                >
+                  <option className={" input rounded-xl input-sm"} value="">
+                    선택해주세요
+                  </option>
+                  <option
+                    className={" input rounded-xl input-sm"}
+                    value="ROLE_TEACHER"
+                  >
+                    강사
+                  </option>
+                  <option
+                    className={" input rounded-xl input-sm"}
+                    value="ROLE_USER"
+                  >
+                    수강생
+                  </option>
+                </select>
+                <label className="label">
+                  <span className="label-text-alt"></span>
+                  <span className="label-text-alt"></span>
+                </label>
+              </div>
+            </span>
 
-      <label htmlFor="gender">성별:</label>
-      <input
-        type="radio"
-        id="male"
-        name="gender"
-        value="male"
-        checked={gender === 'male'}
-        onChange={(event) => setGender(event.target.value)}
-      />
-      <label htmlFor="male">남성</label>
-      <input
-        type="radio"
-        id="female"
-        name="gender"
-        value="female"
-        checked={gender === 'female'}
-        onChange={(event) => setGender(event.target.value)}
-      />
-      <label htmlFor="female">여성</label>
-      <br />
-      <br />
+            <span
+              className={
+                "py-8 px-8 rounded-xl card bg-base-200 max-w-sm " +
+                Styles[`info-container`]
+              }
+            >
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    닉네임 :{" "}
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  id="nickname"
+                  className={" input rounded-xl input-sm"}
+                  minLength={6}
+                  maxLength={16}
+                  value={nickname}
+                  onChange={(event) => setNickname(event.target.value)}
+                />
+              </div>
 
-      <label htmlFor="birthday">생년월일:</label>
-      <input
-        type="date"
-        id="birthday"
-        value={birthday}
-        onChange={(event) => setBirthday(event.target.value)}
-      />
-      <br />
-      <br />
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    이메일 :{" "}
+                  </span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className={" input rounded-xl input-sm"}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </div>
 
-      <label htmlFor="nickname">닉네임:</label>
-      <input
-        type="text"
-        id="nickname"
-        value={nickname}
-        onChange={(event) => setNickname(event.target.value)}
-      />
-      <br />
-      <br />
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text text-xs text-black font-bold">
+                    연락처 :{" "}
+                  </span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  className={" input rounded-xl input-sm"}
+                  value={phone}
+                  onChange={(event) => setPhone(event.target.value)}
+                />
+              </div>
 
-      <label htmlFor="email">Email:</label>
-      <input
-        type="email"
-        id="email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
-      <br />
-      <br />
+              {/* <label htmlFor="profileImg">Profile Image:</label>
+              <input
+                type="file"
+                id="profileImg"
+                hidden
+                onChange={(event) => setProfileImg(event.target.files[0])}
+              /> */}
 
-      <label htmlFor="phone">Phone:</label>
-      <input
-        type="tel"
-        id="phone"
-        value={phone}
-        onChange={(event) => setPhone(event.target.value)}
-      />
-      <br />
-      <br />
+              {/* <label htmlFor="profileImg">
+                <div className={Styles.btnUpload}>
+                  <AddCircleOutlineIcon style={{ fontSize: "xx-large" }} />
+                </div>
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(event) => setProfileImg(event.target.files[0])}
+                className="hidden"
+                id="profileImg"
+              /> */}
 
-      <label htmlFor="profileImg">Profile Image:</label>
-      <input
-        type="file"
-        id="profileImg"
-        onChange={(event) => setProfileImg(event.target.files[0])}
-      />
-      <br />
-      <br />
+              <div className="flex flex-wrap justify-center items-center gap-3">
+                <label htmlFor="file">
+                  <div className={Styles.btnUpload}>
+                    <AddCircleOutlineIcon style={{ fontSize: "xx-large" }} />
+                  </div>
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(event) => setProfileImg(event.target.files[0])}
+                  className="hidden"
+                  id="file"
+                />
+              </div>
 
-      <div>
-<label>
-<input
-         type="radio"
-         name="role"
-         value="student"
-         checked={!isTeacher}
-         onChange={handleRadioChange}
-       />
-수강생
-</label>
-<label>
-<input
-         type="radio"
-         name="role"
-         value="teacher"
-         checked={isTeacher}
-         onChange={handleRadioChange}
-       />
-강사
-</label>
-</div>
-       <br/>
-       <br/>
-
-      <button type="submit">Submit</button>
-    </form>
+              <div className="flex flex-col justify-end items-end mt-5">
+                <button
+                  type="submit"
+                  className={
+                    "btn btn-xs btn-accent " + Styles[`mypage-save-button`]
+                  }
+                >
+                  회원등록
+                </button>
+                <p className={"text-xs mt-3"}>
+                  이미 가입한 회원입니까?{" "}
+                  <Link to={"/login"} className={"text-black font-bold"}>
+                    {" "}
+                    로그인
+                  </Link>
+                </p>
+              </div>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
