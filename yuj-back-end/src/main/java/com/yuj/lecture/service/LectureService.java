@@ -2,6 +2,7 @@ package com.yuj.lecture.service;
 
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,18 +12,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.yuj.exception.CLectureNotFoundException;
 import com.yuj.exception.CUserNotFoundException;
 import com.yuj.exception.CYogaNotFoundException;
 import com.yuj.lecture.domain.Lecture;
 import com.yuj.lecture.domain.LectureSchedule;
 import com.yuj.lecture.domain.UserLecture;
 import com.yuj.lecture.domain.Yoga;
+import com.yuj.lecture.dto.request.LectureReviewRequestDTO;
 import com.yuj.lecture.dto.request.LectureScheduleRegistDTO;
 import com.yuj.lecture.dto.request.LectureVO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.dto.response.LectureReviewResponseDTO;
 import com.yuj.lecture.repository.LectureRepository;
 import com.yuj.lecture.repository.LectureScheduleRepository;
+import com.yuj.lecture.repository.UserLectureRepository;
 import com.yuj.lecture.repository.YogaRepository;
 import com.yuj.lectureimage.domain.ImageFile;
 import com.yuj.lectureimage.handler.FileHandler;
@@ -43,6 +47,7 @@ public class LectureService {
     private final LectureScheduleRepository lectureScheduleRepository;
     private final LectureImageRepository lectureImageRepository;
     private final YogaRepository yogaRepository;
+    private final UserLectureRepository userLectureRepository;
 
     private final UserRepository userRepository;    //  강의 등록 때 pk로 강사 찾아야 함
 
@@ -248,9 +253,9 @@ public class LectureService {
                 .build();
     }
 
-	public List<LectureReviewResponseDTO> getReviewByUserIdAndLectureId(long userId, long lectureId) {
+	public List<LectureReviewResponseDTO> getReviewsByUserId(Long userId) {
 		List<LectureReviewResponseDTO> result = new ArrayList<>();
-		List<UserLecture> list = lectureRepository.getReviewByUserIdAndLectureId(userId, lectureId);
+		List<UserLecture> list = lectureRepository.getReviewsByUserId(userId);
 		
 		for (UserLecture userLecture : list) {
 			result.add(entityToReviewDTO(userLecture));
@@ -271,5 +276,21 @@ public class LectureService {
 				.review(userLecture.getReview())
 				.profileImage(user.getProfileImagePath())
 				.build();
+	}
+
+
+	public void registReview(LectureReviewRequestDTO userRequestDto) {
+		User user = userRepository.findById(userRequestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+		Lecture lecture = lectureRepository.findById(userRequestDto.getLectureId()).orElseThrow(CLectureNotFoundException::new);
+		
+		UserLecture userLecture = UserLecture.builder()
+				.registDate(LocalDate.now())
+				.review(userRequestDto.getReview())
+				.reviewUpdateDate(LocalDateTime.now())
+				.score(userRequestDto.getScore())
+				.lecture(lecture)
+				.user(user)
+				.build();
+		userLectureRepository.save(userLecture);
 	}
 }

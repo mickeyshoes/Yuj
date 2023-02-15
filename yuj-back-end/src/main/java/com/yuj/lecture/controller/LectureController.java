@@ -1,6 +1,29 @@
 package com.yuj.lecture.controller;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.tomcat.util.json.JSONParser;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yuj.lecture.dto.request.LectureReviewRequestDTO;
 import com.yuj.lecture.dto.request.LectureScheduleRegistDTO;
 import com.yuj.lecture.dto.request.LectureUpdateActiveRequestDTO;
 import com.yuj.lecture.dto.request.LectureVO;
@@ -10,22 +33,9 @@ import com.yuj.lecture.service.LectureService;
 import com.yuj.lectureimage.handler.FileHandler;
 import com.yuj.lectureimage.service.LectureImageService;
 import com.yuj.user.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/lectures")
@@ -148,10 +158,21 @@ public class LectureController {
     	return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
     
-    @GetMapping("/{userId}/review")
-    public ResponseEntity<?> getReviewByUserIdAndLectureId(@PathVariable long userId, @RequestParam("lectureId") long lectureId){
-    	List<LectureReviewResponseDTO> resultList = lectureService.getReviewByUserIdAndLectureId(userId, lectureId);
+    @GetMapping("/review")
+    public ResponseEntity<?> getReviewByUserIdAndLectureId(@RequestParam("userId") long userId){
+    	List<LectureReviewResponseDTO> resultList = lectureService.getReviewsByUserId(userId);
     	return new ResponseEntity<>(resultList, HttpStatus.OK);
+    }
+    
+    @PostMapping("/review")
+    public ResponseEntity<?> registReview(@RequestBody LectureReviewRequestDTO userRequestDto) throws Exception{
+    	try {
+            lectureService.registReview(userRequestDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+    	} catch (Exception e) {
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+    	
     }
 }
 

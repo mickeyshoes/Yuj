@@ -44,6 +44,6 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
     @Query(value = "select l from Lecture l join l.yoga y on y.yogaId = :yogaId where l.name like %:name% and l.endDate < :threshold order by l.registDate desc")
     List<Lecture> findLectureEndByYoga(@Param("name") String name, @Param("yogaId") Long yogaId, @Param("threshold") LocalDate threshold);
     
-    @Query(value = "select ul from UserLecture ul join ul.user u on u.userId = :userId join ul.lecture l on l.lectureId = :lectureId order by ul.registDate desc")
-    List<UserLecture> getReviewByUserIdAndLectureId(@Param("userId") Long userId, @Param("lectureId") Long lectureId);
+    @Query(value = "select ul from UserLecture ul where ul.review is not null and ul.lecture.lectureId in (select distinct (l.lectureId) from Lecture l join l.user u where u.userId = :userId) order by ul.registDate desc")
+    List<UserLecture> getReviewsByUserId(@Param("userId") Long userId);
 }
