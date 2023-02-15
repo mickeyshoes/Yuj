@@ -3,9 +3,11 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Styles from "./StudioLectureCreateImagesInput.module.css";
 
 
-const StudioLectureCreateImagesInput = () => {
+const StudioLectureCreateImagesInput = (props) => {
 
-  const [imgFiles, setImgFiles] = useState([]);
+  //미리보기, 데이터 전송
+  let imgFiles = props.imgFiles;
+  const setImgFiles = props.setImgFiles;
 
   //이미지 업로드 input의 onChange 메소드
   const handleImageUpload = (e) => {
@@ -43,7 +45,7 @@ const StudioLectureCreateImagesInput = () => {
           <label htmlFor="file">
             <div className={Styles.btnUpload}><AddCircleOutlineIcon style={{ fontSize: "xx-large" }} /></div>
           </label>
-          <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" id="file" />
+          <input name="images" type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" id="file" />
         </div>
       </div>
     </>

@@ -27,6 +27,7 @@ const StudioLectureListCategorySelectBox = () => {
   return (
     <>
       <select
+        name="category"
         className="select w-40 max-w-xs select-sm text-accent"
         onChange={handleSelected}
         value={selected}

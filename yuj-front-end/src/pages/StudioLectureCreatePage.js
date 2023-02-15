@@ -14,10 +14,12 @@ import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from '../
 
 const StudioLectureCreatePage = () => {
 
-    const dispatch = useDispatch();
-
     // useHistory의 기능을 모두 useNavigate가 대체 -> 뒤로가기, 앞으로가기 등
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
+    const studio = useSelector(state => state.studio);
+
     // 스케줄 입력 컴포넌트 생성을 위한 카운트
     const [addScheduleCnt, setAddSchduleCnt] = useState(1);
 
@@ -27,6 +29,8 @@ const StudioLectureCreatePage = () => {
     const minusAddSchdulecnt = (e) => {
         if (addScheduleCnt > 1) {
             setAddSchduleCnt(addScheduleCnt - 1);
+            const tmpSchedules = schedules;
+            setSchedules([...tmpSchedules])
         }
     }
     // 스케줄 입력 컴포넌트 생성을 위한 함수
@@ -37,7 +41,7 @@ const StudioLectureCreatePage = () => {
                 addScheduleArr.push(
                     <div className='flex items-center gap-3 mb-5' key={i}>
                         <div className='w-full'>
-                            <StudioLectureCreateScheduleInput />
+                            <StudioLectureCreateScheduleInput schedules={schedules} setSchedules={setSchedules}/>
                         </div>
                         <CheckIcon
                             className="text-accent"
@@ -49,7 +53,7 @@ const StudioLectureCreatePage = () => {
                 addScheduleArr.push(
                     <div className='flex items-center gap-3 mb-5' key={i}>
                         <div className='w-full'>
-                            <StudioLectureCreateScheduleInput />
+                            <StudioLectureCreateScheduleInput schedules={schedules} setSchedules={setSchedules}/>
                         </div>
                         <CheckIcon
                             className="text-accent"
@@ -61,7 +65,7 @@ const StudioLectureCreatePage = () => {
                 addScheduleArr.push(
                     <div className='flex items-center gap-3 mb-5' key={i}>
                         <div className='w-full'>
-                            <StudioLectureCreateScheduleInput />
+                            <StudioLectureCreateScheduleInput schedules={schedules} setSchedules={setSchedules}/>
                         </div>
                         <DeleteForeverIcon
                             className="text-accent hover:cursor-pointer hover:text-success"
@@ -76,21 +80,60 @@ const StudioLectureCreatePage = () => {
     }
 
     //사이드바
-    const user = useSelector(state => state.user);
-    const studio = useSelector(state => state.studio);
     useEffect(() => {
         dispatch(getStudioDetail(user.userId));
         dispatch(getStudioLectureList(user.userId));
         dispatch(getStudioLiveLecture(user.userId));
     }, [])
+    
+    //데이터 전송
+    const [imgFiles, setImgFiles] = useState([]); //미리보기, 이미지 데이터 전송
+    const [schedules, setSchedules] = useState([]); //스케줄 데이터 전송
+    const handleSubmit = e => {
+        e.preventDefault();
 
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        const date = new Date();
+
+        let VO = {
+            userId: user.userId,
+            yogaId: '',
+            name: '',
+            description: '',
+            startDate: '',
+            endDate: '',
+            registDate: date,
+            limitStudents: '',
+            fee: 0,
+            totalConunt: 0,
+        }
+
+        let DTO = {
+            files: imgFiles,
+            VO: VO,
+            schedules: schedules,
+        }
+
+        // console.log(data.category);
+        // console.log(data.title);
+        // console.log(data.day);
+        // console.log(data.startTime);
+        // console.log(data.endTime);
+        // console.log(data.description);
+        // console.log(data.limitStudents);
+        // console.log(data);
+        // console.log(imgFiles);
+        console.log(schedules);
+        // console.log(DTO);
+    }
 
     return (
         <>
             <div className="flex w-full">
-                <StudioSidebar studioDetail={studio.studioDetail} userId={user.userId} studioLiveLecture={studio.studioLiveLecture}/>
+                <StudioSidebar studioDetail={studio.studioDetail} userId={user.userId} studioLiveLecture={studio.studioLiveLecture} />
                 <div className="px-40 flex-auto overflow-hidden">
-                    <form className="w-full mt-16">
+                    <form className="w-full mt-16" onSubmit={handleSubmit}>
                         {/* 재활용 */}
                         <div className='mb-3'>
                             <StudioLectureListCategorySelectBox />
@@ -98,9 +141,9 @@ const StudioLectureCreatePage = () => {
 
                         {/* 강의 타이틀, 소개글 */}
                         <div className="w-full">
-                            <input type="text" className={Styles.focusNone + " input input-ghost input-lg w-full px-4"} placeholder="개설할 강좌명을 입력해 주세요." />
+                            <input name="title" type="text" className={Styles.focusNone + " input input-ghost input-lg w-full px-4"} placeholder="개설할 강좌명을 입력해 주세요." />
                             <hr />
-                            <textarea className={Styles.focusNone + " textarea textarea-bordered w-full my-7"} rows={7} placeholder="강좌에 대한 설명을 입력해 주세요."></textarea>
+                            <textarea name="description" className={Styles.focusNone + " textarea textarea-bordered w-full my-7"} rows={7} placeholder="강좌에 대한 설명을 입력해 주세요."></textarea>
                             <hr />
                         </div>
 
@@ -116,13 +159,13 @@ const StudioLectureCreatePage = () => {
 
                         {/* 수강 정원 */}
                         <div className='text-accent text-lg my-7'>
-                            총 수강 정원 &nbsp; <input type='number' max='10' className='input input-primary border-2 w-20 text-right' placeholder='' /> &nbsp; 명
+                            총 수강 정원 &nbsp; <input name='limitStudents' type='number' max='10' className='input input-primary border-2 w-20 text-right' placeholder='' /> &nbsp; 명
                         </div>
                         <hr />
 
                         {/* 이미지 파일 업로드 */}
                         <div className='my-7'>
-                            <StudioLectureCreateImagesInput />
+                            <StudioLectureCreateImagesInput imgFiles={imgFiles} setImgFiles={setImgFiles} />
                         </div>
 
                         <div className="flex justify-end gap-2 pb-8">
