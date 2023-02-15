@@ -25,38 +25,20 @@ const StudioReview = (props) => {
     useEffect(()=>{
         getReviews();
         console.log('회원 계정', user.userId);
-        console.log('스튜디오 주인', studio.studioDetail);
+        console.log('스튜디오 강의 아이디', studio);
+        console.log('강의 목록 리스트 : ', studio.studioLectureList);
+        console.log(process.env.REACT_APP_API_URL);
     }, []);
 
     // change axios, add async
     const getReviews = async () => {
         // const url = process.env.REACT_APP_API_URL + '/';
-        let userId = 3;
-        let lectureId = 0;
-        // const response = [
-        //     {   
-        //         review_id : 1,     
-        //         user_id : "chunsik",
-        //         date : "2023.02.12",
-        //         rating: 4,
-        //         title : '속 근육 강화를 위한 30분 속성 요가',
-        //         body : "나 김춘식.. 우리 동년배 애들 다 요가한다..",
-        //         profileImg : alt_img
-        //     },
-        //     {
-        //         review_id : 2,
-        //         user_id : "",
-        //         date : "2023.02.14",
-        //         rating: 3,
-        //         title : '속 근육 강화를 위한 30분 속성 요가',
-        //         body : "직장인들을 위한 요가 강의라니.. 정말 많은 도움이 되었습니다. \n강사님이 하나하나 차근차근 동작을 설명 해 주셔서 무리없이 배울 수 있었습니다 ㅎㅎ",
-        //         profileImg : alt_img
-        //     }
-        // ];
         const response = await axios.get(
-            `http://localhost:5000/lectures/${userId}/review?lectureId=${lectureId}`
+            `${process.env.REACT_APP_API_URL}/lectures/review?userId=${studio.studioDetail.userId}`
         );
+        console.log('댓글 추가 !!', response.data);
         setReviewList(response.data);
+        console.log('최종 댓글 리스트 : ', reviewList);
     }
 
     async function addReview() {
@@ -80,7 +62,7 @@ const StudioReview = (props) => {
                     </div>
                     <div className="items-center">
                         {reviewList?.map((item, idx) =>
-                            <LectureReviewItem item={item} key={item.reviewId} />
+                            <LectureReviewItem className="pt-20" item={item} key={idx} />
                         )}
                     </div>
             </div>

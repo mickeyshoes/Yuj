@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+import styled from 'styled-components';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from "react-redux";
@@ -10,11 +10,6 @@ const LectureReviewItem = (props) => {
 
     const loginUserInfo = useSelector(state => state.user);
 
-    useEffect(()=>{
-
-        console.log('login user id : ',loginUserInfo.userInfo.id);
-        console.log('item : ', item);
-    })
 
     /*
         not fixed
@@ -26,25 +21,24 @@ const LectureReviewItem = (props) => {
             result.push(<input type="radio" name="rating-2" className="mask mask-star-2 bg-accent" disabled checked/>);
         for(let i=0; i<5-point; i++)
             result.push(<input type="radio" name="rating-2" className="mask mask-star-2 bg-accent" disabled />);
-        console.log(result);
         return result;
     }
 
     return(
         <>
-            <div id="review-item-container">
-                <div className="flex justify gap-3" id="review-item-profile-container">
-                    <img className="w-12 rounded-full" src={item.profileImg} style={{border : '2px solid red'}}/>
-                    <div id="review-text-info-container" className="flex justify-evenly">
-                        <div className="w-20 truncate">{item.userName}</div>
-                        <div>{item.date}</div>
-                        <div className="rating rating-sm flex justify-evenly w-24">
+            <div id="review-item-container" className="p-8" style={{ 'border-bottom': '2px solid black' }}>
+                <Header className="" id="review-item-profile-container">
+                    <img className="w-12 rounded-full" src={`${process.env.REACT_APP_IMAGE_URL}/${item.profileImage}`} style={{border : '2px solid black'}}/>
+                    <HeaderDetailsWrapper id="review-text-info-container">
+                        <HeaderDetail className="w-20 truncate">{item.userName}</HeaderDetail>
+                        <HeaderDetail>{item.date}</HeaderDetail>
+                        <HeaderDetail className="rating rating-sm flex justify-evenly w-24">
                             {drawRating(item.rating)}
-                        </div>
+                        </HeaderDetail>
                         {loginUserInfo.userInfo.id === item.userId ? 
                         (<div><EditIcon/><DeleteIcon/></div>) : null}
-                    </div>
-                </div>
+                    </HeaderDetailsWrapper>
+                </Header>
                 <div className="text-success" id="review-item-lecture-title">
                     {item.lectureName}
                 </div>
@@ -58,3 +52,25 @@ const LectureReviewItem = (props) => {
 }
 
 export default LectureReviewItem;
+
+const Header = styled.div`
+    display: flex;
+    align-items:center;
+    gap : 30px;
+`;
+
+const HeaderDetailsWrapper = styled.div`
+    display: flex;  
+    &:nth-child(3){
+        position: relative;
+        bottom:1px;
+    }
+
+    *{
+        cursor : initial !important;
+    }
+`;
+
+const HeaderDetail = styled(HeaderDetailsWrapper)`
+    align-items: center;
+`;
