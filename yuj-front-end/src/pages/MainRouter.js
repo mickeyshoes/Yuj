@@ -20,6 +20,7 @@ import MyPageLecture from './MyPageLecture';
 import MyPageDashBoard from './MyPageDashBoard';
 import StudioModifyPage from './StudioModifyPage';
 import StudioReview from './StudioReview';
+import LectureReviewAddItem from '../components/LectureReviewAddItem';
 import MainSearchPage from './MainSearchPage';
 import MainSearchLecture from '../components/MainSearchLecture';
 import MainSearchTeacher from '../components/MainSearchTeacher'
@@ -58,6 +59,7 @@ const Test = () => {
           <Route path="/search" element={<MainSearchPage />} />
           <Route path="/searchLecture" element={<MainSearchLecture />} />
           <Route path="/searchTeacher" element={<MainSearchTeacher />} />
+          <Route path="/studio/addReview" element={<LectureReviewAddItem/> }/>
         </Routes>
       </div> 
       {location.pathname !== '/viduTeacher' ? location.pathname !== '/viduStudent' ? <MainFooter /> : null : null}

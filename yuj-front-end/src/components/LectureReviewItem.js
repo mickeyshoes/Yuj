@@ -13,9 +13,7 @@ const LectureReviewItem = (props) => {
     useEffect(()=>{
 
         console.log('login user id : ',loginUserInfo.userInfo.id);
-        // console.log('item : ', item);
-
-
+        console.log('item : ', item);
     })
 
     /*
@@ -28,31 +26,30 @@ const LectureReviewItem = (props) => {
             result.push(<input type="radio" name="rating-2" className="mask mask-star-2 bg-accent" disabled checked/>);
         for(let i=0; i<5-point; i++)
             result.push(<input type="radio" name="rating-2" className="mask mask-star-2 bg-accent" disabled />);
-        
         console.log(result);
         return result;
     }
 
     return(
         <>
-            <div id="review-item-container" style={{border : '3px solid pink'}}>
-                <div className="flex justify gap-3" id="review-item-profile-container" style={{border : '2px solid purple'}}>
+            <div id="review-item-container">
+                <div className="flex justify gap-3" id="review-item-profile-container">
                     <img className="w-12 rounded-full" src={item.profileImg} style={{border : '2px solid red'}}/>
-                    <div id="review-text-info-container" className="flex justify-around gap-2 items-center" style={{border : '2px solid blue'}}>
-                        <div className="w-20 truncate" style={{border : '1px solid green'}}>{item.user_id}</div>
-                        <div style={{border : '1px solid green'}}>{item.date}</div>
-                        <div style={{border : '1px solid green'}} className="rating rating-sm flex justify-evenly w-24">
+                    <div id="review-text-info-container" className="flex justify-evenly">
+                        <div className="w-20 truncate">{item.userName}</div>
+                        <div>{item.date}</div>
+                        <div className="rating rating-sm flex justify-evenly w-24">
                             {drawRating(item.rating)}
                         </div>
-                        {loginUserInfo.userInfo.id === item.user_id ? 
+                        {loginUserInfo.userInfo.id === item.userId ? 
                         (<div><EditIcon/><DeleteIcon/></div>) : null}
                     </div>
                 </div>
                 <div className="text-success" id="review-item-lecture-title">
-                    {item.title}
+                    {item.lectureName}
                 </div>
                 <div id="review-item-ltecture-review">
-                    {item.body}
+                    {item.review}
                 </div>
             </div>
         </>
