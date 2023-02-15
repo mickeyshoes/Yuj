@@ -1,7 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getLecture } from "../stores/lectureSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { changeStudioLectureDetailItem } from "../stores/studioSlice";
 
@@ -9,13 +7,10 @@ const LectureItemCard = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("props.thisLecture는 ");
-  console.log(props.thisLecture);
   const lecture = props.thisLecture;
 
-  const thumbnail = "YujHomeImage.jpg";
-
-  const teacherProfile = "/assets/YujMainLogo.svg";
+  const thumbnail = lecture.thumbnailImage;
+  const teacherProfile = lecture.profileImagePath;
 
   // 강의 종료 날짜와 현재 날짜를 비교하여 '완료'를 띄워줄지 체크
   const date = new Date();

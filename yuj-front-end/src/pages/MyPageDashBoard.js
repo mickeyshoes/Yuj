@@ -8,7 +8,6 @@ import { Link, } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import MyPageLoginCheck from "../utils/MyPageLoginCheck";
-
 const MyPageDashBoard = () => {
 
     const user = useSelector(state => state.user);
@@ -90,7 +89,7 @@ const MyPageDashBoard = () => {
 
         setPercentage(maxCnt != 0 ? Math.round(currCnt / maxCnt * 100) : 100);
     }
-    
+
 
     useEffect(() => {
         if (currentLectures.length != 0 || completedLectures.length != 0) {
@@ -282,73 +281,94 @@ const MyPageDashBoard = () => {
                 <main>
                     <div className="mx-28 mt-16 w-full">
                         <div className="text-3xl font-bold ml-4">대시보드</div>
-                        <div className="w-full flex ">
-                            <div className={Styles[`dashboard-box`]}>
+                        <div className="w-full flex justify-between">
+                            <div className={Styles[`dashboard-box`] + " flex flex-col"}>
                                 <div className="flex m-5 justify-between" >
+
                                     <div className={Styles[`box-font`]}>
                                         <div>수강중</div>
                                     </div>
-                                    <Link to="/mypage/lecture">전체보기 &gt;</Link>
+                                    {/* <Link to="/mypage/lecture">전체보기 &gt;</Link> */}
                                 </div>
-                                {/* 만약 1개도 존재하지 않으면 수강중인 강의가 없습니다.
-                                get으로 강의리스트 가져오고 최신3개까지만 썸네일 가져와서
-                                좌측div에 강의썸네일 우측에는 강의제목, 강의예정 시간
-                                url링크 걸어서 강의 스튜디오로이동해야함 */}
-                                {currentLectures.slice(0, 3).sort((a, b) => a.timeDiff - b.timeDiff).map((post, idx) => (
+                                <div className="flex-auto">
+                                    {console.log("currentLectures 입니다")}
+                                    {console.log(currentLectures)}
+                                    {console.log("currentLectures 끝입니다")}
 
-                                    <div key={idx}>
-                                        {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}
-                                        {/* post 내부에 있는 post.lecture.lectureId를 이용해서 lectureSchdule 데이터 findby해오고
-                                        그안의 Day, startTime 이용해야함  */}
-                                        {/* {console.log("현재 수강중인강의 ")} */}
-                                        {/* {console.log(post)} */}
-                                        <Link to="/studio" className="h-20 my-2 flex">
-                                            <div className="h-full w-32 mx-5">
-                                                {/* 강의 thumbnail_image */}
-                                                <img src={`${process.env.REACT_APP_IMAGE_URL}/${post.thumbnailImage}`}></img>
+                                    {
+
+                                        currentLectures.length === 0
+                                            ? <div class="h-full flex flex-col items-center justify-center pb-16">
+                                                <h1 class="text-3xl font-bold mb-4">진행중인</h1>
+                                                <h1 class="text-3xl font-bold mb-4">강의가 없습니다.</h1>
+                                                <a href="#" class="btn btn-primary">강의 둘러보기</a>
                                             </div>
-                                            {/* 강의 name */}
-                                            <div className="leading-loose truncate">{post.name}
-                                                {console.log(lectureSchedule)}
-                                                {/* lecture의 start_date, end_date , lectureschedule의 start_time, day를 활용 다음 수업시작날짜, 시간 연산 필요 */}
-                                                {/* <div className="break-keep">예정 : {post.startDate} {convertToHM(lectureSchedule[0].startTime)} </div> */}
-                                                <div className="break-keep">예정 : {post.closeTime ? post.closeTime : null} </div>
+                                            : <div>{currentLectures.slice(0, 3).sort((a, b) => a.timeDiff - b.timeDiff).map((post, idx) => (
+
+                                                <div key={idx}>
+                                                    <Link to="/studio" className="h-20 my-2 flex">
+                                                        <div className="h-full w-32 mx-5">
+                                                            {/* 강의 thumbnail_image */}
+                                                            <img src={`${process.env.REACT_APP_IMAGE_URL}/${post.thumbnailImage}`}></img>
+                                                        </div>
+                                                        {/* 강의 name */}
+                                                        <div className="leading-loose truncate">{post.name}
+                                                            {console.log(lectureSchedule)}
+                                                            {/* lecture의 start_date, end_date , lectureschedule의 start_time, day를 활용 다음 수업시작날짜, 시간 연산 필요 */}
+                                                            {/* <div className="break-keep">예정 : {post.startDate} {convertToHM(lectureSchedule[0].startTime)} </div> */}
+                                                            <div className="break-keep">예정 : {post.closeTime ? post.closeTime : null} </div>
+                                                        </div>
+                                                    </Link>
+                                                </div >
+
+                                            ))}
                                             </div>
-                                        </Link>
-                                    </div >
-                                ))}
+
+                                    }
+                                </div>
+
 
 
                             </div>
-                            <div className={Styles[`dashboard-box`]}>
+                            <div className={Styles[`dashboard-box`] + " flex flex-col"}>
                                 <div className="flex m-5 justify-between" >
                                     <div className={Styles[`box-font`]}>
                                         <div>수강 완료</div>
                                     </div>
-                                    <Link to="/mypage/lecture">전체보기 &gt;</Link>
+                                    {/* <Link to="/mypage/lecture">전체보기 &gt;</Link> */}
+
                                 </div>
-                                <div>
+                                <div className="flex-auto">
                                     {
-                                        completedLectures
-                                            .sort((a, b) => new Date(b.endDate) - new Date(a.endDate))  //가장 최근 수강완료된것부터 정렬
-                                            .slice(0, 3)
-                                            .map((post, idx) => (
-                                                <div key={idx}>
-                                                    {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}
-                                                    <Link to="/studio" className="h-20 my-2 flex">
-                                                        <div className="h-full w-32 mx-5">
-                                                            {/* src를 가져온 강의의 thumbnail_image로 */}
-                                                            <img src={`${process.env.REACT_APP_IMAGE_URL}/${post.thumbnailImage}`} alt="Lecture thumbnail" />
-                                                        </div>
-                                                        {/* 강의 name */}
-                                                        <div className="leading-loose truncate">
-                                                            {post.name}
-                                                            {/* 강의 end_date */}
-                                                            <div>완료일 : {post.endDate}</div>
-                                                        </div>
-                                                    </Link>
-                                                </div>
-                                            ))
+
+                                        completedLectures.length === 0
+                                            ? <div class="h-full flex flex-col items-center justify-center pb-16">
+                                                <h1 class="text-3xl font-bold mb-4">완료된</h1>
+                                                <h1 class="text-3xl font-bold mb-4">강의가 없습니다.</h1>
+                                                <a href="#" class="btn btn-primary">강의 목록 이동</a>
+                                            </div>
+                                            : <div>{completedLectures
+                                                .sort((a, b) => new Date(b.endDate) - new Date(a.endDate))  //가장 최근 수강완료된것부터 정렬
+                                                .slice(0, 3)
+                                                .map((post, idx) => (
+                                                    <div key={idx}>
+                                                        {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}
+                                                        <Link to="/studio" className="h-20 my-2 flex">
+                                                            <div className="h-full w-32 mx-5">
+                                                                {/* src를 가져온 강의의 thumbnail_image로 */}
+                                                                <img src={`${process.env.REACT_APP_IMAGE_URL}/${post.thumbnailImage}`} alt="Lecture thumbnail" />
+                                                            </div>
+                                                            {/* 강의 name */}
+                                                            <div className="leading-loose truncate">
+                                                                {post.name}
+                                                                {/* 강의 end_date */}
+                                                                <div>완료일 : {post.endDate}</div>
+                                                            </div>
+                                                        </Link>
+                                                    </div>
+                                                ))
+                                            }
+                                            </div>
                                     }
                                 </div>
                                 {/* 만약 1개도 존재하지 않으면 수강완료한 강의가 없습니다.
