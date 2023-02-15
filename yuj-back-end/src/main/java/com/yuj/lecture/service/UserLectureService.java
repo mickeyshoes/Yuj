@@ -85,7 +85,8 @@ public class UserLectureService {
         Long ret = -1L;
         // 유저렉처 찾아오기
         UserLecture userLecture = userLectureRepository.findByUser_UserIdAndLecture_LectureId(userId, lectureId).orElseThrow(Exception::new);
-        // 수정
+        // 수강 중 상태 확인 후 수정
+        if(!userLecture.isState()) return ret;
         userLecture.setState(!userLecture.isState());
         // total_count--
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(Exception::new);
