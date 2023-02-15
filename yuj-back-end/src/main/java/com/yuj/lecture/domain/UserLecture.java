@@ -5,9 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.ColumnDefault;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -19,15 +16,19 @@ import java.time.LocalDateTime;
 @Builder
 @ToString(of = {"userLectureId"})
 public class UserLecture {
+    @SequenceGenerator(
+            name="USER_LECTURE_SEQ_GEN",
+            sequenceName = "USER_LECTURE_SEQ",
+            initialValue = 100,
+            allocationSize = 1
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_LECTURE_SEQ_GEN")
     private Long userLectureId;
 
     private LocalDate registDate;
 
-    @Builder.Default
-    @ColumnDefault("0")
-    private int score = 0;
+    private Integer score;
 
     private String review;
     private LocalDateTime reviewUpdateDate;

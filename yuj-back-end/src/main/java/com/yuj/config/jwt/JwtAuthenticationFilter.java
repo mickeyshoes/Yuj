@@ -1,5 +1,5 @@
 package com.yuj.config.jwt;
-
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,10 +45,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 log.info("authentication.getName() = " + authentication.getName());
             }
         } catch(ExpiredJwtException e) {
-            log.error("!!!!!!!!!!!!!!!!!!!!!!!");
-            log.error("response = " + response);
+            System.out.println("response = " + response);
+//            ((HttpServletResponse)response).sendRedirect("localhost:5000/reissue");
         }
-
         filterChain.doFilter(request, response);
     }
 }

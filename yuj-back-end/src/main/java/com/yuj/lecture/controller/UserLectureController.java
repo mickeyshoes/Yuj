@@ -1,8 +1,6 @@
 package com.yuj.lecture.controller;
 
-import com.yuj.lecture.domain.Lecture;
 import com.yuj.lecture.domain.UserLecture;
-import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.service.LectureService;
 import com.yuj.lecture.service.UserLectureService;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +38,8 @@ public class UserLectureController {
 
     // 유저 수강 취소
     @PutMapping
-    public ResponseEntity<?> updateUserLectureState(@RequestParam("userId") Long userId, @RequestParam("lectureId") Long lectureId) throws Exception {
-        Long ret = userLectureService.updateUserLectureState(userId, lectureId);
+    public ResponseEntity<?> deleteUserLecture(@RequestParam("userId") Long userId, @RequestParam("lectureId") Long lectureId) throws Exception {
+        Long ret = userLectureService.deleteUserLecture(userId, lectureId);
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 }
