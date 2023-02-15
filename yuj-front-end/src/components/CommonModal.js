@@ -13,7 +13,7 @@ import MainFooter from "../components/mainFooter/MainFooter";
  * 자세한 사용법은 맨 아래 예제를 참고해주세요.
  *
  */
-const CommonModal = ({title, content, buttons=[], modalId}) => {
+const CommonModal = ({title, content, buttons=[], modalId, body=null}) => {
 
   return (
     <>
@@ -22,6 +22,7 @@ const CommonModal = ({title, content, buttons=[], modalId}) => {
             <div className="modal-box">
                 <h3 className="font-bold text-lg">{title}</h3>
                 <p className="py-4">{content}</p>
+                <div>{body}</div>
                 <div className="modal-action">
                 {
                     buttons.map((btn, idx) => 

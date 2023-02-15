@@ -24,7 +24,7 @@ class Vidu extends Component {
 
         this.state = {
             mySessionId: props.navigationState.mySessionId,
-            myUserName: props.navigationState.myUserName + Math.floor(Math.random() * 100),
+            myUserName: props.navigationState.myUserName,
             myUserType: props.navigationState.myUserType,
 
             session: undefined,

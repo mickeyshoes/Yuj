@@ -1,6 +1,8 @@
 import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { updateLectureActive } from '../stores/lectureSlice';
 import styled from 'styled-components';
 import '../components/openVidu/OpenVidu.css';
 import UserVideoComponent from '../components/openVidu/UserVideoComponent';
@@ -11,9 +13,9 @@ import { SignalCellularNull } from "@mui/icons-material";
 import { Navigate } from 'react-router-dom';
 
 const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io";
-// const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io';
+const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io';
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
-const OPENVIDU_SERVER_URL = 'http://localhost:4443';
+// const OPENVIDU_SERVER_URL = 'http://localhost:4443';
 const OPENVIDU_SERVER_SECRET = '123123';
 
 class Vidu extends Component {
@@ -22,7 +24,7 @@ class Vidu extends Component {
 
         this.state = {
             mySessionId: props.navigationState.mySessionId,
-            myUserName: props.navigationState.myUserName + Math.floor(Math.random() * 100),
+            myUserName: props.navigationState.myUserName,
             myUserType: props.navigationState.myUserType,
 
             session: undefined,
@@ -296,6 +298,15 @@ class Vidu extends Component {
             mySession.disconnect();
         }
 
+        //수업중인 강의 active false로 바꾸기
+        this.props.dispatch(updateLectureActive(
+            {
+                lectureId: this.state.mySessionId,
+                active: false,
+                userId: this.props.userInfo.userId
+            }
+        ))
+
         // Empty all properties...
         this.OV = null;
         this.setState({
@@ -306,9 +317,11 @@ class Vidu extends Component {
             mainStreamManager: undefined,
             publisher: undefined
         });
+
         this.setState({
             session: undefined
         })
+
         await axios.delete(
             '/openvidu/api/sessions/' + this.state.mySessionId,
             {
@@ -573,4 +586,8 @@ class Vidu extends Component {
     }
 }
 
-export default Vidu;
+const mapStateToProps = (state) => ({
+    userInfo: state.user.userInfo
+});
+  
+export default connect(mapStateToProps)(Vidu);

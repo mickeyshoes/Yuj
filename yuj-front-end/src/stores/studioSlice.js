@@ -96,6 +96,10 @@ const studioSlice = createSlice({
 		[getStudioLiveLecture.fulfilled]: (state, {payload}) => {
 			state.studioLiveLecture = payload;
 		},
+		[getStudioLiveLecture.rejected]: (state, {payload}) => {
+			console.log("getStudioFailed!");
+			state.studioLiveLecture = {};
+		},
 		[getStudioSelectedLectureList.fulfilled]: (state, {payload}) => {
 			state.studioLectureList = payload;
 		},

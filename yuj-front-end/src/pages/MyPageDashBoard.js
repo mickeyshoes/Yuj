@@ -102,9 +102,10 @@ const MyPageDashBoard = () => {
         let events = [];
         for(const lecture of [...currentLectures, ...completedLectures]){
             const schedules = await getLectureScheduleByLectureId(lecture.lectureId);
-            const { calcEvents, calcEventCloseTime } = calcEventsWithUserLectureAndSchedules(lecture, schedules);
+            const { calcEvents, calcEventCloseTime, timeDiff } = calcEventsWithUserLectureAndSchedules(lecture, schedules);
             events = events.concat(calcEvents);
             lecture.closeTime = calcEventCloseTime;
+            lecture.timeDiff = timeDiff;
             console.log("foreach lecture res: ",lecture)
         }
         setLectureEvents(events);
@@ -115,6 +116,7 @@ const MyPageDashBoard = () => {
         console.log("calcEventsWithUserLectureAndSchedules : ",userLecture, schedules)
         const calcEvents = [];
         let calcEventCloseTime = '';
+        let timeDiff = 0;
 
 
         //시작날, 끝날, 수업요일 저장하기
@@ -138,12 +140,14 @@ const MyPageDashBoard = () => {
 
                     if(!calcEventCloseTime) {
                         let getEventDateTime = startDate.format("YYYY-MM-DD") + schedule.startTime;
-                        calcEventCloseTime = elapsedTime(getEventDateTime);
+                        let calcRes = elapsedTime(getEventDateTime);
+                        calcEventCloseTime  = calcRes.calcEventCloseTime;
+                        timeDiff  = calcRes.timeDiff;
                     }
                 }
             })
         }
-        return { calcEvents, calcEventCloseTime };
+        return { calcEvents, calcEventCloseTime, timeDiff };
     }
 
     //~분전, ~일전 계산하는 함수
@@ -165,10 +169,10 @@ const MyPageDashBoard = () => {
           const betweenTime = Math.floor(diff / value.milliSeconds);
       
           if (betweenTime > 0) {
-            return `${betweenTime}${value.name} 후`;
+            return {calcEventCloseTime:`${betweenTime}${value.name} 후`, timeDiff: diff};
           }
         }
-        return '잠시 후';
+        return {calcEventCloseTime : '잠시 후', timeDiff: diff};
       }
 
 
@@ -279,7 +283,7 @@ const MyPageDashBoard = () => {
                                 get으로 강의리스트 가져오고 최신3개까지만 썸네일 가져와서
                                 좌측div에 강의썸네일 우측에는 강의제목, 강의예정 시간
                                 url링크 걸어서 강의 스튜디오로이동해야함 */}
-                                {currentLectures.slice(0, 3).map(post => (
+                                {currentLectures.slice(0, 3).sort((a,b) => a.timeDiff - b.timeDiff).map(post => (
 
                                     <>
                                         {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}

@@ -7,13 +7,13 @@ import { useDispatch } from 'react-redux';
 const HomePage = () => {
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   
   //전체 검색 창으로 이동 -> keyword는 ''
   const goSearchPage = () => {
     navigate('/search', {state:{keyword:''}});
-    // dispatch(searchLectures(keyword));
-    // dispatch(searchTeachers(keyword));
+    dispatch(searchLectures(''));
+    dispatch(searchTeachers(''));
   }
 
   return (

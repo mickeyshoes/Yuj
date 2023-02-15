@@ -31,7 +31,7 @@ const SearchTeacherListItem = (props) => {
                     </div>
                 </div>
                 <div>
-                    <p className={'text-xs leading-6 pr-8'}>
+                    <p className={'text-xs text-left leading-6 pr-8'}>
                         {description}
                     </p>
                 </div>

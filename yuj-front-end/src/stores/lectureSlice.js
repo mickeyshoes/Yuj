@@ -26,6 +26,46 @@ const getSelectedLectureList = createAsyncThunk("GET_SELECTED_LECTURE_LIST", asy
 	return response.data;
 })
 
+const updateLectureActive = createAsyncThunk("UPDATE_LECTURE_ACTIVE", async({lectureId, active, userId}) => {
+    const data = {
+        active,
+        userId
+    }
+
+    const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/lectures/${lectureId}/updateActive`, 
+        JSON.stringify(data), 
+        {
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        }
+    );
+    console.log("UPDATE_LECTURE_ACTIVE: ", response);
+
+    return response.data;
+})
+
+const registUserLectureSchedule = createAsyncThunk("REGIST_USER_LECTURE_SCHEDULE", async({lectureId, userId}) => {
+    const data = {
+        lectureId,
+        userId
+    }
+
+    const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/lectures/userLectureSchedule`, 
+        JSON.stringify(data), 
+        {
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        }
+    );
+    console.log("UPDATE_LECTURE_ACTIVE: ", response);
+
+    return response.data;
+})
+
 const lectureSlice = createSlice({
     name: 'lectureSlice',
 
@@ -52,12 +92,18 @@ const lectureSlice = createSlice({
             console.log("search lectures", payload);
             state.lecturesSearched = payload;
         },
-        [getSelectedLectureList.fulfilled]: (state, { payload}) => { 
+        [getSelectedLectureList.fulfilled]: (state, {payload}) => { 
             state.lecturesSearched = payload;
+        },
+        [updateLectureActive.fulfilled]: (state, {payload}) => { 
+            console.log("update Lecture active success! : ", payload.active);
+        },
+        [registUserLectureSchedule.fulfilled]: (state, {payload}) => { 
+            console.log("regist userLectureSchedule success! : ", payload.active);
         }
     }
 })
 
 export default lectureSlice;
 
-export {getLecture, getLectureSchedule, searchLectures, getSelectedLectureList};
+export {getLecture, getLectureSchedule, registUserLectureSchedule, searchLectures, getSelectedLectureList, updateLectureActive};
