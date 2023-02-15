@@ -3,16 +3,23 @@ import MyPageSidebar from '../components/MyPageSidebar';
 import axios from "axios";
 import { useState, useEffect, } from "react";
 import LectureItemCard from "../components/LectureItemCard";
+import { useSelector } from 'react-redux';
+import MyPageLoginCheck from "../utils/MyPageLoginCheck";
 
 const LOCAL_URL = "http://localhost:5000";
 const URL = LOCAL_URL;
 
 const MyPageLecture = () => {
 
+    const user = useSelector(state => state.user);
+    MyPageLoginCheck(user);
+
+    const [lectures, setLectures] = useState([]);
+
     useEffect(() => {
         axios({
             method: "GET",
-            url: `${URL}/mypage/dashboard/3`
+            url: `${URL}/mypage/dashboard/${user.userId}` //u
         }).then(res => {
             setLectures(res.data);
         })
@@ -20,8 +27,6 @@ const MyPageLecture = () => {
                 console.log(e);
             });
     }, []);
-
-    const [lectures, setLectures] = useState([]);
 
     return (
         <>
@@ -36,18 +41,7 @@ const MyPageLecture = () => {
                                 <LectureItemCard thisLecture={lecture} key={lecture.lectureId} />
                             </div>
                         ))}
-                        {/* 임시로 복사해둔 것입니다. */}
-                        {lectures.map(lecture => (
-                            <div key={lecture.lectureId}>
-                                <LectureItemCard thisLecture={lecture} key={lecture.lectureId} />
-                            </div>
-                        ))}
-                        {lectures.map(lecture => (
-                            <div key={lecture.lectureId}>
-                                {console.log("MyPageLecture lecture: ", lecture)}
-                                <LectureItemCard thisLecture={lecture} key={lecture.lectureId} />
-                            </div>
-                        ))}
+
                     </div>
                 </div>
             </div>

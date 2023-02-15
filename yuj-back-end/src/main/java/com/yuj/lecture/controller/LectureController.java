@@ -154,3 +154,4 @@ public class LectureController {
     	return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 }
+
