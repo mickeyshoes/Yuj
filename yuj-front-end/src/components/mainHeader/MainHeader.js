@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { searchLectures } from '../../stores/lectureSlice';
 import { searchTeachers } from '../../stores/studioSlice';
+import { useLocation } from 'react-router-dom';
 import styles from './MainHeader.module.css'
 import SearchIcon from '@mui/icons-material/Search';
 import LoginBox from './LoginBox';
@@ -12,6 +13,7 @@ const MainHeader = () => {
   const [keyword, setKeyword] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const doSearch = () => {
     navigate('/search',{state:{keyword:keyword}});
@@ -27,6 +29,11 @@ const MainHeader = () => {
     }
   }
 
+  useEffect(() => {
+    setKeyword('');
+  }, [location])
+
+
   return (
     <div className="navbar bg-secondary" style={{ height: '100px', minHeight: '100px' }}>
       <div className="flex-1">
@@ -36,7 +43,7 @@ const MainHeader = () => {
       </div>
       <div className="flex-none" >
         <div className="form-control" style={{ position: 'relative', paddingRight: '15px' }}>
-          <input onKeyPress={handleOnKeyPress} onChange={(e) => setKeyword(e.target.value)} type="text" placeholder="#강의#강사" className={styles.search + " input input-bordered"} />
+          <input onKeyPress={handleOnKeyPress} value={keyword} onChange={(e) => setKeyword(e.target.value)} type="text" placeholder="#강의#강사" className={styles.search + " input input-bordered"} />
           <button onClick={() => doSearch()} className={'btn btn-xs btn-ghost border-none btn-circle'}  style={{ position: 'absolute', top:'2px', right:'20px', height:'1rem'}}>
             <SearchIcon style={{height:'1rem'}}/>
           </button>

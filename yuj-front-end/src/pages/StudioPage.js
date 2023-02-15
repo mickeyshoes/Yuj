@@ -43,7 +43,7 @@ const StudioPage = () => {
                     <div className={'px-40'}>
                         <StudioMainDescription studioDetail={studio.studioDetail}/>
                         <ListTitle className={'text-2xl font-bold'} titleText={'강의 목록'} onClickEvent={() => { navigate("/studioLectureListPage")}}/>
-                        <div className={'mt-20 my-48  flex justify-evenly'}>
+                        <div className={'mt-12 my-48  flex justify-evenly'}>
                             {studio.studioLectureList.map((lecture, index) => 
                                 index < 3 ? <LectureItemCard key={lecture.lectureId} thisLecture={lecture}/> : null
                             )}

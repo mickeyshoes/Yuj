@@ -52,7 +52,7 @@ const StudioSidebar = (props) => {
     <>
         {/* 수강생 버튼 */}
         <CommonModal 
-          // title={'실시간 강의에 참여하시겠습니까?'} 
+          // title={'실시간 강의에 참여하시겠습니까?'}
           content={'실시간 강의에 참여하시겠습니까?'}
           body={<p className={'mt-4 mb-8 text-accent font-bold w-full '}>{studioLiveLecture.name}</p>} 
           buttons={[
@@ -123,7 +123,7 @@ const StudioSidebar = (props) => {
               <input type="radio" name="rating-2" className="mask mask-star-2 bg-accent" disabled/>
             </div>
             {
-              studioDetail.userId != userId ?
+              studioDetail.userId !== userId ?
               <CommonModalBtn text={'Go Live'} className={Styles.liveBtn +' border-none btn-accent mt-12 '+(!studioLiveLecture.name ? 'btn-disabled':'')} modalId={'studio-go-live'}/>
               :
               // <button className={Styles.liveBtn+' btn border-none mt-12 btn-accent'} onClick={() => startLiveClicked()}>Start Live</button>

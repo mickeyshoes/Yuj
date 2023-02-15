@@ -35,13 +35,10 @@ const MainSearchPage = (props) => {
   useEffect(() => {
     if(location.state != null){
       setKeyword(location.state.keyword);
+      window.history.replaceState({},document.title);
     }
     dispatch(getYogaList());
-  }, [location.state.keyword])
-
-  // useEffect(() => {
-  //   doSearch();
-  // }, [keyword])
+  }, [])
 
   
 
