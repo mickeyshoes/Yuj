@@ -40,7 +40,7 @@ class MyPageWeeklyStudyChart extends React.Component {
                 fill: {
                     type: 'image',
                     image: {
-                        src: ['/assets/chartBackground.jpg'],
+                        src: ['/assets/chartBackground1.png'],
                     }
                 },
                 stroke: {

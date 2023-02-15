@@ -280,34 +280,30 @@ const MyPageDashBoard = () => {
                 <MyPageSidebar />
                 <main>
                     <div className="mx-28 mt-16 w-full">
-                        <div className="text-3xl font-bold ml-4">대시보드</div>
+                        <div className="text-3xl font-bold ml-4 text-accent">대시보드</div>
                         <div className="w-full flex justify-between">
                             <div className={Styles[`dashboard-box`] + " flex flex-col"}>
                                 <div className="flex m-5 justify-between" >
 
                                     <div className={Styles[`box-font`]}>
-                                        <div>수강중</div>
+                                        <div className="text-accent">수강중</div>
                                     </div>
                                     {/* <Link to="/mypage/lecture">전체보기 &gt;</Link> */}
                                 </div>
                                 <div className="flex-auto">
-                                    {console.log("currentLectures 입니다")}
-                                    {console.log(currentLectures)}
-                                    {console.log("currentLectures 끝입니다")}
-
                                     {
-
                                         currentLectures.length === 0
-                                            ? <div class="h-full flex flex-col items-center justify-center pb-16">
-                                                <h1 class="text-3xl font-bold mb-4">진행중인</h1>
-                                                <h1 class="text-3xl font-bold mb-4">강의가 없습니다.</h1>
-                                                <a href="#" class="btn btn-primary">강의 둘러보기</a>
+                                            ? <div className="h-full flex flex-col items-center justify-center pb-16">
+                                                <h1 className="text-3xl font-bold mb-4">진행중인</h1>
+                                                <h1 className="text-3xl font-bold mb-4">강의가 없습니다.</h1>
+                                                <Link to="/searchLecture" className="btn btn-primary">강의 둘러보기</Link>
                                             </div>
                                             : <div>{currentLectures.slice(0, 3).sort((a, b) => a.timeDiff - b.timeDiff).map((post, idx) => (
-
+                                                console.log("post입니다"),
+                                                console.log(post),
                                                 <div key={idx}>
                                                     <Link to="/studio" className="h-20 my-2 flex">
-                                                        <div className="h-full w-32 mx-5">
+                                                        <div className="h-full w-32 mx-5 ">
                                                             {/* 강의 thumbnail_image */}
                                                             <img src={`${process.env.REACT_APP_IMAGE_URL}/${post.thumbnailImage}`}></img>
                                                         </div>
@@ -321,7 +317,9 @@ const MyPageDashBoard = () => {
                                                     </Link>
                                                 </div >
 
+
                                             ))}
+
                                             </div>
 
                                     }
@@ -333,7 +331,7 @@ const MyPageDashBoard = () => {
                             <div className={Styles[`dashboard-box`] + " flex flex-col"}>
                                 <div className="flex m-5 justify-between" >
                                     <div className={Styles[`box-font`]}>
-                                        <div>수강 완료</div>
+                                        <div className="text-accent">수강 완료</div>
                                     </div>
                                     {/* <Link to="/mypage/lecture">전체보기 &gt;</Link> */}
 
@@ -342,10 +340,10 @@ const MyPageDashBoard = () => {
                                     {
 
                                         completedLectures.length === 0
-                                            ? <div class="h-full flex flex-col items-center justify-center pb-16">
-                                                <h1 class="text-3xl font-bold mb-4">완료된</h1>
-                                                <h1 class="text-3xl font-bold mb-4">강의가 없습니다.</h1>
-                                                <a href="#" class="btn btn-primary">강의 목록 이동</a>
+                                            ? <div className="h-full flex flex-col items-center justify-center pb-16">
+                                                <h1 className="text-3xl font-bold mb-4">완료된</h1>
+                                                <h1 className="text-3xl font-bold mb-4">강의가 없습니다.</h1>
+                                                <Link to="/mypage/lecture" className="btn btn-primary">강의 목록 이동</Link>
                                             </div>
                                             : <div>{completedLectures
                                                 .sort((a, b) => new Date(b.endDate) - new Date(a.endDate))  //가장 최근 수강완료된것부터 정렬
@@ -377,7 +375,7 @@ const MyPageDashBoard = () => {
                                 url링크 걸어서 강의 스튜디오로이동해야함 */}
                             </div>
                             <div className={Styles[`dashboard-box`]}>
-                                <div className={"pl-5 pt-5 " + Styles[`box-font`]}>주간 학습 달성률</div>
+                                <div className={"pl-5 pt-5 text-accent " + Styles[`box-font`]}>주간 학습 달성률</div>
                                 <div>
                                     <MyPageWeeklyStudyChart percentage={percentage} />
                                 </div>
@@ -387,7 +385,7 @@ const MyPageDashBoard = () => {
                             </div>
                         </div>
                         <div className="px-5 my-16">
-                            <div>학습 일정</div>
+                            <div className={"text-accent " + Styles[`box-font`]}>학습 일정</div>
                             <div className={'max-w-5xl'}>
                                 <MyPageCalendar lectureEvents={lectureEvents} />
                             </div>
