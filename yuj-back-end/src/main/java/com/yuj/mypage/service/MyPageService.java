@@ -1,9 +1,14 @@
 package com.yuj.mypage.service;
 
+import com.yuj.exception.CLectureNotFoundException;
+import com.yuj.exception.CUserLectureNotFoundException;
+import com.yuj.exception.CUserNotFoundException;
 import com.yuj.lecture.domain.*;
 import com.yuj.lecture.repository.LectureRepository;
 import com.yuj.lecture.repository.LectureScheduleRepository;
 
+import com.yuj.lecture.repository.UserLectureRepository;
+import com.yuj.lecture.repository.UserLectureScheduleRepository;
 import com.yuj.mypage.dto.request.MyPageUserInfoRequestDTO;
 import com.yuj.mypage.dto.response.MyPageLectureScheduleResponseDTO;
 import com.yuj.mypage.dto.response.MyPageUserLectureResponseDTO;
@@ -12,6 +17,8 @@ import com.yuj.mypage.repository.MyPageUserInfoRepository;
 import com.yuj.mypage.repository.MyPageUserLectureRepository;
 import com.yuj.mypage.repository.MyPageUserLectureScheduleRepository;
 import com.yuj.user.domain.User;
+import com.yuj.user.repository.UserRepository;
+import com.yuj.util.DayCounter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +32,10 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class MyPageService {
-
+    private final UserRepository userRepository;
+    private final LectureRepository lectureRepository;
+    private final UserLectureRepository userLectureRepository;
+    private final UserLectureScheduleRepository userLectureScheduleRepository;
     private final MyPageUserLectureRepository myPageUserLectureRepository;
     private final LectureScheduleRepository lectureScheduleRepository;
     private final MyPageUserLectureScheduleRepository myPageUserLectureScheduleRepository;
@@ -192,4 +202,38 @@ public class MyPageService {
                 .lectureId(userlectureSchedule.getLecture().getLectureId())
                 .build();
     }
+
+    /**
+     *
+     * @param userId    : 수강생의 PK
+     * @param lectureId : 강의의 PK
+     * @return : 수강생의 강의 등록 시점부터 현재 날짜까지 수업의 참석률
+     */
+    public double attendanceRate(Long userId, Long lectureId) {
+        UserLecture userLecture = userLectureRepository.findByUser_UserIdAndLecture_LectureId(userId, lectureId).orElseThrow(CUserLectureNotFoundException::new);
+        List<Integer> dayList = new ArrayList<>();
+
+        LocalDate from = userLecture.getRegistDate();   //  등록일
+        LocalDate to = LocalDate.now();                 //  오늘일
+        long totalCnt = 0;                              //  오늘까지 진행된 수업 수
+        long attendance = 0;                            //  참석한 수업 수
+
+        List<LectureSchedule> lectureScheduleList = lectureScheduleRepository.findAllByLecture_LectureId(lectureId);
+
+        //  수업 열리는 요일 다 구함
+        for(LectureSchedule lectureSchedule : lectureScheduleList) {
+            dayList.add(DayCounter.convertDay(lectureSchedule.getDay()));
+        }
+
+        totalCnt = DayCounter.cntOfDays(from, to, dayList); //  등록일 기준 지금까지 진행된 수업 개수
+
+        List<UserLectureSchedule> userLectureSchedules = userLectureScheduleRepository
+                .findByUser_UserIdAndLecture_LectureId(userId, lectureId)
+                .orElseThrow(CUserLectureNotFoundException::new);
+
+        attendance = userLectureSchedules.size();
+
+        return ((double)attendance / totalCnt) * 100;
+    }
+
 }
