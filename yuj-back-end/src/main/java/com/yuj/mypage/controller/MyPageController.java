@@ -6,6 +6,7 @@ import com.yuj.mypage.dto.response.MyPageUserLectureResponseDTO;
 import com.yuj.mypage.dto.response.MyPageUserLectureScheduleResponseDTO;
 import com.yuj.mypage.service.MyPageService;
 import com.yuj.user.domain.User;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class MyPageController {
     private final MyPageService myPageService;
 
     //userId기반 모든 강의 가져오기
+    @ApiOperation(value = "모든 강의 가져오기", notes = "userId를 이용하여 수강한 모든 강의를 가져옵니다.")
     @GetMapping("/dashboard/{userId}")
     public ResponseEntity<?> getUserLecture(@PathVariable Long userId) {
         List<MyPageUserLectureResponseDTO> userLecturesById = myPageService.getAllUserLecturesById(userId);
@@ -43,6 +45,7 @@ public class MyPageController {
     }
 
     // 현재 수강중인 강의만 가져오기(진행중)
+    @ApiOperation(value = "수강중인 강의 가져오기", notes = "userId를 이용하여 현재 수강중인 강의를 가져옵니다.")
     @GetMapping("/dashboard/currentlectures/{userId}")
     public ResponseEntity<?> getCurrentLectures(@PathVariable Long userId) throws Exception {
         List<MyPageUserLectureResponseDTO> userLecturesById = myPageService.getCurrentLecturesById(userId);
@@ -58,6 +61,7 @@ public class MyPageController {
     }
 
     // 수강 완료된 강의만 가져오기
+    @ApiOperation(value = "수강 완료된 강의 가져오기", notes = "userId를 이용하여 강의 endDate가 끝난 강의를 모두 가져옵니다.")
     @GetMapping("/dashboard/completedlectures/{userId}")
     public ResponseEntity<?> getCompletedLectures(@PathVariable Long userId) throws Exception {
         List<MyPageUserLectureResponseDTO> userLecturesById = myPageService.getCompletedLecturesById(userId);
@@ -73,6 +77,7 @@ public class MyPageController {
     }
 
 
+    @ApiOperation(value = "강의스케쥴 가져오기", notes = "lectureId를 기반으로 하여 강의 스케쥴을 가져옵니다.")
     @GetMapping("/dashboard/lectureSchedule/{lectureId}")
     public ResponseEntity<?> getLectureSchedule(@PathVariable Long lectureId) {
         List<MyPageLectureScheduleResponseDTO> lectureScheduleByLectureId = myPageService.getLectureScheduleByLectureId(lectureId);
@@ -105,13 +110,14 @@ public class MyPageController {
 
     }
     //    유저정보수정
-//    @PatchMapping("/info/{userId}")
-//    public ResponseEntity<User> userUpdate(@RequestBody MyPageUserInfoRequestDTO myPageUserInfoRequestDTO, @PathVariable Long userId) {
-//        Optional<User> user = this.myPageService.updateUser(userId, myPageUserInfoRequestDTO);
-//        System.out.println("userUpdate 컨트롤러에 도착");
-//        System.out.println(user);
-//
-//        return new ResponseEntity(user, HttpStatus.OK);
-//    }
+    @ApiOperation(value = "회원 정보 수정", notes = "마이페이지 회원 정보 form을 통해 회원 정보를 수정합니다.")
+    @PatchMapping("/info/{userId}")
+    public ResponseEntity<User> userUpdate(@RequestBody MyPageUserInfoRequestDTO myPageUserInfoRequestDTO, @PathVariable Long userId) {
+        Optional<User> user = this.myPageService.updateUser(userId, myPageUserInfoRequestDTO);
+        System.out.println("userUpdate 컨트롤러에 도착");
+        System.out.println(user);
+
+        return new ResponseEntity(user, HttpStatus.OK);
+    }
 
 }

@@ -49,8 +49,9 @@ const MainHeader = () => {
           </button>
         </div>
         <ul className="menu menu-horizontal px-1 items-center">
-          <li className='px-2'><Link to="/testLectureCard" className={styles.menu}>강의 소개</Link></li>
-          <li className='px-2'><Link to="/testLectureDetail" className={styles.menu}>강사 소개</Link></li>
+          <li className='px-2'><Link to="/" className={styles.menu}>메인 페이지</Link></li>
+          <li className='px-2'><Link to="/searchLecture" className={styles.menu}>강의 소개</Link></li>
+          <li className='px-2'><Link to="/searchTeacher" className={styles.menu}>강사 소개</Link></li>
           <li className='pl-2'><Link to="/" className={styles.menu}>문의사항</Link></li>
         </ul>
         <div className='mx-5'> | </div>

@@ -4,6 +4,7 @@ import Styles from './MyPages.module.css';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import MyPageLoginCheck from "../utils/MyPageLoginCheck";
 
 const LOCAL_URL = "http://localhost:5000";
 const URL = LOCAL_URL;
@@ -21,32 +22,15 @@ function phoneLengthLimit(e) {
 
 const MyPageInfo = () => {
 
-    // 내 정보의 input상자 클래스를 한번에 관리하기 위한 inputClassName
-    const inputClassName = "rounded-[5px] pl-2 h-6 input-bordered w-full text-base " + Styles[`myPageInput`];
     //현재 로그인한 유저
     const user = useSelector(state => state.user);
+    MyPageLoginCheck(user);
 
+    // 내 정보의 input상자 클래스를 한번에 관리하기 위한 inputClassName
+    const inputClassName = "rounded-[5px] pl-2 h-6 input-bordered w-full text-base " + Styles[`myPageInput`];
 
-    // useEffect(() => {
-    //     const getUserInfo = async () => {
-    //         try {
-    //             // 로그인한 유저 정보 가져오기
-    //             const response = await axios.get(`${URL}/users/3`); //id로 회원정보 조회하는 API
-    //             const userData = response.data;
-
-    //             // 유저 기본 정보 넣어주기
-    //             setProfileImage(userData.profileImage);
-    //             setNickname(userData.nickname);
-    //             setPassword(userData.password);
-    //             setPhone(userData.phone);
-    //             setEmail(userData.email);
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     };
-    //     getUserInfo();
-    // }, []);
-
+    console.log("유저입니다.");
+    console.log(user);
     const [profileImage, setProfileImage] = useState(user.userInfo.profileImage);
     const [nickname, setNickname] = useState(user.userInfo.nickname);
     const [password, setPassword] = useState("");
@@ -57,7 +41,7 @@ const MyPageInfo = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const updateUser = {
+        const myPageUserInfoRequestDTO = {
             userId,
             profileImage,
             nickname,
@@ -66,9 +50,12 @@ const MyPageInfo = () => {
             email,
         };
         console.log("url")
-
+        console.log(myPageUserInfoRequestDTO)
+        const headers = user.tokenInfo
+        console.log('헤더입니다.')
+        console.log(headers)
         console.log(`${LOCAL_URL}/mypage/info/${userId}`)
-        axios.patch(`${LOCAL_URL}/mypage/info/${userId}`, updateUser)
+        axios.patch(`${LOCAL_URL}/mypage/info/${userId}`, myPageUserInfoRequestDTO, headers)
             .then((res) => console.log(res))
             .catch((err) => console.error(err));
     };
@@ -77,13 +64,11 @@ const MyPageInfo = () => {
     return (
         <>
             <div className="flex w-full ">
-                <MyPageSidebar/>
+                <MyPageSidebar />
                 <div className="px-40 w-full">
                     <div className={"flex " + Styles[`info-background-image`]} >
 
                         <form className={"p-10 card bg-base-200 " + Styles[`info-container`]} onSubmit={handleSubmit}>
-
-                            {/* <input type="hidden" name="method" value="PUT"></input> */}
                             <input type="hidden" name="userId" value={userId} />
                             <div className="form-control">
                                 <label className="label">
@@ -91,11 +76,9 @@ const MyPageInfo = () => {
                                 </label>
                                 <div className="avatar">
                                     <div className="w-24 rounded-full">
-                                        {/* 이 아래 현재 로그인한 유저의 이미지파일을 받아와야함 */}
+                                        {/* 현재 로그인한 유저의 이미지 */}
                                         <img src={`${process.env.REACT_APP_IMAGE_URL}/${profileImage}`} />
                                     </div>
-                                    {/* 이전 사용하던 인풋박스 */}
-                                    {/* <input type="file" className="file-input file-input-bordered file-input-accent w-full profileInput myPageInput" /> */}
                                     <input type="file" name="profileImage" accept="image/*" className={"block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 " + Styles.profileInput + " " + Styles.myPageInput} onChange={(e) => setProfileImage(e.target.value)} />
                                 </div>
                             </div>
@@ -104,10 +87,10 @@ const MyPageInfo = () => {
                                 <label className="label">
                                     <span className="label-text">닉네임</span>
                                 </label>
-                                <input type="text" name="nickname" placeholder="닉네임을 입력하세요." defaultValue={nickname} className={inputClassName} maxLength={16} onChange={(e) => setNickname(e.target.value)} />
+                                <input type="text" name="nickname" placeholder="닉네임을 입력하세요." defaultValue={nickname} className={inputClassName} maxLength={12} onChange={(e) => setNickname(e.target.value)} />
                                 <label className="label">
                                     <span className="label-text-alt"></span>
-                                    <span className="label-text-alt"></span>
+                                    <span className="label-text-alt">(12글자 이하로 입력하세요)</span>
                                 </label>
                             </div>
 
@@ -133,7 +116,7 @@ const MyPageInfo = () => {
                                 <input type="password" name="password" placeholder="새 비밀번호 확인" className={inputClassName} minLength={6} maxLength={16} onChange={(e) => setPassword(e.target.value)} />
                                 <label className="label">
                                     <span className="label-text-alt"></span>
-                                    <span className="label-text-alt justify-end">(비밀번호는 6글자 이상, 16글자 이하로 입력해주세요.)</span>
+                                    <span className="label-text-alt justify-end">(6글자 이상, 16글자 이하로 입력하세요  )</span>
                                 </label>
                             </div>
 
@@ -159,7 +142,7 @@ const MyPageInfo = () => {
                                     <span className="label-text-alt"></span>
                                 </label>
                             </div>
-                            <div class='flex justify-end'>
+                            <div className='flex justify-end'>
                                 <button className={"btn btn-accent " + Styles[`mypage-save-button`]}>변경하기</button>
                             </div>
                         </form>

@@ -9,6 +9,8 @@ import com.yuj.lecture.repository.LectureScheduleRepository;
 
 import com.yuj.lecture.repository.UserLectureRepository;
 import com.yuj.lecture.repository.UserLectureScheduleRepository;
+import com.yuj.lectureimage.domain.ImageFile;
+import com.yuj.lectureimage.repository.LectureImageRepository;
 import com.yuj.mypage.dto.request.MyPageUserInfoRequestDTO;
 import com.yuj.mypage.dto.response.MyPageLectureScheduleResponseDTO;
 import com.yuj.mypage.dto.response.MyPageUserLectureResponseDTO;
@@ -39,7 +41,7 @@ public class MyPageService {
     private final MyPageUserLectureRepository myPageUserLectureRepository;
     private final LectureScheduleRepository lectureScheduleRepository;
     private final MyPageUserLectureScheduleRepository myPageUserLectureScheduleRepository;
-
+    private final LectureImageRepository lectureImageRepository;
     private final MyPageUserInfoRepository myPageUserInfoRepository;
 
     //    userId를 사용하여 수강하고있는 모든 강의정보 가져오기
@@ -73,6 +75,9 @@ public class MyPageService {
                 myPageUserLectureResponseDTOS.add(entityToUserLectureResponseDTO(dto));
             }
         }
+
+//        현재시간보다 endDate가 이전(강의가 완료된것)인 것들 중에서 가장 최근의것을 우선으로 정렬
+        Collections.sort(myPageUserLectureResponseDTOS, (o1, o2) -> o2.getEndDate().compareTo(o1.getEndDate()));
         return myPageUserLectureResponseDTOS;
     }
 
@@ -126,31 +131,30 @@ public class MyPageService {
 
 //    private MyPageUserLectureResponseDTO entityToUserLectureResponseDTO(UserLecture userLecture){
 //        User user = userLecture.getUser();
-////    유저 정보 수정
-//
-//    public Optional<User> updateUser(Long userId, MyPageUserInfoRequestDTO myPageUserInfoRequestDTO) {
-//        Optional<User> user = this.myPageUserInfoRepository.findById(userId);
-//
-//        user.ifPresent(u -> {
-//            if (myPageUserInfoRequestDTO.getProfileImage() != null) {
-//                u.setProfileImagePath(myPageUserInfoRequestDTO.getProfileImage());
-//            }
-//            if (myPageUserInfoRequestDTO.getNickname() != null) {
-//                u.setNickname(myPageUserInfoRequestDTO.getNickname());
-//            }
-//            if (myPageUserInfoRequestDTO.getPassword() != null) {
-//                u.setPassword(myPageUserInfoRequestDTO.getPassword());
-//            }
-//            if (myPageUserInfoRequestDTO.getPhone() != null) {
-//                u.setPhone(myPageUserInfoRequestDTO.getPhone());
-//            }
-//            if (myPageUserInfoRequestDTO.getEmail() != null) {
-//                u.setEmail(myPageUserInfoRequestDTO.getEmail());
-//            }
-//            this.myPageUserInfoRepository.save(u);
-//        });
-//        return user;
-//    }
+//    유저 정보 수정
+    public Optional<User> updateUser(Long userId, MyPageUserInfoRequestDTO myPageUserInfoRequestDTO) {
+        Optional<User> user = this.myPageUserInfoRepository.findById(userId);
+
+        user.ifPresent(u -> {
+            if (myPageUserInfoRequestDTO.getProfileImage() != null) {
+                u.setProfileImagePath(myPageUserInfoRequestDTO.getProfileImage());
+            }
+            if (myPageUserInfoRequestDTO.getNickname() != null) {
+                u.setNickname(myPageUserInfoRequestDTO.getNickname());
+            }
+            if (myPageUserInfoRequestDTO.getPassword() != null) {
+                u.setPassword(myPageUserInfoRequestDTO.getPassword());
+            }
+            if (myPageUserInfoRequestDTO.getPhone() != null) {
+                u.setPhone(myPageUserInfoRequestDTO.getPhone());
+            }
+            if (myPageUserInfoRequestDTO.getEmail() != null) {
+                u.setEmail(myPageUserInfoRequestDTO.getEmail());
+            }
+            this.myPageUserInfoRepository.save(u);
+        });
+        return user;
+    }
 
 
     private MyPageUserLectureResponseDTO entityToUserLectureResponseDTO(UserLecture userLecture) {
@@ -159,6 +163,16 @@ public class MyPageService {
         User user = lecture.getUser();
         Yoga yoga = lecture.getYoga();
 
+        Optional<List<ImageFile>> imageFiles = lectureImageRepository.findAllByLecture_LectureId(lecture.getLectureId());
+        String filePath;
+        if(imageFiles.isPresent()){
+            filePath = imageFiles.get().get(0).getFilePath();
+        }
+        else{
+            filePath = "";
+        }
+
+//        lectureid가져오고 이미지repository에서 이미지 리스트 가져오고 0번인덱스의 filepath를 thumbnailimage값으로 넣어준다.
         return MyPageUserLectureResponseDTO.builder().
                 userLectureId(userLecture.getUserLectureId()).
                 userRegistDate(userLecture.getRegistDate()).
@@ -169,7 +183,7 @@ public class MyPageService {
                 profileImagePath(user.getProfileImagePath()).
                 lectureId(lecture.getLectureId()).
                 name(lecture.getName()).
-                thumbnailImage(lecture.getThumbnailImage()).
+                thumbnailImage(filePath).
                 lectureRegistDate(lecture.getRegistDate()).
                 startDate(lecture.getStartDate()).
                 endDate(lecture.getEndDate()).
