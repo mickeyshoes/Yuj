@@ -3,14 +3,7 @@ package com.yuj.lecture.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -29,8 +22,14 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UserLecture {
+    @SequenceGenerator(
+            name="USER_LECTURE_SEQ_GEN",
+            sequenceName = "USER_LECTURE_SEQ",
+            initialValue = 100,
+            allocationSize = 1
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_LECTURE_SEQ_GEN")
     private Long userLectureId;
 
     private LocalDate registDate;

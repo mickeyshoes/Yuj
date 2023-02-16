@@ -32,10 +32,11 @@ const StudioLectureDetailPage = () => {
   const studio = useSelector((state) => state.studio);
   const userId = user.userId;
   const teacherId = lecture.userId;
-  console.log(user);
-  console.log(userId);
-  console.log(teacherId);
-  console.log(lecture);
+  console.log("lecture : " ,lecture);
+  // console.log(user);
+  // console.log(userId);
+  // console.log(teacherId);
+  // console.log(lecture);
   //강의 종료 날짜와 현재 날짜를 비교하여 강의가 종료된 상태인지를 확인
   const date = new Date();
   const endDate = new Date(lecture.endDate);
@@ -184,7 +185,7 @@ const StudioLectureDetailPage = () => {
         />
         <div className="px-40 overflow-hidden">
           <div className="mt-5">
-            <StudioLectureDetailCarousel />
+            <StudioLectureDetailCarousel thisLecture={lecture}/>
           </div>
           <div className="mt-5">
             <StudioLectureDetailInfoBox
