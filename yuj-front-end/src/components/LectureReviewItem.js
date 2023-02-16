@@ -15,7 +15,7 @@ const LectureReviewItem = (props) => {
         <>
             <div id="review-item-container" className="p-8" style={{ 'border-bottom': '2px solid rgb(144, 133, 154, 0.4)', opacity:''}}>
                 <Header className="" id="review-item-profile-container">
-                    <img className="w-12 rounded-full" src={`${process.env.REACT_APP_IMAGE_URL}/${item.profileImage}`} style={{border : '2px solid rgb(144, 133, 154, 0.8)'}}/>
+                    <img className="w-12 rounded-full" src={`${process.env.REACT_APP_IMAGE_URL}/${item.profileImage}`}/>
                     <HeaderDetailsWrapper id="review-text-info-container">
                         <HeaderDetail className="w-20 truncate">{item.userName}</HeaderDetail>
                         <HeaderDetail>{item.date}</HeaderDetail>

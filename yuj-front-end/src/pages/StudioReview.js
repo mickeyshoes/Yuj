@@ -55,8 +55,8 @@ const StudioReview = (props) => {
                         <div><span className="text-success">총 {reviewList.length}개의 후기</span></div> 
                         {
                             studio.studioDetail.studioId == user.userId || user.userId === ""
-                                ?<button className="border-none btn-accent btn-access text-white gap-2 " style={{'background-color': '#cccccc'}}><CreateIcon />후기 작성</button>
-                                :<button className="border-none btn-accent btn-access text-white gap-2 " onClick={addReview}><CreateIcon />후기 작성</button>
+                                ?<button className="border-none btn-accent btn text-white gap-2 px-4 btn-sm " style={{'background-color': '#cccccc'}}><CreateIcon />후기 작성</button>
+                                :<button className="border-none btn-accent btn text-white gap-2 px-4 btn-sm" onClick={addReview}><CreateIcon />후기 작성</button>
                         }
                     </div>
                     <div className="items-center">
