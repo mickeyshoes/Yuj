@@ -58,7 +58,7 @@ const userSlice = createSlice({
 			refreshToken: "",
 			accessTokenExpireDate: 0
 		},
-		userId: '',
+		userId: -1,
 		userInfo: {
 			// id: "",
 			// name: "",
@@ -75,7 +75,7 @@ const userSlice = createSlice({
 	reducers: {
 		clearUserState:(state, action) => {
 			state.tokenInfo = {};
-			state.userId = '';
+			state.userId = -1;
 			state.userInfo = {};
 		}
 	},

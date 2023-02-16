@@ -8,8 +8,10 @@ import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from "../
 
 const StudioLectureListPage = () => {
 
-  //컴포넌트가 마운트 될 때 lecture list를 데이터베이스에서 불러오기(현재 위치한 스튜디오의 강사 userId 기반)
+  const studio = useSelector(state => state.studio);
+  const user = useSelector(state => state.user);
   const teacher = useSelector(state => state.studio.studioDetail);
+  //컴포넌트가 마운트 될 때 lecture list를 데이터베이스에서 불러오기(현재 위치한 스튜디오의 강사 userId 기반)
   const dispatch = useDispatch();
   useEffect(() => {
     console.log('firstmount');
@@ -43,12 +45,10 @@ const StudioLectureListPage = () => {
   };
 
   //사이드바
-  const user = useSelector(state => state.user);
-  const studio = useSelector(state => state.studio);
   useEffect(() => {
-    dispatch(getStudioDetail(user.userId));
-    // dispatch(getStudioLectureList(user.userId));
-    dispatch(getStudioLiveLecture(user.userId));
+    dispatch(getStudioDetail(studio.userId));
+    // dispatch(getStudioLectureList(studio.userId));
+    dispatch(getStudioLiveLecture(studio.userId));
   }, [])
 
   return (
