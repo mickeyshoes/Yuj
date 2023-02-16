@@ -106,23 +106,26 @@ const SignUp = () => {
     month && year ? getDaysInMonth(year, Number(month)) : null;
 
   return (
-    <div className={"px-60 w-full"}>
+    <div className={"px-52 w-full"}>
       <div
         className={
           Styles[`info-background-image`] +
-          " w-full flex items-center justify-center"
+          " w-full flex items-center justify-center overflow-hidden"
           // "w-full"
         }
+        style={{ height: "calc(100vh - 125px)" }}
       >
-        <form onSubmit={handleSubmit}>
-          <div className="flex">
+        <form className="w-full mt-16" onSubmit={handleSubmit}>
+          <div className="flex auto">
             <span
               className={
-                "py-8 px-8 rounded-xl card bg-base-200 max-w-sm " +
-                Styles[`info-container`]
+                "py-8 px-8 rounded-xl card bg-base-200 " +
+                Styles[`signin-info-container`]
               }
             >
-              <p className={"text-2xl mb-3 text-black font-bold"}>회원가입</p>
+              <p className={"text-3xl mb-3 ml-1 text-black font-bold"}>
+                회원 가입
+              </p>
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text text-xs text-black font-bold">
@@ -133,7 +136,7 @@ const SignUp = () => {
                   type="text"
                   name="id"
                   placeholder=""
-                  className={" input rounded-xl input-sm"}
+                  className={"bg-opacity-50 input rounded-xl input-sm"}
                   maxLength={16}
                   onChange={(e) => setUserId(e.target.value)}
                 />
@@ -151,7 +154,7 @@ const SignUp = () => {
                 <input
                   type="password"
                   placeholder=""
-                  className={" input rounded-xl input-sm"}
+                  className={"bg-opacity-50 input rounded-xl input-sm"}
                   minLength={6}
                   maxLength={16}
                   onChange={(e) => setPassword(e.target.value)}
@@ -172,7 +175,7 @@ const SignUp = () => {
                   placeholder=""
                   id="username"
                   value={username}
-                  className={" input rounded-xl input-sm"}
+                  className={"bg-opacity-50 input rounded-xl input-sm"}
                   onChange={(e) => setUsername(e.target.value)}
                 />
                 <label className="label">
@@ -188,17 +191,26 @@ const SignUp = () => {
                 </label>
                 <select
                   id="gender-select"
-                  className={" input rounded-xl input-sm"}
+                  className={"bg-opacity-50 input rounded-xl input-sm"}
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
                 >
-                  <option className={" input rounded-xl input-sm"} value="">
+                  <option
+                    className={"bg-opacity-50 input rounded-xl input-sm"}
+                    value=""
+                  >
                     선택해주세요
                   </option>
-                  <option className={" input rounded-xl input-sm"} value="남성">
+                  <option
+                    className={"bg-opacity-50 input rounded-xl input-sm"}
+                    value="남성"
+                  >
                     남성
                   </option>
-                  <option className={" input rounded-xl input-sm"} value="여성">
+                  <option
+                    className={"bg-opacity-50 input rounded-xl input-sm"}
+                    value="여성"
+                  >
                     여성
                   </option>
                 </select>
@@ -214,9 +226,9 @@ const SignUp = () => {
                     생년월일 :{" "}
                   </span>
                 </label>
-                <span>
+                <span className="flex gap-2">
                   <select
-                    className={" input rounded-xl input-sm"}
+                    className={"bg-opacity-50 input rounded-xl input-sm grow"}
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
                   >
@@ -237,7 +249,7 @@ const SignUp = () => {
                     ))}
                   </select>
                   <select
-                    className={" input rounded-xl input-sm"}
+                    className={"bg-opacity-50 input rounded-xl input-sm grow"}
                     value={month}
                     onChange={(e) => setMonth(e.target.value)}
                   >
@@ -256,7 +268,7 @@ const SignUp = () => {
                   </select>
                   {
                     <select
-                      className={" input rounded-xl input-sm"}
+                      className={"bg-opacity-50 input rounded-xl input-sm grow"}
                       value={day}
                       onChange={(e) => setDay(e.target.value)}
                     >
@@ -282,21 +294,24 @@ const SignUp = () => {
                 </label>
                 <select
                   id="rolename-select"
-                  className={" input rounded-xl input-sm"}
+                  className={"bg-opacity-50 input rounded-xl input-sm"}
                   value={roleName}
                   onChange={(e) => setRoleName(e.target.value)}
                 >
-                  <option className={" input rounded-xl input-sm"} value="">
+                  <option
+                    className={"bg-opacity-50 input rounded-xl input-sm"}
+                    value=""
+                  >
                     선택해주세요
                   </option>
                   <option
-                    className={" input rounded-xl input-sm"}
+                    className={"bg-opacity-50 input rounded-xl input-sm"}
                     value="ROLE_TEACHER"
                   >
                     강사
                   </option>
                   <option
-                    className={" input rounded-xl input-sm"}
+                    className={"bg-opacity-50 input rounded-xl input-sm"}
                     value="ROLE_USER"
                   >
                     수강생
@@ -311,9 +326,10 @@ const SignUp = () => {
 
             <span
               className={
-                "py-8 px-8 rounded-xl card bg-base-200 max-w-sm " +
-                Styles[`info-container`]
+                "py-8 px-8 rounded-xl card bg-base-200 " +
+                Styles[`signin-info-container`]
               }
+              style={{ height: "fit-content" }}
             >
               <div className="form-control w-full">
                 <label className="label">
@@ -324,7 +340,7 @@ const SignUp = () => {
                 <input
                   type="text"
                   id="nickname"
-                  className={" input rounded-xl input-sm"}
+                  className={"bg-opacity-50 input rounded-xl input-sm"}
                   minLength={6}
                   maxLength={16}
                   value={nickname}
@@ -341,7 +357,7 @@ const SignUp = () => {
                 <input
                   type="email"
                   id="email"
-                  className={" input rounded-xl input-sm"}
+                  className={"bg-opacity-50 input rounded-xl input-sm"}
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
@@ -356,7 +372,7 @@ const SignUp = () => {
                 <input
                   type="tel"
                   id="phone"
-                  className={" input rounded-xl input-sm"}
+                  className={"bg-opacity-50 input rounded-xl input-sm"}
                   value={phone}
                   onChange={(event) => setPhone(event.target.value)}
                 />
@@ -384,7 +400,7 @@ const SignUp = () => {
                 id="profileImg"
               /> */}
 
-              <div className="flex flex-wrap justify-center items-center gap-3">
+              <div className="flex flex-wrap justify-center items-center gap-3 mt-8">
                 <label htmlFor="file">
                   <div className={Styles.btnUpload}>
                     <AddCircleOutlineIcon style={{ fontSize: "xx-large" }} />

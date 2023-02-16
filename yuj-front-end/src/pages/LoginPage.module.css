@@ -10,12 +10,19 @@ input::-webkit-inner-spin-button {
     font-weight: bold;
 }
 
-.info-background-image{
+/* .info-background-image{
     background-image: url('../../public/assets/Sample2.jpg'); /* url사용하니 절대경로 참조가 안되어 직접 assets 접근 */
-    background-size: 100% 100%;
+    /* background-size: 100% 100%;
     background-repeat: no-repeat;
     width: 100%;
     height:100%;
+    opacity: 0.7;
+} */
+
+.info-background-image{
+    background-image: url('../../public/assets/Sample2.jpg'); /* url사용하니 절대경로 참조가 안되어 직접 assets 접근 */
+    background-size: cover;
+    background-repeat: no-repeat;
     opacity: 0.7;
 }
 
@@ -24,9 +31,17 @@ input::-webkit-inner-spin-button {
     background-color: rgba(255, 255, 255, 0.5);
     margin-left: 2%;
     margin-top: 5%;
-    margin-right: 50%;
-    margin-bottom: 24%;
-    
+    margin-right: 55%;
+    margin-bottom: 30%;
+}
+
+.signin-info-container{
+    width: 700px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-right: 5%;
+    margin-bottom: 15%;
 }
 
 .profileInput{

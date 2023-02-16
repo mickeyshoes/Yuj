@@ -27,8 +27,9 @@ const LoginPage = () => {
   }, [user.userId])
 
   return (
-    <div className={'px-60 w-full'}>
-      <div className={Styles[`info-background-image`] + ' w-full flex items-center justify-center'}>
+    <div className={'px-52 w-full'}>
+      <div className={Styles[`info-background-image`] + ' w-full flex items-center justify-center overflow-hidden'} 
+        style={{ height: 'calc(100vh - 125px)' }}>
         <form className={"py-8 px-8 rounded-xl card bg-base-200 max-w-sm " + Styles[`info-container`]} onSubmit={handleSubmit}>
           <p className={'text-2xl mb-3 text-black font-bold'}>로그인</p>
           <div className="form-control w-full">
