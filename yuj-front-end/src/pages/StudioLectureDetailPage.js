@@ -50,7 +50,7 @@ const StudioLectureDetailPage = () => {
   //현재 들어온 유저가 수강생인지를 확인
   useEffect(() => {
     // changeUserLecture({});
-    console.log("userId :::::" + userId);
+    console.log("userId ::" + userId);
     console.log(lecture.lectureId);
     dispatch(getUserLecture({userId: user.userId, lectureId: lecture.lectureId}));
   }, [])

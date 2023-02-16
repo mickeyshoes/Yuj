@@ -20,7 +20,7 @@ const LoginPage = () => {
   }
 
   useEffect(() => {
-    if(user.userId != '') {
+    if(user.userId != -1) {
       dispatch(getUserInfo({accessToken: user.tokenInfo.accessToken, userId: user.userId}))
       navigate('/');
     }
