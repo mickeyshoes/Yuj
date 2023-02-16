@@ -1,31 +1,31 @@
-import React, { useEffect,useState } from "react";
-import { useSelector, useDispatch} from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import LectureItemCard from "./LectureItemCard";
-import { searchLectures } from '../stores/lectureSlice';
-import SearchIcon from '@mui/icons-material/Search';
+import { searchLectures } from "../stores/lectureSlice";
+import SearchIcon from "@mui/icons-material/Search";
 import MainSearchLectureListCategorySelectBox from "./MainSearchLectureListCategorySelectBox";
 
 const MainSearchTeacher = () => {
-    const [keyword, setKeyword] = useState('');
-    let lectures = useSelector(state => state.lecture.lecturesSearched)
-    const dispatch = useDispatch();
+  const [keyword, setKeyword] = useState("");
+  let lectures = useSelector((state) => state.lecture.lecturesSearched);
+  const dispatch = useDispatch();
 
-    const doSearch = () => {
-        dispatch(searchLectures(keyword));
+  const doSearch = () => {
+    dispatch(searchLectures(keyword));
+  };
+
+  const handleOnKeyPress = (e) => {
+    console.log(e);
+    if (e.key === "Enter") {
+      doSearch();
     }
-    
-    const handleOnKeyPress = (e) => {
-        console.log(e);
-        if (e.key === 'Enter') {
-            doSearch();
-        }
-    } 
-    
-    useEffect(() => {
-        if(lectures.length == 0){
-            doSearch();
-        }
-    },[])
+  };
+
+  useEffect(() => {
+    if (lectures.length == 0) {
+      doSearch();
+    }
+  }, []);
 
     return (
         <>
@@ -56,8 +56,11 @@ const MainSearchTeacher = () => {
                     </div>
                 </div>
             </div>
-        </>
-    );
-}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default MainSearchTeacher;

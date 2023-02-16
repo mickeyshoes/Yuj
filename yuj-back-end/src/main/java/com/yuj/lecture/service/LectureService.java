@@ -63,6 +63,7 @@ public class LectureService {
 
     @Transactional
     public Long registLecture(List<MultipartFile> files, LectureVO lectureVO, List<LectureScheduleRegistDTO> lsrDtos) {
+//    public Long registLecture(MultipartFile[][] files, LectureVO lectureVO, List<LectureScheduleRegistDTO> lsrDtos) {
         //  강사 Entity 찾아내기
         log.info("in registLecture");
         User teacher = userRepository.findById(lectureVO.getUserId()).orElseThrow(CUserNotFoundException::new);
@@ -104,7 +105,7 @@ public class LectureService {
                 }
             }
 
-            if(!lsrDtos.isEmpty()) {
+            if(lsrDtos != null && !lsrDtos.isEmpty()) {
                 for(LectureScheduleRegistDTO dto : lsrDtos) {
                     //  일정을 DB에 저장
                     LectureSchedule lectureSchedule = dto.toEntity(lecture);

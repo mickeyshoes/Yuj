@@ -1,30 +1,44 @@
 import React, { useRef, useState } from "react";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Styles from "./StudioLectureCreateImagesInput.module.css";
 
-
 const StudioLectureCreateImagesInput = (props) => {
-
   //미리보기, 데이터 전송
   let imgFiles = props.imgFiles;
   const setImgFiles = props.setImgFiles;
 
-  let imgTransfer = props.imgTransfer;
+  // let imgTransfer = props.imgTransfer;
+
+  console.log("initial imgTransfer = " + props.imgTransfer);
+
   const setImgTransfer = props.setImgTransfer;
+
+  console.log("initial ");
 
   //이미지 업로드 input의 onChange 메소드
   const handleImageUpload = (e) => {
     const fileArr = e.target.files;
     const fileArrFrom = Array.from(e.target.files);
 
-    console.log(fileArrFrom);
-    setImgTransfer(fileArrFrom);
-    
-    // console.log("In StudioLectureCreateImagesInput");
-    // console.log("fileArr = " + fileArr);
-    // console.log("e.target.files[0] = " + JSON.stringify(e.target.files[0]));
-    // console.log("fileArr[0] = " + fileArr[0]);
+    console.log("fileArrFrom = " + fileArrFrom);
+    // setImgTransfer(fileArrFrom);
+    setImgTransfer(fileArr);
+    // fileArrFrom.map((file) => {
+    //   setImgTransfer([...props.imgTransfer, file]);
+    // });
+    // setImgTransfer(fileArrFrom);
+
+    // imgTransfer = fileArrFrom;
+
+    console.log("In StudioLectureCreateImagesInput");
+    console.log("fileArr = " + fileArr);
+    console.log("e.target.files[0] = " + JSON.stringify(e.target.files[0]));
+    console.log("fileArr[0] = " + fileArr[0]);
     // setImgTransfer(fileArr);
+
+    console.log("********************************************************");
+    console.log(props.imgTransfer);
+    console.log("********************************************************");
 
     let fileURLs = [];
 
@@ -56,9 +70,20 @@ const StudioLectureCreateImagesInput = (props) => {
         })}
         <div className="flex flex-wrap justify-center items-center gap-3">
           <label htmlFor="file">
-            <div className={Styles.btnUpload}><AddCircleOutlineIcon style={{ fontSize: "xx-large" }} /></div>
+            <div className={Styles.btnUpload}>
+              <AddCircleOutlineIcon style={{ fontSize: "xx-large" }} />
+            </div>
           </label>
-          <input name="images" type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" id="file" />
+          <input
+            name="images"
+            type="file"
+            accept="image/*"
+            multiple
+            encType="multipart/form-data"
+            onChange={handleImageUpload}
+            className="hidden"
+            id="file"
+          />
         </div>
       </div>
     </>

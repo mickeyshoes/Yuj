@@ -14,9 +14,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "lecture_image")
 public class ImageFile {
+    @SequenceGenerator(
+            name="LECTURE_IMAGE_SEQ_GEN",
+            sequenceName = "LECTURE_IMAGE_SEQ",
+            initialValue = 100,
+            allocationSize = 1
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "lecture_image_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LECTURE_IMAGE_SEQ_GEN")
     private Long lectureImageId;
 
     @Column(nullable = false)
