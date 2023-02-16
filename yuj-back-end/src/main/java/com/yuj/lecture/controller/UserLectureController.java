@@ -1,6 +1,5 @@
 package com.yuj.lecture.controller;
 
-import com.yuj.lecture.domain.UserLecture;
 import com.yuj.lecture.dto.response.UserLectureResponseDTO;
 import com.yuj.lecture.service.LectureService;
 import com.yuj.lecture.service.UserLectureService;
@@ -38,7 +37,7 @@ public class UserLectureController {
     }
 
     // 유저 수강 취소
-    @PutMapping
+    @PostMapping("/delete")
     public ResponseEntity<?> deleteUserLecture(@RequestParam("userId") Long userId, @RequestParam("lectureId") Long lectureId) throws Exception {
         Long ret = userLectureService.deleteUserLecture(userId, lectureId);
         return new ResponseEntity<>(ret, HttpStatus.OK);
