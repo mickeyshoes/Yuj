@@ -24,10 +24,11 @@ const StudioReview = (props) => {
     //init - get all review for lecture(teacher's only)
     useEffect(()=>{
         getReviews();
-        console.log('회원 계정', user.userId);
-        console.log('스튜디오 강의 아이디', studio);
-        console.log('강의 목록 리스트 : ', studio.studioLectureList);
-        console.log(process.env.REACT_APP_API_URL);
+        // console.log('회원 계정', user);
+        // console.log(typeof(user.userId));
+        // console.log('스튜디오 강의 아이디', studio);
+        // console.log('강의 목록 리스트 : ', studio.studioLectureList);
+        // console.log(process.env.REACT_APP_API_URL);
     }, []);
 
     // change axios, add async
@@ -35,14 +36,12 @@ const StudioReview = (props) => {
         // const url = process.env.REACT_APP_API_URL + '/';
         const response = await axios.get(
             `${process.env.REACT_APP_API_URL}/lectures/review?userId=${studio.studioDetail.userId}`
+            // `http://localhost:5000/lectures/review?userId=${studio.studioDetail.userId}`
         );
-        console.log('댓글 추가 !!', response.data);
         setReviewList(response.data);
-        console.log('최종 댓글 리스트 : ', reviewList);
     }
 
     async function addReview() {
-        console.log('addReview');
         navigate('/studio/addReview'); 
     }
     
@@ -55,7 +54,7 @@ const StudioReview = (props) => {
                     <div className="flex justify-between">
                         <div><span className="text-success">총 {reviewList.length}개의 후기</span></div> 
                         {
-                            studio.studioDetail.studioId == user.userId 
+                            studio.studioDetail.studioId == user.userId || user.userId === ""
                                 ?<button className="border-none btn-accent btn-access text-white gap-2 " style={{'background-color': '#cccccc'}}><CreateIcon />후기 작성</button>
                                 :<button className="border-none btn-accent btn-access text-white gap-2 " onClick={addReview}><CreateIcon />후기 작성</button>
                         }

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from 'styled-components';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,36 +7,27 @@ import { useSelector } from "react-redux";
 const LectureReviewItem = (props) => {
 
     const item = props.item;
+    const rating = props.item.rating;
 
     const loginUserInfo = useSelector(state => state.user);
-
-
-    /*
-        not fixed
-        별점이 잘 표시되지 않는 버그 있음 e.g) 4-> 5점으로 표시
-    */
-    function drawRating(point){
-        const result = [];
-        for(let i=0; i<point; i++)
-            result.push(<input type="radio" name="rating-2" className="mask mask-star-2 bg-accent" disabled checked/>);
-        for(let i=0; i<5-point; i++)
-            result.push(<input type="radio" name="rating-2" className="mask mask-star-2 bg-accent" disabled />);
-        return result;
-    }
-
+    
     return(
         <>
-            <div id="review-item-container" className="p-8" style={{ 'border-bottom': '2px solid black' }}>
+            <div id="review-item-container" className="p-8" style={{ 'border-bottom': '2px solid rgb(144, 133, 154, 0.4)', opacity:''}}>
                 <Header className="" id="review-item-profile-container">
-                    <img className="w-12 rounded-full" src={`${process.env.REACT_APP_IMAGE_URL}/${item.profileImage}`} style={{border : '2px solid black'}}/>
+                    <img className="w-12 rounded-full" src={`${process.env.REACT_APP_IMAGE_URL}/${item.profileImage}`} style={{border : '2px solid rgb(144, 133, 154, 0.8)'}}/>
                     <HeaderDetailsWrapper id="review-text-info-container">
                         <HeaderDetail className="w-20 truncate">{item.userName}</HeaderDetail>
                         <HeaderDetail>{item.date}</HeaderDetail>
-                        <HeaderDetail className="rating rating-sm flex justify-evenly w-24">
-                            {drawRating(item.rating)}
+                        <HeaderDetail className="rating rating-sm flex justify-evenly w-24 ml-8">
+                            <input type="radio" name={item.reviewId} className="mask mask-star-2 bg-accent" readOnly checked={rating == 1}/>
+                            <input type="radio" name={item.reviewid} className="mask mask-star-2 bg-accent" readOnly checked={rating == 2}/>
+                            <input type="radio" name={item.reviewid} className="mask mask-star-2 bg-accent" readOnly checked={rating == 3}/>
+                            <input type="radio" name={item.reviewid} className="mask mask-star-2 bg-accent" readOnly checked={rating == 4}/>
+                            <input type="radio" name={item.reviewid} className="mask mask-star-2 bg-accent" readOnly checked={rating == 5} />
                         </HeaderDetail>
-                        {loginUserInfo.userInfo.id === item.userId ? 
-                        (<div><EditIcon/><DeleteIcon/></div>) : null}
+                        {/* {loginUserInfo.userInfo.id === item.userId ? 
+                        (<div><EditIcon/><DeleteIcon/></div>) : null} */}
                     </HeaderDetailsWrapper>
                 </Header>
                 <div className="text-success" id="review-item-lecture-title">

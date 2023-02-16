@@ -22,6 +22,7 @@ const StudioReview = (props) => {
     useEffect(()=>{
         getLectures();
         console.log(lectureList);
+        console.log('현재 유저', user);
         console.log('스튜디오 주인', studio.studioDetail.studioId);
     }, []);
 
@@ -29,7 +30,8 @@ const StudioReview = (props) => {
     const getLectures = async () => {
         // const url = process.env.REACT_APP_API_URL + '/';
         const response = await axios.get(
-            `${process.env.REACT_APP_API_URL}/${studio.studioDetail.studioId}/lectures`
+            // `http://localhost:5000/studio/${studio.studioDetail.studioId}/lectures`
+            `${process.env.REACT_APP_API_URL}/studio/${studio.studioDetail.studioId}/lectures`
         );
         setLectureList(response.data);
         setLoading(false);
@@ -67,13 +69,15 @@ const StudioReview = (props) => {
             review : data.review,
             score : data.rating,
             lectureId : selectedValue,
-            userId : user.userId
+            userId: user.userId,
+            teacherId: studio.studioDetail.studioId
         }
 
         const response = await axios.post(
-            `${process.env.REACT_APP_API_URL}/lectures/review`, body
+            `http://localhost:5000/lectures/review`, body,
+            // `${process.env.REACT_APP_API_URL}/lectures/review`, body,
         );
-        console.log(response);
+        navigate(-1);
     }
     
     
