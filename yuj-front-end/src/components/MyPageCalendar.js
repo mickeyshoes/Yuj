@@ -8,7 +8,7 @@ const MyPageCalendar = (props) => {
     const color = {
         0: '#90859A',
         1: '#B7AFBD',
-    }
+    };
 
     return (
         <div className="App max-w-full">
@@ -21,6 +21,10 @@ const MyPageCalendar = (props) => {
                         tle: event.title.substr(0, 13),
                         backgroundColor: color[index % Object.keys(color).length],
                         borderColor: color[index % Object.keys(color).length],
+                        url: "/studio",
+                        state: {
+                          lectureId: event.lectureId,
+                        },
                     }
                 })}
             />

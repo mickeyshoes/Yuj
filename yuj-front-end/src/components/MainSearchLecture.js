@@ -48,6 +48,8 @@ const MainSearchTeacher = () => {
                     <div className="flex py-12 px-0">
                         <div className="flex flex-wrap justify-start gap-9">
                             {lectures?.map((lecture) => (
+                                console.log("lecture는"),
+                                console.log(lecture),
                                 <LectureItemCard key={lecture.lectureId} thisLecture={lecture}/>
                             ))}
                         </div>

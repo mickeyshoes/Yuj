@@ -22,6 +22,7 @@ public class MyPageUserLectureResponseDTO {
 //  UserLecture
     private Long userLectureId;
     private LocalDate userRegistDate;
+    private boolean state;
 //    User
     private Long userId;
     private String id;

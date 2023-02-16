@@ -177,6 +177,7 @@ public class MyPageService {
                 userLectureId(userLecture.getUserLectureId()).
                 userRegistDate(userLecture.getRegistDate()).
                 userLectureId(userLecture.getUserLectureId()).
+                state(userLecture.isState()).
                 userId(user.getUserId()).
                 id(user.getId()).
                 nickname(user.getNickname()).

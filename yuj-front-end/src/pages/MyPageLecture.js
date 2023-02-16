@@ -15,7 +15,7 @@ const MyPageLecture = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(user.userId === ''){
+        if(user.userId === -1){
             navigate('/login');
         }
     },[])
