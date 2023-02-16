@@ -1,6 +1,7 @@
 package com.yuj.lecture.controller;
 
 import com.yuj.lecture.domain.UserLecture;
+import com.yuj.lecture.dto.response.UserLectureResponseDTO;
 import com.yuj.lecture.service.LectureService;
 import com.yuj.lecture.service.UserLectureService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ public class UserLectureController {
     // 유저 수강 검색
     @GetMapping
     public ResponseEntity<?> searchUserLecture(@RequestParam("userId") Long userId, @RequestParam("lectureId") Long lectureId) throws Exception {
-        UserLecture userLecture = userLectureService.getUserLecture(userId, lectureId);
-        return new ResponseEntity<>(userLecture, HttpStatus.OK);
+        UserLectureResponseDTO userLectureResponseDTO = userLectureService.getUserLecture(userId, lectureId);
+        return new ResponseEntity<>(userLectureResponseDTO, HttpStatus.OK);
     }
 
     // 유저 수강 신청 혹은 재수강

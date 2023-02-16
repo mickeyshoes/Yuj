@@ -5,6 +5,7 @@ import com.yuj.exception.CUserLectureNotFoundException;
 import com.yuj.exception.CUserNotFoundException;
 import com.yuj.lecture.domain.Lecture;
 import com.yuj.lecture.domain.UserLecture;
+import com.yuj.lecture.dto.response.UserLectureResponseDTO;
 import com.yuj.lecture.repository.LectureRepository;
 import com.yuj.lecture.repository.UserLectureRepository;
 import com.yuj.user.domain.User;
@@ -98,8 +99,24 @@ public class UserLectureService {
     }
 
     //유저 렉처 검색
-    public UserLecture getUserLecture(Long userId, Long lectureId) throws Exception {
+    public UserLectureResponseDTO getUserLecture(Long userId, Long lectureId) throws Exception {
         UserLecture userLecture = userLectureRepository.findByUser_UserIdAndLecture_LectureId(userId, lectureId).orElseThrow(Exception::new);
-        return userLecture;
+
+        return entityToResponseDTO(userLecture);
+    }
+
+    public UserLectureResponseDTO entityToResponseDTO(UserLecture userLecture) {
+        User user = userLecture.getUser();
+        Lecture lecture = userLecture.getLecture();
+        return UserLectureResponseDTO.builder()
+                .userLectureId(userLecture.getUserLectureId())
+                .registDate(userLecture.getRegistDate())
+                .score(userLecture.getScore())
+                .review(userLecture.getReview())
+                .reviewUpdateDate(userLecture.getReviewUpdateDate())
+                .userId(user.getUserId())
+                .lectureId(lecture.getLectureId())
+                .state(userLecture.isState())
+                .build();
     }
 }

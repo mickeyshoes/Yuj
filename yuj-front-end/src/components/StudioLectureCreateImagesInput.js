@@ -9,9 +9,22 @@ const StudioLectureCreateImagesInput = (props) => {
   let imgFiles = props.imgFiles;
   const setImgFiles = props.setImgFiles;
 
+  let imgTransfer = props.imgTransfer;
+  const setImgTransfer = props.setImgTransfer;
+
   //이미지 업로드 input의 onChange 메소드
   const handleImageUpload = (e) => {
     const fileArr = e.target.files;
+    const fileArrFrom = Array.from(e.target.files);
+
+    console.log(fileArrFrom);
+    setImgTransfer(fileArrFrom);
+    
+    // console.log("In StudioLectureCreateImagesInput");
+    // console.log("fileArr = " + fileArr);
+    // console.log("e.target.files[0] = " + JSON.stringify(e.target.files[0]));
+    // console.log("fileArr[0] = " + fileArr[0]);
+    // setImgTransfer(fileArr);
 
     let fileURLs = [];
 
@@ -25,7 +38,7 @@ const StudioLectureCreateImagesInput = (props) => {
       reader.onload = () => {
         fileURLs[i] = reader.result;
         setImgFiles([...fileURLs]);
-        console.log(imgFiles);
+        // console.log(imgFiles);
       };
       reader.readAsDataURL(file);
     }

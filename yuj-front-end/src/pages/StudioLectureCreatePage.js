@@ -11,6 +11,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from '../stores/studioSlice';
+import axios from 'axios';
 
 const StudioLectureCreatePage = () => {
 
@@ -24,50 +25,46 @@ const StudioLectureCreatePage = () => {
     const [addScheduleCnt, setAddSchduleCnt] = useState(1);
 
     const plusAddSchdulecnt = (e) => {
-        setAddSchduleCnt(addScheduleCnt + 1);
+        if (addScheduleCnt === schedules.length) {
+            setAddSchduleCnt(addScheduleCnt + 1);
+        } else {
+            alert("일정을 확인해 주세요.");
+        }
     }
     const minusAddSchdulecnt = (e) => {
-        if (addScheduleCnt > 1) {
+        if (addScheduleCnt > 0) {
             setAddSchduleCnt(addScheduleCnt - 1);
-            const tmpSchedules = schedules;
-            setSchedules([...tmpSchedules])
+            let tmpSchedules = [];
+            const id = e.target.id;
+            for (let i = 0; i < schedules.length; i++) {
+                if (id != i) {
+                    tmpSchedules.push(schedules[i]);
+                };
+            }
+            setSchedules(tmpSchedules);
         }
     }
     // 스케줄 입력 컴포넌트 생성을 위한 함수
     function addSchedules(addScheduleCnt) {
         let addScheduleArr = [];
-        for (let i = 1; i <= addScheduleCnt; i++) {
-            if (i === 1) {
+        for (let i = 0; i < addScheduleCnt; i++) {
+            if (i !== addScheduleCnt - 1) {
                 addScheduleArr.push(
                     <div className='flex items-center gap-3 mb-5' key={i}>
                         <div className='w-full'>
-                            <StudioLectureCreateScheduleInput schedules={schedules} setSchedules={setSchedules}/>
+                            <StudioLectureCreateScheduleInput schedules={schedules} setSchedules={setSchedules} />
                         </div>
-                        <CheckIcon
-                            className="text-accent"
-                            style={{ fontSize: "xx-large" }}
-                        />
-                    </div>
-                )
-            } else if (i !== addScheduleCnt) {
-                addScheduleArr.push(
-                    <div className='flex items-center gap-3 mb-5' key={i}>
-                        <div className='w-full'>
-                            <StudioLectureCreateScheduleInput schedules={schedules} setSchedules={setSchedules}/>
-                        </div>
-                        <CheckIcon
-                            className="text-accent"
-                            style={{ fontSize: "xx-large" }}
-                        />
+                        <CheckIcon id={i} className='text-accent' style={{ fontSize: "xx-large" }} />
                     </div>
                 )
             } else {
                 addScheduleArr.push(
                     <div className='flex items-center gap-3 mb-5' key={i}>
                         <div className='w-full'>
-                            <StudioLectureCreateScheduleInput schedules={schedules} setSchedules={setSchedules}/>
+                            <StudioLectureCreateScheduleInput schedules={schedules} setSchedules={setSchedules} />
                         </div>
                         <DeleteForeverIcon
+                            id={i}
                             className="text-accent hover:cursor-pointer hover:text-success"
                             style={{ fontSize: "xx-large" }}
                             onClick={minusAddSchdulecnt}
@@ -79,53 +76,120 @@ const StudioLectureCreatePage = () => {
         return addScheduleArr;
     }
 
+    //현재 날짜 계산
+    const currentDate = new Date().toISOString().substring(0, 10);;
+    const [startDateValue, setStartDateValue] = useState(currentDate);
+
     //사이드바
     useEffect(() => {
         dispatch(getStudioDetail(user.userId));
         dispatch(getStudioLectureList(user.userId));
         dispatch(getStudioLiveLecture(user.userId));
     }, [])
-    
+
     //데이터 전송
     const [imgFiles, setImgFiles] = useState([]); //미리보기, 이미지 데이터 전송
     const [schedules, setSchedules] = useState([]); //스케줄 데이터 전송
-    const handleSubmit = e => {
+    const [imgTransfer, setImgTransfer] = useState([]);//이미지 데이터 전송 전용
+    
+    console.log("In StudioLectureCreatePage");
+    console.log("imgTransfer = " + imgTransfer);
+
+
+    const handleSubmit = async e => {
         e.preventDefault();
+        e.persist();
+
+        console.log("In StudioLectureCreatePage handleSubmit");
+        console.log("imgTransfer = " + imgTransfer);
+
+        // const date = new Date();
+        // console.log("date!!!!!!!!!!! = " + date);
+
+        const today = new Date();
+
+        const year = today.getFullYear();
+        const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        const day = ('0' + today.getDate()).slice(-2);
+
+        const dateString = year + '-' + month + '-' + day;
 
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
-        const date = new Date();
+        console.log("data = " + data);
+        // let fileArr = imgFiles;
+
+        // console.log("fileArr = " + fileArr);
+
+        let scheduleList = schedules;
 
         let VO = {
             userId: user.userId,
-            yogaId: '',
-            name: '',
-            description: '',
-            startDate: '',
-            endDate: '',
-            registDate: date,
-            limitStudents: '',
-            fee: 0,
-            totalConunt: 0,
+            yogaId: data.category,
+            name: data.title,
+            description: data.description,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            registDate: dateString,
+            limitStudents: data.limitStudents,
+            fee: "0",
+            totalConunt: "0"
         }
 
-        let DTO = {
-            files: imgFiles,
-            VO: VO,
-            schedules: schedules,
-        }
+        console.log("VO = " + VO);
 
-        // console.log(data.category);
-        // console.log(data.title);
-        // console.log(data.day);
-        // console.log(data.startTime);
-        // console.log(data.endTime);
-        // console.log(data.description);
-        // console.log(data.limitStudents);
-        // console.log(data);
-        // console.log(imgFiles);
-        console.log(schedules);
-        // console.log(DTO);
+        // for(let i = 0; i < files.length; i++) {
+        //     formData.append("files", files[i]);
+        // }
+        // formData.append("files", JSON.stringify(imgFiles));
+        // formData.append("scheduleArr", JSON.stringify(scheduleList));
+        // formData.append("vo", JSON.stringify(VO));
+
+        let sendData = {
+            // files: fileArr,
+            files: imgTransfer,
+            vo: JSON.stringify(VO),
+            scheduleArr: null
+        };
+
+        console.log("sendData = " + sendData);
+        console.log("sendData = " + sendData.files);
+        console.log("sendData = " + sendData.vo);
+        console.log("sendData = " + sendData.scheduleArr);
+
+        const config = {
+            headers: {
+                "content-type": "multipart/form-data",
+            },
+        };
+
+
+
+        axios
+            .post(`${process.env.REACT_APP_API_URL}/lectures`, sendData, config)
+            .then((response) => {
+                console.log("OK!!!!");
+                console.log(response.data);
+                // window.location.replace("/"); //  로그인 성공 시 화면 이동
+            })
+            .catch((error) => {
+                console.log("Error!!!!!!!!!!!!!");
+                console.error(error);
+            });
+
+
+        // const postSurvey = await axios({
+        //     method: "POST",
+        //     url: `http://localhost:5000/lectures`,
+        //     mode: "cors",
+        //     // headers: {
+        //     //   "Content-Type": "multipart/form-data", 
+        //     // },
+        //     data: sendData,
+        //     config
+        //   });
+
+        //   console.log(postSurvey);
     }
 
     return (
@@ -155,6 +219,11 @@ const StudioLectureCreatePage = () => {
                             </div>
                             {addSchedules(addScheduleCnt)}
                         </div>
+                        <div className='flex w-full justify-end'>
+                            <div className='text-accent text-base mb-7'>
+                                개설 기간 : &nbsp; <input name='startDate' type='date' className='input input-primary border-2 w-40' min={currentDate} onChange={(e) => setStartDateValue(e.target.value)} placeholder='' />&nbsp;&nbsp;-&nbsp;&nbsp;<input name='endDate' min={startDateValue} type='date' className='input input-primary border-2 w-40' placeholder='' />
+                            </div>
+                        </div>
                         <hr />
 
                         {/* 수강 정원 */}
@@ -165,7 +234,7 @@ const StudioLectureCreatePage = () => {
 
                         {/* 이미지 파일 업로드 */}
                         <div className='my-7'>
-                            <StudioLectureCreateImagesInput imgFiles={imgFiles} setImgFiles={setImgFiles} />
+                            <StudioLectureCreateImagesInput imgFiles={imgFiles} setImgFiles={setImgFiles} imgTransfer={imgTransfer} setImgTransfer={setImgTransfer} />
                         </div>
 
                         <div className="flex justify-end gap-2 pb-8">

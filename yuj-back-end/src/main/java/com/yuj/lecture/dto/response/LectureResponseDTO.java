@@ -2,10 +2,10 @@ package com.yuj.lecture.dto.response;
 
 import com.yuj.lecture.domain.Yoga;
 import com.yuj.lectureimage.dto.LectureImageDto;
-import com.yuj.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,7 +23,8 @@ public class LectureResponseDTO {
     private int limitStudents;
     private int fee;
     private int totalCount;
-    private  boolean isActive;
+    private boolean isActive;
+    private Long userId;
     private String username;
     private String nickname;
     private String email;

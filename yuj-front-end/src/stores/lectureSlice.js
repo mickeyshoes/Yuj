@@ -66,6 +66,19 @@ const registUserLectureSchedule = createAsyncThunk("REGIST_USER_LECTURE_SCHEDULE
     return response.data;
 })
 
+const registUserLecture = createAsyncThunk("REGIST_USER_LECTURE_SCHEDULE", async({userId, lectureId}) => {
+    const data = {userId, lectureId};
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/lectures/userLecture`, JSON.stringify(data));
+    console.log("REGIST_USER_LECTURE: ", response);
+    return response.data;
+})
+
+const getUserLecture = createAsyncThunk("GET_USER_LECTURE", async({userId, lectureId}) => {
+    const response = await axios.get(`http://localhost:5000/lectures/userLectures?userId=${userId}&lectureId=${lectureId}`);
+    console.log("GET_USER_LECTURE", response);
+    return response.data;
+})
+
 const lectureSlice = createSlice({
     name: 'lectureSlice',
 
@@ -74,9 +87,14 @@ const lectureSlice = createSlice({
         lectureSchedule: [],
         lectures: [],
         lecturesSearched:[],
+        userLecture:{},
     },
 
     reducers: {
+        changeUserLecture:(state, action) => {
+			const newUserLecture = action.payload;
+			state.studioDetail = newUserLecture;
+		}
     },
 
     extraReducers: {
@@ -100,10 +118,19 @@ const lectureSlice = createSlice({
         },
         [registUserLectureSchedule.fulfilled]: (state, {payload}) => { 
             console.log("regist userLectureSchedule success! : ", payload.active);
+        },
+        [registUserLecture.fulfilled]: (state, {payload}) => {
+            console.log("regist UserLecture success! : ", payload.data)
+        },
+        [getUserLecture.fulfilled]: (state, {payload}) => {
+            console.log("get UserLecture success! : ", payload.data)
+            state.userLecture = payload;
         }
     }
 })
 
 export default lectureSlice;
 
-export {getLecture, getLectureSchedule, registUserLectureSchedule, searchLectures, getSelectedLectureList, updateLectureActive};
+export const { changeUserLecture } = lectureSlice.actions;
+
+export {getLecture, getLectureSchedule, registUserLectureSchedule, searchLectures, getSelectedLectureList, updateLectureActive, registUserLecture, getUserLecture};

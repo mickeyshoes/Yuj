@@ -26,7 +26,7 @@ const StudioPage = () => {
         }else if(studio.studioDetail.studioId == null) {
             navigate(-1);
         }
-    },[])
+    },[location.state]) //추적이 안되고 있어 location.state 추가
 
     const getStudioData = (teacherId) => {
         dispatch(getStudioDetail(teacherId));

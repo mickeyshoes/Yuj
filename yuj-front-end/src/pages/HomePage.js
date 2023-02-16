@@ -19,7 +19,8 @@ const HomePage = () => {
   }
 
   const goStudio = () => {
-    navigate('/studio', {state:{teacherId: user.userInfo.userId}});
+    console.log(user.userId)
+    navigate('/studio', {state:{teacherId: user.userId}});
   }
 
   function mainButton(user) {

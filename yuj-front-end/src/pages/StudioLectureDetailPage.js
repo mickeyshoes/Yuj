@@ -18,14 +18,17 @@ import {
   getStudioLectureList,
   getStudioLiveLecture,
 } from "../stores/studioSlice";
-import { getLectureSchedule } from "../stores/lectureSlice";
+import { getLectureSchedule, getUserLecture } from "../stores/lectureSlice";
 
 const StudioLectureDetailPage = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(user);
+  const studio = useSelector((state) => state.studio);
 
   //현재 탐색하고 있는 강의 불러오기 //리덕스 퍼시스트로 유지
-  let lecture = useSelector((state) => state.studio.studioLectureDetailItem);
-
+  const lecture = useSelector((state) => state.studio.studioLectureDetailItem);
+  console.log(lecture);
   //강의 종료 날짜와 현재 날짜를 비교하여 강의가 종료된 상태인지를 확인
   const date = new Date();
   const endDate = new Date(lecture.endDate);
@@ -37,31 +40,51 @@ const StudioLectureDetailPage = () => {
     }
   }
 
+  //현재 들어온 유저가 수강생인지를 확인
+  useEffect(() => {
+    dispatch(getUserLecture({userId:user.userId, lectureId:lecture.lectureId}));
+  },[])
+  const userLecture = useSelector(state => state.lecture.userLecture);
+  console.log(userLecture)
+
   // 수강생 -> 수강 신청(수강 취소), 목록으로
   // 강사 -> 수정하기, 폐강하기, 목록으로
   // 단, endCheck가 true이면 목록으로 버튼만
-  let isTeacher = useSelector(state => state.user.userInfo.teacher);
-  let userId = useSelector(state => state.user.userId);
+  const userId = user.userId;
+  const teacherId = lecture.username;
+  console.log(userId);
+  console.log(teacherId);
   function userRole() {
-    if (isTeacher) return "teacher";
+    if (userId === teacherId) return "teacher";
     else return "user";
   }
 
   let lectureDetailButtons;
-  if(userId === '') {
+  if(user.userId === '') {
     //로그인한 유저 정보가 없는 경우 목록으로 버튼만
     lectureDetailButtons = (
       <></>
     )
   } else if (userRole() === "user" && !endCheck()) {
-    lectureDetailButtons = (
-      <div>
-        <StudioLectureDetailLectureRegistModalBtn
-          text={"수강 신청"}
-          className={"btn-accent text-white px-12"}
-        />
-      </div>
-    );
+    // if(userLecture === null || !userLecture.state ) {
+      lectureDetailButtons = (
+        <div>
+          <StudioLectureDetailLectureRegistModalBtn
+            text={"수강 신청"}
+            className={"btn-accent text-white px-12"}
+          />
+        </div>
+      );
+    // } else {
+    //   lectureDetailButtons = (
+    //     <div>
+    //       <StudioLectureDetailLectureRegistModalBtn
+    //         text={"수강 취소"}
+    //         className={"btn-accent text-white px-12"}
+    //       />
+    //     </div>
+    //   );
+    // }
   } else if (userRole() === "teacher" && !endCheck()) {
     lectureDetailButtons = (
       <div className="flex flex-wrap gap-2">
@@ -81,8 +104,6 @@ const StudioLectureDetailPage = () => {
   let lectureSchedule = useSelector((state) => state.lecture.lectureSchedule);
 
   //사이드바
-  const user = useSelector((state) => state.user);
-  const studio = useSelector((state) => state.studio);
   useEffect(() => {
     dispatch(getStudioDetail(user.userId));
     dispatch(getStudioLectureList(user.userId));
