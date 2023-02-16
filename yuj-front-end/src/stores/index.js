@@ -7,6 +7,7 @@ import studioSlice from './studioSlice';
 import commonSlice from './commonSlice';
 import lectureSlice from './lectureSlice';
 import userSlice from './userSlice';
+import modelSlice from './modelSlice';
 
 const reducers = combineReducers({
     common: commonSlice.reducer,
@@ -14,13 +15,14 @@ const reducers = combineReducers({
     studio: studioSlice.reducer,
     lecture: lectureSlice.reducer,
     user: userSlice.reducer,
+    model: modelSlice.reducer,
 })
 
 const persistConfig = {
     key: 'yuj',
     storage,
     // whitelist: ['studio', 'lecture', 'studioSample'],
-    blacklist: ['studioSample']
+    blacklist: ['studioSample', 'model']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers);
