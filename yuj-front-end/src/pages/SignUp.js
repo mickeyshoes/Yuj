@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Styles from "./LoginPage.module.css";
 
 const SignUp = () => {

@@ -9,10 +9,12 @@ import { useSelector } from 'react-redux';
 function MyPageSidebar() {
 
   const user = useSelector(state => state.user);
+
   const navigate = useNavigate();
 
   // 사이드바 메뉴 추가하려면 아래 입력
   const sidebarMenu = [
+
     {
       name: "대시보드",
       path: "/mypage/dashboard",
@@ -26,19 +28,20 @@ function MyPageSidebar() {
       path: "/mypage/lecture",
     },
   ];
-
+  const itemClicked = (teacherId) => {
+    navigate("/studio", { state: { teacherId } });
+  }
   return (
-
     <div className="drawer-side">
       <ul className={"flex items-start justify-between menu p-5 bg-primary text-base-content " + Styles.myPageSidebar}>
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
         <div>
-        <img className={Styles.myProfileImg + " cursor-pointer flex m-auto mb-5 "} onClick={() => navigate('/mypage/info')} src={`${process.env.REACT_APP_IMAGE_URL}/${user.userInfo.profileImage}`} />
-        {/* <img className='profile-img' src={studioDetail.profileImagePath}/> */}      
-        <div>
-          <p className={Styles.myNickname + ' justify-center'}>{user.userInfo.nickname}</p>
-          <p className={Styles.myEmail + ' mt-3 justify-center	'}>{user.userInfo.email}</p>
-        </div>
+          <img className={Styles.myProfileImg + " cursor-pointer flex m-auto mb-5 "} onClick={() => navigate('/mypage/info')} src={`${process.env.REACT_APP_IMAGE_URL}/${user.userInfo.profileImage}`} />
+          {/* <img className='profile-img' src={studioDetail.profileImagePath}/> */}
+          <div>
+            <p className={Styles.myNickname + ' justify-center'}>{user.userInfo.nickname}</p>
+            <p className={Styles.myEmail + ' mt-3 justify-center	'}>{user.userInfo.email}</p>
+          </div>
         </div>
 
         <div>
@@ -52,13 +55,19 @@ function MyPageSidebar() {
               </li>
             );
           })}
+          {
+            user.userInfo.teacher === true
+              ? <li>
+                <button onClick={() => itemClicked(user.userId)} className={Styles.sidebarMenu + ' justify-center'}>
+                  스튜디오
+                </button>
+              </li>
+              : null
+          }
         </div>
-
         <img className={Styles.myPageSidebarYujLogo + " mb-10"} src='/assets/mypage-sidebar-yuj-logo.png' alt='yuj sidebar logo' />
       </ul>
     </div>
-        
-
   );
 }
 export default MyPageSidebar;

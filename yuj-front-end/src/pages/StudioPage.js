@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getStudioDetail, getStudioLectureList, getStudioLiveLecture } from '../stores/studioSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import StudioSidebar from '../components/StudioSidebar';
-import MainHeader from './../components/mainHeader/MainHeader';
-import MainFooter from "../components/mainFooter/MainFooter";
 import StudioMainBanner from '../components/StudioMainBanner';
 import StudioMainDescription from '../components/StudioMainDescription';
 import ListTitle from '../components/ListTitle';

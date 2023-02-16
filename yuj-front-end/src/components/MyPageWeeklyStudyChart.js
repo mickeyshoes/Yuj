@@ -4,10 +4,14 @@ import ReactApexChart from "react-apexcharts";
 class MyPageWeeklyStudyChart extends React.Component {
     constructor(props) {
         super(props);
-
+        console.log("props입니다")
+        console.log(props)
+        console.log("props.centerImage입니다")
+        console.log(props.centerImage)
+        const center = props.centerImage
         this.state = {
 
-            series: [props.percentage? props.percentage : 0],
+            series: [props.percentage ? props.percentage : 0],
             options: {
                 chart: {
                     height: 350,
@@ -16,12 +20,12 @@ class MyPageWeeklyStudyChart extends React.Component {
                 plotOptions: {
                     radialBar: {
                         hollow: {
-                            margin: 15,
-                            size: '70%',
-                            image: '/assets/chartCenterImage.png',
+                            margin: 60,
+                            size: '65%',
+                            image: center,
                             imageWidth: 64,
                             imageHeight: 64,
-                            imageClipped: false
+                            
                         },
                         dataLabels: {
                             name: {
@@ -54,8 +58,8 @@ class MyPageWeeklyStudyChart extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.percentage != prevProps.percentage){
-            this.setState({series: [this.props.percentage]});
+        if (this.props.percentage != prevProps.percentage) {
+            this.setState({ series: [this.props.percentage] });
         }
     }
 

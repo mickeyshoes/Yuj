@@ -5,9 +5,6 @@ import StudioSidebar from '../components/StudioSidebar';
 import MainHeader from './../components/mainHeader/MainHeader';
 import MainFooter from "../components/mainFooter/MainFooter";
 import StudioMainBanner from '../components/StudioMainBanner';
-import StudioMainDescription from '../components/StudioMainDescription';
-import ListTitle from '../components/ListTitle';
-import LectureItemCard from '../components/LectureItemCard';
 import BannerFileInput from '../components/BannerFileInput';
 import { CommonModal, CommonModalBtn } from '../components/CommonModal';
 

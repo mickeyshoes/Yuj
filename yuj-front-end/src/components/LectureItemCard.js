@@ -8,10 +8,7 @@ const LectureItemCard = (props) => {
   const navigate = useNavigate();
 
   const lecture = props.thisLecture;
-
   const thumbnail = lecture.thumbnailImage;
-  const teacherProfile = lecture.profileImagePath;
-
   // 강의 종료 날짜와 현재 날짜를 비교하여 '완료'를 띄워줄지 체크
   const date = new Date();
   const endDate = new Date(lecture.endDate);
@@ -79,7 +76,7 @@ const LectureItemCard = (props) => {
           <div className="flex justify-between items-center">
             <div>
               <button className="flex items-center" onClick={() => goStudio()}>
-                <img className="h-3.5 pr-2" src={teacherProfile} />
+                <img className="h-3.5 pr-2" src={`${process.env.REACT_APP_IMAGE_URL}/${lecture.profileImagePath}`} />
                 <div className="text-xs font-bold hover:text-accent">
                   {lecture.nickname}
                 </div>

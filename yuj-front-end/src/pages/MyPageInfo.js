@@ -4,7 +4,7 @@ import Styles from './MyPages.module.css';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import MyPageLoginCheck from "../utils/MyPageLoginCheck";
+import { useNavigate } from 'react-router-dom';
 
 const LOCAL_URL = "http://localhost:5000";
 const URL = LOCAL_URL;
@@ -12,7 +12,6 @@ const URL = LOCAL_URL;
 //핸드폰 번호를 11자로 제한하기 위한 함수
 function phoneLengthLimit(e) {
     const target = e.target;
-
     //target.value.length = input에서 받은 value의 길이
     target.maxLength = 11;
     if (target.value.length > target.maxLength) {
@@ -24,7 +23,13 @@ const MyPageInfo = () => {
 
     //현재 로그인한 유저
     const user = useSelector(state => state.user);
-    MyPageLoginCheck(user);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(user.userId === ''){
+            navigate('/login');
+        }
+    },[])
 
     // 내 정보의 input상자 클래스를 한번에 관리하기 위한 inputClassName
     const inputClassName = "rounded-[5px] pl-2 h-6 input-bordered w-full text-base " + Styles[`myPageInput`];
