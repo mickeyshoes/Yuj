@@ -137,6 +137,7 @@ public class UserService {
         		.gender(user.getGender())
         		.profileImage(user.getProfileImagePath())
         		.isTeacher(user.isTeacher())
+        		.rating((float)user.getRatingSum() /user.getRatingCnt())
         		.build();
     }
     private TeacherResponseDTO entityToTeacherResponseDTO(User user) {

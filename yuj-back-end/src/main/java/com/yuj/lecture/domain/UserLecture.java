@@ -1,12 +1,26 @@
 package com.yuj.lecture.domain;
 
-import com.yuj.user.domain.User;
-import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+
+import org.hibernate.annotations.ColumnDefault;
+
+import com.yuj.user.domain.User;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -14,22 +28,14 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@ToString(of = {"userLectureId"})
 public class UserLecture {
-    @SequenceGenerator(
-            name="USER_LECTURE_SEQ_GEN",
-            sequenceName = "USER_LECTURE_SEQ",
-            initialValue = 100,
-            allocationSize = 1
-    )
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_LECTURE_SEQ_GEN")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userLectureId;
 
     private LocalDate registDate;
-
+    @Column(nullable = true)
     private Integer score;
-
     private String review;
     private LocalDateTime reviewUpdateDate;
 
@@ -45,8 +51,9 @@ public class UserLecture {
     public void registDate() {
         this.registDate = LocalDate.now();
     }
-
+    
     @Builder.Default
     @ColumnDefault("1")
     private boolean state = true;
+
 }

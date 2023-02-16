@@ -290,6 +290,7 @@ public class LectureService {
 
 	public void registReview(LectureReviewRequestDTO userRequestDto) {
 		User user = userRepository.findById(userRequestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+		
 		Lecture lecture = lectureRepository.findById(userRequestDto.getLectureId()).orElseThrow(CLectureNotFoundException::new);
 		
 		UserLecture userLecture = UserLecture.builder()
@@ -301,5 +302,12 @@ public class LectureService {
 				.user(user)
 				.build();
 		userLectureRepository.save(userLecture);
+		
+		// 후기에 따른 강사 댓글 개수, 점수 합계 update
+		User teacher = userRepository.findById(userRequestDto.getTeacherId()).orElseThrow(CUserNotFoundException::new);
+		
+		teacher.setRatingCnt(teacher.getRatingCnt() + 1);
+		teacher.setRatingSum(teacher.getRatingSum() + userRequestDto.getScore());
+		userRepository.save(teacher);
 	}
 }

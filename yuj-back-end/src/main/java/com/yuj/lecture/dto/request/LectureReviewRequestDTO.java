@@ -16,5 +16,5 @@ public class LectureReviewRequestDTO {
 	private Integer score;
 	private long lectureId;
 	private long userId;
-	
+	private long teacherId;
 }
