@@ -164,7 +164,7 @@ const UserLivePage = () => {
         context.fillStyle = color;
 
         context.beginPath();
-        context.drawImage(imageTag, 0,0, imageTag.width, imageTag.height);
+        // context.drawImage(imageTag, 0,0, imageTag.width, imageTag.height);
 
         for(const [key, value] of points.entries()){
             const circle = new Path2D();

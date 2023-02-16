@@ -11,9 +11,12 @@ import { SignalCellularNull } from "@mui/icons-material";
 
 import { Navigate } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { returnToInitState, toggleInferenceMode, toggleSkeletonMode, initModel } from '../stores/modelSlice';
+
 const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io";
-const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io';
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
+const OPENVIDU_SERVER_URL = "https://i8a504.p.ssafy.io";
+// const APPLICATION_SERVER_URL = "http://localhost:5000";
 // const OPENVIDU_SERVER_URL = 'http://localhost:4443';
 const OPENVIDU_SERVER_SECRET = '123123';
 const OPENVIDU_PRO_SPEECH_TO_TEXT = 'vosk';
@@ -21,6 +24,11 @@ const OPENVIDU_PRO_SPEECH_TO_TEXT = 'vosk';
 class Vidu extends Component {
     constructor(props) {
         super(props);
+
+        this.studentVideoRef = React.createRef();
+        this.studentCanvasRef = React.createRef();
+        this.teacherVideoRef = React.createRef();
+        this.teacherCanvasRef = React.createRef();
 
         this.state = {
             mySessionId: props.navigationState.mySessionId,
@@ -40,6 +48,8 @@ class Vidu extends Component {
             voiceMessage: '음소거 하기',
             listMessage: '참가자 켜기',
             chatMessage: '채팅창 켜기',
+            aiMessage : 'AI 피드백 켜기',
+            teacherSkeletonMessage : '강사 스켈레톤 켜기',
 
             // 채팅 관련
             messages: [],
@@ -61,6 +71,8 @@ class Vidu extends Component {
         this.videoControl = this.videoControl.bind(this);
         this.voiceControl = this.voiceControl.bind(this);
         this.listControl = this.listControl.bind(this);
+        this.aiInferenceToggle = this.aiInferenceToggle.bind(this);
+        this.teacherSkeletonToggle = this.teacherSkeletonToggle.bind(this);
 
         this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
         this.handleChangeUserName = this.handleChangeUserName.bind(this);
@@ -77,6 +89,11 @@ class Vidu extends Component {
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.onbeforeunload);
+        console.log('did mount done');
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        console.log('update root Vidu Student!!!');
     }
 
     componentWillUnmount() {
@@ -199,7 +216,7 @@ class Vidu extends Component {
     // 세션 생성하는 과정
     async joinSession() {
         this.OV = new OpenVidu();
-
+        console.log('join session')
         this.setState(
             {
                 session: this.OV.initSession(),
@@ -256,9 +273,9 @@ class Vidu extends Component {
                                 publishAudio: true, // 최초 입장 시 오디오 설정 여부
                                 publishVideo: true, // 최초 입장 시 비디오 설정 여부
                                 resolution: '640x480', // 영상 해상도 "320x240", "640x480", "1280x720"
-                                frameRate: 25, // 초당 프레임 수
+                                frameRate: 40, // 초당 프레임 수
                                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-                                mirror: false, // 미러 버전
+                                mirror: true, // 미러 버전
                             });
 
                             mySession.publish(publisher);
@@ -313,6 +330,7 @@ class Vidu extends Component {
             mainStreamManager: undefined,
             publisher: undefined
         });
+        this.props.returnToInitState();
     }
 
     async switchCamera() {
@@ -424,9 +442,24 @@ class Vidu extends Component {
         }
     }
 
+    aiInferenceToggle() {
+        const beforeState = this.props.model.userInferenceState.inferenceState;
+        this.props.toggleInferenceMode();
+        console.log('2. toggle inference event activate. value : ', beforeState,'-> ',this.props.model.userInferenceState.inferenceState);
+        let message = !beforeState ? 'AI 피드백 끄기' : 'AI 피드백 켜기';
+        this.setState({ aiMessage: message })
+    }
+
+    teacherSkeletonToggle() {
+        this.props.toggleSkeletonMode();
+        let message = this.props.model.teacherSkeletonState.skeletonState ? '강사 스켈레톤 끄기' : '강사 스켈레톤 켜기';
+        this.setState({teacherSkeletonMessage: message});
+    }
+
     render() {
         if(this.state.session === undefined && this.state.isVisited === false){
             this.joinSession();
+            this.props.initModel();
             this.setState({ isVisited: true });
         }
 
@@ -485,26 +518,28 @@ class Vidu extends Component {
                         </div>
 
                         <VideoContainer>
-                            <div>
+                            {/* <div>
                                 {this.state.mainStreamManager !== undefined && this.state.isActive === true ? (
                                     <div style={{ position: 'relative', width: 'auto' }} onClick={() => {this.handleMainVideoStream(this.state.mainStreamManager) }}>
-                                        <UserVideoComponent isActive={ this.state.isActive} streamManager={this.state.mainStreamManager} />
+                                        <UserVideoComponent type={this.state.myUserType} isActive={ this.state.isActive} streamManager={this.state.mainStreamManager} />
                                     </div>
                                 ) : null}
-                            </div>
+                            </div> */}
                             <VideoGrid>
-                                {this.state.publisher !== undefined ? (
-                                    <div style={{ position: 'relative', width: '50%' }} onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                                        <UserVideoComponent streamManager={this.state.publisher} />
-                                    </div>
-                                ): null}
                                 {this.state.subscribers.map((sub, i) => (
                                     ( JSON.parse(sub.stream.connection.data).clientType === '강사' ? (
                                         <div key={i} style={{ width: '50%' }} onClick={() => this.handleMainVideoStream(sub)}>
-                                            <UserVideoComponent streamManager={sub} />
+                                            <UserVideoComponent teacherVideoRef={this.teacherVideoRef} teacherCanvasRef={this.teacherCanvasRef} type={'강사'} streamManager={sub} />
                                         </div>
                                     ) : null)
                                 ))}
+                                {this.state.publisher !== undefined ? (
+                                    <div style={{ position: 'relative', width: '50%' }} onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                                        <UserVideoComponent studentVideoRef={this.studentVideoRef} studentCanvasRef={this.studentCanvasRef} 
+                                            teacherVideoRef={this.teacherVideoRef} teacherCanvasRef={this.teacherCanvasRef} 
+                                            type={this.state.myUserType} streamManager={this.state.publisher} />
+                                    </div>
+                                ): null}
                             </VideoGrid>
                         </VideoContainer>
 
@@ -516,6 +551,12 @@ class Vidu extends Component {
                                 </button>
                                 <button className="clickControl" onClick={this.voiceControl}><div className="flex w-full justify-center">{this.state.publisher.properties.publishAudio === true ?
                                     <span className="material-symbols-outlined">mic</span> : <span className="material-symbols-outlined">mic_off</span>}    {this.state.voiceMessage}</div>
+                                </button>
+                                <button className="clickControl " onClick={this.aiInferenceToggle}><div className="flex w-full justify-center">{this.props.model.userInferenceState.inferenceState === true ?
+                                    <span className="material-symbols-outlined">psychology_alt</span> : <span className="material-symbols-outlined">psychology</span>}    {this.state.aiMessage}</div>
+                                </button>
+                                <button className="clickControl " onClick={this.teacherSkeletonToggle}><div className="flex w-full justify-center">{this.props.model.teacherSkeletonState.skeletonState === true ?
+                                    <span className="material-symbols-outlined">auto_fix_off</span> : <span className="material-symbols-outlined">auto_fix</span>}    {this.state.teacherSkeletonMessage}</div>
                                 </button>
                                 <button className="clickControl" onClick={this.listControl}><div className="flex w-full justify-center">{this.state.liston === true ?
                                     <span className="material-symbols-outlined">person</span> : <span className="material-symbols-outlined">person_off</span>} {this.state.listMessage}</div>
@@ -561,4 +602,19 @@ class Vidu extends Component {
     }
 }
 
-export default Vidu;
+const mapStateToProps = (state) => {
+    return {
+        model : state.model,
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+        toggleInferenceMode : () => dispatch(toggleInferenceMode()),
+        toggleSkeletonMode : () => dispatch(toggleSkeletonMode()),
+        initModel : () => dispatch(initModel()),
+        returnToInitState : () => dispatch(returnToInitState())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (Vidu);
