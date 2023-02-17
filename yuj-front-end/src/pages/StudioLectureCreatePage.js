@@ -212,6 +212,7 @@ const StudioLectureCreatePage = () => {
         console.log("OK!!!!");
         console.log(response.data);
         // window.location.replace("/"); //  로그인 성공 시 화면 이동
+        navigate("/studio");
       })
       .catch((error) => {
         console.log("Error!!!!!!!!!!!!!");
