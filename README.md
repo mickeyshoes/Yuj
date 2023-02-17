@@ -18,12 +18,12 @@
     ![](./image/yuj-target.png)
 - 멤버
     - <img src="./image/members.jpg" width="500" height="500">  
-    - :technologist: 허재성 : 팀장, BE
-    - :technologist: 김인중 : PM, BE, FE, devops
-    - :technologist: 오현규 : FE, BE
-    - :technologist: 배진호 : FE, BE
-    - :technologist: 이호준 : FE, BE
-    - :technologist: 임성민 : FE(AI)
+    - :technologist: 허재성 : 팀장, BE 리더
+    - :technologist: 김인중 : PM, CI/CD 구축
+    - :technologist: 오현규 : FE 리더, 디자인 총괄
+    - :technologist: 배진호 : 프레젠테이션, 화면 구성
+    - :technologist: 이호준 : DB 설계, WebRTC
+    - :technologist: 임성민 : 인공지능, 서버 구성
 
 ### 2. 서비스 소개
 #### 메인 화면
@@ -34,10 +34,12 @@
 ![강사 목록](./image/%EA%B0%95%EC%82%AC%20%EB%AA%A9%EB%A1%9D.png)
 #### 강의 목록
 > 전체 강의 목록을 조회할 수 있습니다. 강의에 관련된 간략한 정보를 확인할 수 있습니다.
-![강의 목록](./image/%EA%B0%95%EC%9D%98%20%EB%AA%A9%EB%A1%9D.png)
+![강의 목록](./image/lecture_introduce.png)
 
 #### 강의 수강(수강생 시점)
-![]()
+<!-- ![yuj-pose-detection-success](https://user-images.githubusercontent.com/49228132/219531818-207fd822-2ae2-4fa0-9790-d8f2c79b5bb0.gif) -->
+<img src="https://user-images.githubusercontent.com/49228132/219531818-207fd822-2ae2-4fa0-9790-d8f2c79b5bb0.gif" width="65%" height="65%"/>
+
 #### 강의 시작(강사 시점)
 ![]()
 #### 마이 페이지
@@ -46,13 +48,16 @@
 
 
 ### 3. 시스템 구성
-![](./image/configuration.png)
+![](./image/configuration2.png)
 - FE
     - React 18
     - Redux 4.2.0
     - FullCalendar 6.0.3
     - ApexChart 3.36.3
     - Tensorflow.js 3.21.0
+    - Tailwind CSS
+    - Daisy UI
+    - Material Icon
 - BE
     - Spring boot 2.7.8
     - Gradle
@@ -72,8 +77,13 @@
 
 #### 요구사항 정의
 ![](./image/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD.png)
+
 #### 데이터 베이스 설계
-![](./image/yuj-erd.png)
+<!-- ![](./image/yuj-erd.png) -->
+<img src="./image/yuj-erd.png" width="65%" height="65%"/>
+
 #### 깃 브랜치 전략
-![](./image/%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%A0%84%EB%9E%B5.png)
+<!-- ![](./image/%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%A0%84%EB%9E%B5.png) -->
+<img src="./image/%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%A0%84%EB%9E%B5.png" width="65%" height="65%"/>
+
 ####

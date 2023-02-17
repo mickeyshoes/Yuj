@@ -404,7 +404,10 @@ const SignUp = () => {
               <div className="flex flex-wrap justify-center items-center gap-3 mt-8">
                 <label htmlFor="file" className="hover:cursor-pointer">
                   <div className={Styles.btnUpload}>
-                    <AddCircleOutlineIcon className="text-success hover:text-accent" style={{ fontSize: "xx-large" }} />
+                    <AddCircleOutlineIcon
+                      className="text-success hover:text-accent"
+                      style={{ fontSize: "xx-large" }}
+                    />
                   </div>
                 </label>
                 <input
