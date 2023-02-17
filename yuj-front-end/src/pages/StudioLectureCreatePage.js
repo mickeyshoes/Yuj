@@ -220,7 +220,7 @@ const StudioLectureCreatePage = () => {
 
     // const postSurvey = await axios({
     //     method: "POST",
-    //     url: `http://localhost:5000/lectures`,
+    //     url: `https://i8a504.p.ssafy.io/api/lectures`,
     //     mode: "cors",
     //     // headers: {
     //     //   "Content-Type": "multipart/form-data",

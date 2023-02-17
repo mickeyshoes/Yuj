@@ -32,7 +32,7 @@ input::-webkit-inner-spin-button {
     margin-left: 2%;
     margin-top: 5%;
     margin-right: 55%;
-    margin-bottom: 25%;
+    margin-bottom: 15%;
 }
 
 .signin-info-container{
@@ -41,7 +41,7 @@ input::-webkit-inner-spin-button {
     margin-left: 5%;
     margin-top: 5%;
     margin-right: 5%;
-    margin-bottom: 15%;
+    margin-bottom: 10%;
 }
 
 .profileInput{

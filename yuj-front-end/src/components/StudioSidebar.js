@@ -46,7 +46,7 @@ const StudioSidebar = (props) => {
   
   const checkUserRegistedLecture = async() => {
     // const response = await axios.get(`${process.env.REACT_APP_API_URL}/lectures/userLectures?userId=${userId}&lectureId=${studioLiveLecture.lectureId}`);
-    const response = await axios.get(`http://localhost:5000/lectures/userLectures?userId=${userId}&lectureId=${studioLiveLecture.lectureId}`);
+    const response = await axios.get(`https://i8a504.p.ssafy.io/api/lectures/userLectures?userId=${userId}&lectureId=${studioLiveLecture.lectureId}`);
     console.log("checkUserRegistedLecture", response);
     return response.data;
   }

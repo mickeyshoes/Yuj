@@ -49,7 +49,7 @@ const MyPageDashBoard = () => {
         return `${hours}:${minutes}`;
     }
 
-    const LOCAL_URL = "http://localhost:5000";
+    const LOCAL_URL = "https://i8a504.p.ssafy.io/api";
 
     const URL = LOCAL_URL;
 
@@ -271,7 +271,7 @@ const MyPageDashBoard = () => {
         return axios({
             method: "GET",
             // url: `${process.env.REACT_APP_API_URL}/mypage/dashboard/userlectureSchedule/${userId}`
-            url: `http://localhost:5000/mypage/dashboard/userLectureSchedule/${userId}`
+            url: `https://i8a504.p.ssafy.io/api/mypage/dashboard/userLectureSchedule/${userId}`
         })
             .then(response => {
                 console.log('getUserLectureScheduleByUserId : ', response.data)

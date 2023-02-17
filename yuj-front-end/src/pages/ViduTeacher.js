@@ -14,7 +14,7 @@ import { Navigate } from 'react-router-dom';
 
 const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io";
 const OPENVIDU_SERVER_URL = 'https://i8a504.p.ssafy.io';
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
+// const APPLICATION_SERVER_URL = "https://i8a504.p.ssafy.io/api/";
 // const OPENVIDU_SERVER_URL = 'http://localhost:4443';
 const OPENVIDU_SERVER_SECRET = '123123';
 

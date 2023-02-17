@@ -36,7 +36,7 @@ const StudioReview = (props) => {
         // const url = process.env.REACT_APP_API_URL + '/';
         const response = await axios.get(
             `${process.env.REACT_APP_API_URL}/lectures/review?userId=${studio.studioDetail.userId}`
-            // `http://localhost:5000/lectures/review?userId=${studio.studioDetail.userId}`
+            // `https://i8a504.p.ssafy.io/api/lectures/review?userId=${studio.studioDetail.userId}`
         );
         setReviewList(response.data);
     }

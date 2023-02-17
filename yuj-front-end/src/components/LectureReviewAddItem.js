@@ -30,7 +30,7 @@ const StudioReview = (props) => {
     const getLectures = async () => {
         // const url = process.env.REACT_APP_API_URL + '/';
         const response = await axios.get(
-            // `http://localhost:5000/studio/${studio.studioDetail.studioId}/lectures`
+            // `https://i8a504.p.ssafy.io/api/studio/${studio.studioDetail.studioId}/lectures`
             `${process.env.REACT_APP_API_URL}/studio/${studio.studioDetail.studioId}/lectures`
         );
         setLectureList(response.data);
@@ -74,7 +74,7 @@ const StudioReview = (props) => {
         }
 
         const response = await axios.post(
-            `http://localhost:5000/lectures/review`, body,
+            `https://i8a504.p.ssafy.io/api/lectures/review`, body,
             // `${process.env.REACT_APP_API_URL}/lectures/review`, body,
         );
         navigate(-1);

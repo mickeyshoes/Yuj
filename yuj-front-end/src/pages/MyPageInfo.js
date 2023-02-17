@@ -6,7 +6,8 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const LOCAL_URL = "http://localhost:5000";
+const LOCAL_URL = "https://i8a504.p.ssafy.io/api";
+// const REMOTE_URL = "https://i8a504.p.ssafy.io/api";
 const URL = LOCAL_URL;
 
 //핸드폰 번호를 11자로 제한하기 위한 함수
