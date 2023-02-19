@@ -174,7 +174,8 @@ public class UserLectureService {
     	
     	return LectureReviewResponseDTO.builder()
     			.reviewId(userLecture.getUserLectureId())
-    			.userName(user.getName())
+    			.userId(user.getUserId())
+    			.userName(user.getNickname())
     			.date(userLecture.getRegistDate())
     			.rating(userLecture.getScore())
     			.lectureName(lecture.getName())

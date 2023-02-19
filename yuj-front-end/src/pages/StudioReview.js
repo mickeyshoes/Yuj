@@ -21,10 +21,8 @@ const StudioReview = (props) => {
     useEffect(()=>{
         getReviews();
         console.log('댓글 리스트 : ', reviewList);
-        // console.log('회원 계정', user);
-        // console.log(typeof(user.userId));
-        // console.log('스튜디오 강의 아이디', studio);
-        // console.log('강의 목록 리스트 : ', studio.studioLectureList);
+        // console.log('회원 계정', user.userId);
+        // console.log('스튜디오 강사 아이디', studiostudioDetail.userId);
     }, []);
 
     // change axios, add async
@@ -59,7 +57,7 @@ const StudioReview = (props) => {
                     </div>
                     <div className="items-center">
                         {reviewList?.map((item, idx) =>
-                            <LectureReviewItem className="pt-20" item={item} key={idx} />
+                            <LectureReviewItem className="pt-20" item={item} key={idx} getReviews={ getReviews} />
                         )}
                     </div>
             </div>

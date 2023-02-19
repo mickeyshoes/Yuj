@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 public class LectureReviewResponseDTO {
 	private long reviewId;
+	private long userId;
 	private String userName;
 	private LocalDate date;
 	private double rating;
