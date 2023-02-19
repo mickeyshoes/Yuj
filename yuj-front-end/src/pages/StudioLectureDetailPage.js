@@ -200,7 +200,7 @@ const StudioLectureDetailPage = () => {
           <div className="flex justify-end flex-wrap gap-2 pt-5 pb-8">
             {lectureDetailButtons}
             {/* <Link to="/studioLectureListPage" className="flex"> */}
-              <button className="btn btn-primary px-12" onClick={() => navigate('/studioLectureListPage')}>목록으로</button>
+              <button className="btn btn-primary px-12" onClick={() => navigate(-1)}>뒤로가기</button>
             {/* </Link> */}
           </div>
         </div>
