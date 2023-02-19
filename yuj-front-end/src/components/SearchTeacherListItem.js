@@ -14,7 +14,7 @@ const SearchTeacherListItem = (props) => {
 
     return (
         <>
-            <button onClick={() => itemClicked(userId)} className={'btn-secondary flex w-full items-center py-5 px-12 mt-5 rounded-xl'}>
+            <button onClick={() => itemClicked(userId)} className={'btn-secondary flex w-full items-center py-5 px-12 mt-5 rounded-xl shadow-lg'}>
                 <div>
                     <img className={'w-20 h-20 rounded-full object-cover max-w-none'} src={`${process.env.REACT_APP_IMAGE_URL}/${profileImage}`}/>
                     {/* <img className={'w-20 h-20 rounded-full object-cover max-w-none'} src={'https://i8a504.p.ssafy.io/'+profileImagePath}/> */}

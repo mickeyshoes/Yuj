@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface UserLectureRepository extends JpaRepository<UserLecture, Long> {
     Optional<List<UserLecture>> findByLecture_LectureId(Long lectureId);
 
-    Optional<List<UserLecture>> findByUser_UserId(Long userId);
+    List<UserLecture> findByUser_UserId(Long userId);
 
     Optional<UserLecture> findByUser_UserIdAndLecture_LectureId(Long userId, Long lectureId);
 
@@ -21,5 +21,5 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Long> 
     
     @Query(value = "select ul from UserLecture ul where ul.review is not null and ul.state=true and ul.lecture.lectureId in (select distinct (l.lectureId) from Lecture l join l.user u where u.userId = :userId) order by ul.reviewUpdateDate desc")
     List<UserLecture> getReviewsByUserId(@Param("userId") Long userId);
-	
+
 }

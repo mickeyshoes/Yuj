@@ -217,6 +217,20 @@ public class LectureService {
     	return result;
 	}
 
+    // 유저가 현재 수강하고 있는 강의 반환
+    public List<LectureResponseDTO> getLectureByUserLecture_userId(long userId) {
+        List<LectureResponseDTO> result = new ArrayList<>();
+
+        List<UserLecture> list = userLectureRepository.findByUser_UserId(userId);
+
+        for (UserLecture userLecture : list) {
+            Long lectureId = userLecture.getLecture().getLectureId();
+            LectureResponseDTO lrdto = entityToResponseDTO(lectureRepository.findByLectureId(lectureId));
+            result.add(lrdto);
+        }
+        return result;
+    }
+
     private LectureResponseDTO entityToResponseDTO(Lecture lecture) {
         User user = lecture.getUser();
         return LectureResponseDTO.builder()

@@ -41,7 +41,7 @@ const MainSearchTeacher = () => {
                         </div>
                     </div>
                     <div className="flex py-12 px-0">
-                        <div className="flex flex-wrap justify-start gap-9">
+                        <div className="flex flex-wrap justify-start gap-2">
                             {teachers?.map((teacher) => (
                                 <SearchTeacherListItem key={teacher.userId} teacherInfo={teacher} />
                             ))}

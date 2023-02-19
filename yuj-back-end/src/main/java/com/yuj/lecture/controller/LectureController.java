@@ -169,5 +169,11 @@ public class LectureController {
         List<LectureResponseDTO> resultList = lectureService.searchLectureByNameAndYoga(name, yogaId);
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
+
+    @GetMapping("/myPage/lectures")
+    public ResponseEntity<List<LectureResponseDTO>> searchLectureByUserLecture_userId(@RequestParam("userId") Long userId) throws Exception {
+        List<LectureResponseDTO> resultList = lectureService.getLectureByUserLecture_userId(userId);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
+    }
 }
 

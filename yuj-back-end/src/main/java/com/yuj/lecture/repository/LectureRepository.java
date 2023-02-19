@@ -3,6 +3,7 @@ package com.yuj.lecture.repository;
 import com.yuj.lecture.domain.Lecture;
 import com.yuj.lecture.domain.UserLecture;
 
+import com.yuj.lecture.dto.response.LectureResponseDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,8 @@ import java.util.Optional;
 
 @Repository
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
+
+    Lecture findByLectureId(Long lectureId);
 
     Optional<List<Lecture>> findByUser_UserIdAndIsActiveTrue(Long userId);
     @Query(value = "select l from Lecture l join l.user u where u.userId = :userId and l.endDate >= :threshold order by l.registDate desc")
