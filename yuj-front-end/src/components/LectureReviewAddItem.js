@@ -51,27 +51,25 @@ const StudioReview = (props) => {
         console.log(data.rating);
         console.log(data.review);
 
-        //0. check isLogin
-        //1. check login user is enrolled
-        // const userEnrolledList = await isEnrolled();
-        // console.log(userEnrolledList);
-
-        // //3. else throws modal not available
-        // if(userEnrolledList){
-        //     //routing
-        //     navigate("/studio/review")
-        // }
-        // else{
-        //     //goto modal
-        // }
-        let body = {
-            review : data.review,
-            score : data.rating,
-            lectureId : selectedValue,
-            userId: user.userId,
-            teacherId: studio.studioDetail.userId
+        let body = {};
+        if (data.rating === undefined) {
+            body = {
+                review: data.review,
+                score: 5,
+                lectureId : selectedValue,
+                userId: user.userId,
+                teacherId: studio.studioDetail.userId
+            }
+        } else { 
+            body = {
+                review: data.review,
+                score: data.rating,
+                lectureId : selectedValue,
+                userId: user.userId,
+                teacherId: studio.studioDetail.userId
+            }
         }
-
+        
         const response = await axios.post(
             // `http://localhost:5000/lectures/userLectures/review`, body,
             `https://i8a504.p.ssafy.io/api/lectures/userLectures/review`, body,
