@@ -51,7 +51,7 @@ const LectureItemCard = (props) => {
 
   return (
     <div>
-      <div className="card w-72 bg-base-100 shadow-xl min-h-full ">
+      <div className="card w-72 bg-base-100 shadow-xl min-h-full" style={{height: '22rem'}}>
         <figure className="relative">
           {/* changeStudioLectureDetailItem 메소드를 통해 DetailPage로 이동 시 띄워줄 강의 저장 */}
           <Link

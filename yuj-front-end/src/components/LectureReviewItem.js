@@ -28,7 +28,7 @@ const LectureReviewItem = (props) => {
 
     return(
         <>
-            <div id="review-item-container" className="p-8 hover:bg-success hover:bg-opacity-10" style={{ 'border-bottom': '2px solid rgb(144, 133, 154, 0.4)', opacity:''}}>
+            <div id="review-item-container" className="p-8 hover:bg-success hover:bg-opacity-10" style={{ borderBottom: '2px solid rgb(144, 133, 154, 0.4)', opacity:''}}>
                 <Header className="" id="review-item-profile-container">
                     <img className="w-12 rounded-full" src={`${process.env.REACT_APP_IMAGE_URL}/${item.profileImage}`}/>
                     <HeaderDetailsWrapper id="review-text-info-container">
