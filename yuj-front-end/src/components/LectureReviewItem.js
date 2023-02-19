@@ -10,6 +10,8 @@ const LectureReviewItem = (props) => {
     const rating = props.item.rating;
 
     const loginUserInfo = useSelector(state => state.user);
+    console.log('로그인 정보 : ', loginUserInfo);
+    console.log('item 정보 : ', item);
     
     return(
         <>
@@ -26,8 +28,8 @@ const LectureReviewItem = (props) => {
                             <input type="radio" name={item.reviewid} className="mask mask-star-2 bg-accent" readOnly checked={rating === 4}/>
                             <input type="radio" name={item.reviewid} className="mask mask-star-2 bg-accent" readOnly checked={rating === 5} />
                         </HeaderDetail>
-                        {/* {loginUserInfo.userInfo.id === item.userId ? 
-                        (<div><EditIcon/><DeleteIcon/></div>) : null} */}
+                        {loginUserInfo.userInfo.id === item.userId ? 
+                        (<><EditIcon/><DeleteIcon/></>) : null}
                     </HeaderDetailsWrapper>
                 </Header>
                 <div className="text-success" id="review-item-lecture-title">

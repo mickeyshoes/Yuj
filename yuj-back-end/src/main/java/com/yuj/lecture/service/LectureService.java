@@ -63,7 +63,6 @@ public class LectureService {
 
     @Transactional
     public Long registLecture(List<MultipartFile> files, LectureVO lectureVO, List<LectureScheduleRegistDTO> lsrDtos) {
-//    public Long registLecture(MultipartFile[][] files, LectureVO lectureVO, List<LectureScheduleRegistDTO> lsrDtos) {
         //  강사 Entity 찾아내기
         log.info("in registLecture");
         User teacher = userRepository.findById(lectureVO.getUserId()).orElseThrow(CUserNotFoundException::new);
@@ -105,7 +104,7 @@ public class LectureService {
                 }
             }
 
-            if(lsrDtos != null && !lsrDtos.isEmpty()) {
+            if(!lsrDtos.isEmpty()) {
                 for(LectureScheduleRegistDTO dto : lsrDtos) {
                     //  일정을 DB에 저장
                     LectureSchedule lectureSchedule = dto.toEntity(lecture);
@@ -263,52 +262,4 @@ public class LectureService {
                 .build();
     }
 
-	public List<LectureReviewResponseDTO> getReviewsByUserId(Long userId) {
-		List<LectureReviewResponseDTO> result = new ArrayList<>();
-		List<UserLecture> list = lectureRepository.getReviewsByUserId(userId);
-		
-		for (UserLecture userLecture : list) {
-			result.add(entityToReviewDTO(userLecture));
-		}
-		return result;
-	}
-	
-	private LectureReviewResponseDTO entityToReviewDTO(UserLecture userLecture) {
-		User user = userLecture.getUser();
-		Lecture lecture = userLecture.getLecture();
-		
-		return LectureReviewResponseDTO.builder()
-				.reviewId(userLecture.getUserLectureId())
-				.userName(user.getName())
-				.date(userLecture.getRegistDate())
-				.rating(userLecture.getScore())
-				.lectureName(lecture.getName())
-				.review(userLecture.getReview())
-				.profileImage(user.getProfileImagePath())
-				.build();
-	}
-
-
-	public void registReview(LectureReviewRequestDTO userRequestDto) {
-		User user = userRepository.findById(userRequestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
-		
-		Lecture lecture = lectureRepository.findById(userRequestDto.getLectureId()).orElseThrow(CLectureNotFoundException::new);
-		
-		UserLecture userLecture = UserLecture.builder()
-				.registDate(LocalDate.now())
-				.review(userRequestDto.getReview())
-				.reviewUpdateDate(LocalDateTime.now())
-				.score(userRequestDto.getScore())
-				.lecture(lecture)
-				.user(user)
-				.build();
-		userLectureRepository.save(userLecture);
-		
-		// 후기에 따른 강사 댓글 개수, 점수 합계 update
-		User teacher = userRepository.findById(userRequestDto.getTeacherId()).orElseThrow(CUserNotFoundException::new);
-		
-		teacher.setRatingCnt(teacher.getRatingCnt() + 1);
-		teacher.setRatingSum(teacher.getRatingSum() + userRequestDto.getScore());
-		userRepository.save(teacher);
-	}
 }

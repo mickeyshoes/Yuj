@@ -1,10 +1,15 @@
 package com.yuj.lecture.controller;
 
+import com.yuj.lecture.dto.request.LectureReviewRequestDTO;
+import com.yuj.lecture.dto.response.LectureReviewResponseDTO;
 import com.yuj.lecture.dto.response.UserLectureResponseDTO;
 import com.yuj.lecture.service.LectureService;
 import com.yuj.lecture.service.UserLectureService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +47,37 @@ public class UserLectureController {
         Long ret = userLectureService.deleteUserLecture(userId, lectureId);
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
+    
+    // 수강 후기 관련 api
+    
+    // 유저(강사의) 수강후기 리스트
+    @GetMapping("/review")
+    public ResponseEntity<?> getReviewByUserId(@RequestParam("userId") long userId) {
+        List<LectureReviewResponseDTO> resultList = userLectureService.getReviewsByUserId(userId);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
+    }
+
+    // 유저 수강후기 등록
+    @PostMapping("/review")
+    public ResponseEntity<?> registReview(@RequestBody LectureReviewRequestDTO userRequestDto) throws Exception {
+        try {
+        	userLectureService.registReview(userRequestDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    // 유저 수강후기 삭제
+    @GetMapping("/review/{userLectureId}")
+    public ResponseEntity<?> deleteReview(@PathVariable long userLectureId) throws Exception {
+    	try {
+    		userLectureService.deleteReview(userLectureId);
+    		return new ResponseEntity<>(HttpStatus.OK);
+    	} catch (Exception e) {
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+    }
+    
+    // 유저 수강후기 수정
 }

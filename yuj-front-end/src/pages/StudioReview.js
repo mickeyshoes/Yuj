@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"; 
 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -17,26 +17,24 @@ const StudioReview = (props) => {
 
     const [reviewList, setReviewList] = useState([]);
 
-    //for debug
-    const alt_img = 'https://pbs.twimg.com/profile_images/1536535827257630720/VUZLhP8M_400x400.jpg'
-
-
     //init - get all review for lecture(teacher's only)
     useEffect(()=>{
         getReviews();
+        console.log('댓글 리스트 : ', reviewList);
         // console.log('회원 계정', user);
         // console.log(typeof(user.userId));
         // console.log('스튜디오 강의 아이디', studio);
         // console.log('강의 목록 리스트 : ', studio.studioLectureList);
-        // console.log(process.env.REACT_APP_API_URL);
     }, []);
 
     // change axios, add async
     const getReviews = async () => {
         // const url = process.env.REACT_APP_API_URL + '/';
         const response = await axios.get(
-            `${process.env.REACT_APP_API_URL}/lectures/review?userId=${studio.studioDetail.userId}`
-            // `https://i8a504.p.ssafy.io/api/lectures/review?userId=${studio.studioDetail.userId}`
+            `${process.env.REACT_APP_API_URL}/lectures/userLectures/review?userId=${studio.studioDetail.userId}`
+            // `http://localhost:5000/lectures/userLectures/review?userId=${studio.studioDetail.userId}`
+            // `https://i8a504.p.ssafy.io/api/lectures/userLectures/review?userId=${studio.studioDetail.userId}`
+
         );
         setReviewList(response.data);
     }

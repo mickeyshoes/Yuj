@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +32,7 @@ import com.yuj.lecture.dto.request.LectureVO;
 import com.yuj.lecture.dto.response.LectureResponseDTO;
 import com.yuj.lecture.dto.response.LectureReviewResponseDTO;
 import com.yuj.lecture.service.LectureService;
+import com.yuj.lecture.service.UserLectureService;
 import com.yuj.lectureimage.handler.FileHandler;
 import com.yuj.lectureimage.service.LectureImageService;
 import com.yuj.user.service.UserService;
@@ -165,23 +168,6 @@ public class LectureController {
     public ResponseEntity<?> searchLectureByNameAndYoga(@PathVariable long yogaId, @RequestParam("search") String name) throws Exception {
         List<LectureResponseDTO> resultList = lectureService.searchLectureByNameAndYoga(name, yogaId);
         return new ResponseEntity<>(resultList, HttpStatus.OK);
-    }
-
-    @GetMapping("/review")
-    public ResponseEntity<?> getReviewByUserIdAndLectureId(@RequestParam("userId") long userId) {
-        List<LectureReviewResponseDTO> resultList = lectureService.getReviewsByUserId(userId);
-        return new ResponseEntity<>(resultList, HttpStatus.OK);
-    }
-
-    @PostMapping("/review")
-    public ResponseEntity<?> registReview(@RequestBody LectureReviewRequestDTO userRequestDto) throws Exception {
-        try {
-            lectureService.registReview(userRequestDto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
     }
 }
 

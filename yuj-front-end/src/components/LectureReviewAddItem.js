@@ -28,7 +28,6 @@ const StudioReview = (props) => {
 
     // change axios, add async
     const getLectures = async () => {
-        // const url = process.env.REACT_APP_API_URL + '/';
         const response = await axios.get(
             // `http://localhost:5000/studio/${studio.studioDetail.studioId}/lectures`
             `${process.env.REACT_APP_API_URL}/studio/${studio.studioDetail.userId}/lectures`
@@ -70,12 +69,13 @@ const StudioReview = (props) => {
             score : data.rating,
             lectureId : selectedValue,
             userId: user.userId,
-            teacherId: studio.studioDetail.studioId
+            teacherId: studio.studioDetail.userId
         }
 
         const response = await axios.post(
-            `https://i8a504.p.ssafy.io/api/lectures/review`, body,
-            // `${process.env.REACT_APP_API_URL}/lectures/review`, body,
+            // `http://localhost:5000/lectures/userLectures/review`, body,
+            `https://i8a504.p.ssafy.io/api/lectures/userLectures/review`, body,
+            // `${process.env.REACT_APP_API_URL}/lectures/userLectures/review`, body,
         );
         navigate(-1);
     }
