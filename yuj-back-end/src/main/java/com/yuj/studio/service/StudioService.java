@@ -35,7 +35,7 @@ public class StudioService {
     public Long createStudio(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Studio studio = Studio.builder()
-                .bannerImage(null)
+                .bannerImage("sample.jpg") // 스튜디오 배너 기본 이미지
                 .description(user.getNickname() + "님의 스튜디오입니다.")
                 .build();
 

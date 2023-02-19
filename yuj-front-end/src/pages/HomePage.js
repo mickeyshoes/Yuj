@@ -8,14 +8,14 @@ import { useEffect } from 'react';
 const HomePage = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
-  // const dispatch = useDispatch();
   
   //전체 검색 창으로 이동 -> keyword는 ''
   const goSearchPage = () => {
     navigate('/search', {state:{keyword:''}});
-    // dispatch(searchLectures(keyword));
-    // dispatch(searchTeachers(keyword));
+    dispatch(searchLectures(''));
+    dispatch(searchTeachers(''));
   }
 
   const goStudio = () => {

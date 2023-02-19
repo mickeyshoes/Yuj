@@ -69,7 +69,9 @@ const LectureItemCard = (props) => {
               </div>
               {complete()}
             </div>
+            <div className="max-h-48">
             <img src={`${process.env.REACT_APP_IMAGE_URL}/${lecture.images ? lecture.images[0].filePath : thumbnail}`} alt="Card Image" />
+            </div>
           </Link>
         </figure>
         <div className="card-body">
