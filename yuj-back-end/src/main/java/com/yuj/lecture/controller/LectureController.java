@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.yuj.lecture.domain.UserLectureSchedule;
+import com.yuj.lecture.service.LectureScheduleService;
+import com.yuj.lecture.service.UserLectureScheduleService;
 import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -50,15 +53,14 @@ public class LectureController {
     private final UserService userService;
     private final LectureImageService lectureImageService;
 
+    private final LectureScheduleService lectureScheduleService;
+    private final UserLectureService userLectureService;
+    private final UserLectureScheduleService userLectureScheduleService;
     private final FileHandler fileHandler;
 
     @PostMapping
     public ResponseEntity<?> registLecture(
-//            @RequestPart(value="files", required = false) List<MultipartFile> files,
             @RequestPart(value = "files", required = false) List<MultipartFile> files,
-
-//            @RequestPart(value = "files", required = false) List<MultipartFile> files,
-//            @RequestPart(value = "files", required = false) MultipartFile[][] files,
             @RequestParam(value = "vo") String lectureVOString,
             @RequestParam(value = "scheduleArr", required = false) String scheduleArr
     ) {
@@ -89,26 +91,7 @@ public class LectureController {
                     .build();
 
             log.info("VO = " + lectureVO);
-
-//            List<LectureScheduleRegistDto> lsrDtos = new ArrayList<>();
-//            for(String schedulVOString :scheduleArr) {
-//                jsonParser = new JSONParser(schedulVOString);
-//                obj = jsonParser.parse();
-//                mapper = new ObjectMapper();
-//                map = mapper.convertValue(obj, Map.class);
-//
-//                LectureScheduleRegistDto dto = LectureScheduleRegistDto.builder()
-//                        .startTime(LocalTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE))
-//                        .endTime(LocalTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME))
-//                        .day(Integer.parseInt(String.valueOf(map.get("day"))))
-//                        .build();
-//
-//                lsrDtos.add(dto);
-//            }
-
             List<LectureScheduleRegistDTO> lsrDtos = new ArrayList<>();
-//            JSONArray jsonArray = new JSONArray(scheduleArr);
-//            log.info("jsonArray = " + jsonArray);
 
             if (scheduleArr != null) {
                 JSONArray jsonArray = new JSONArray(scheduleArr);
@@ -116,7 +99,6 @@ public class LectureController {
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObj = jsonArray.getJSONObject(i);
-//                log.info("jsonObj : " + jsonObj);
                     LectureScheduleRegistDTO dto = LectureScheduleRegistDTO.builder()
                             .startTime(LocalTime.parse(String.valueOf(jsonObj.get("startTime")) + ":00"))
                             .endTime(LocalTime.parse(String.valueOf(jsonObj.get("endTime")) + ":00"))
@@ -130,14 +112,40 @@ public class LectureController {
 
             Long ret = lectureService.registLecture(files, lectureVO, lsrDtos);
             return new ResponseEntity<>("강의 개설 성공\n강의 번호 : " + ret, HttpStatus.OK);
-//            return new ResponseEntity<>("OK!!!", HttpStatus.OK);
-
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("강의 개설 오류", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
-//        return null;
+    /**
+     * @param lectureId : 삭제할 강의의 PK
+     * @return : 강의 삭제 성공 시 OK 반환
+     */
+    @DeleteMapping("/{lectureId}")
+    public ResponseEntity<?> deleteLecture(@PathVariable("lectureId") Long lectureId) {
+        ResponseEntity<?> ret = null;
+
+        //  강의 관련 이미지 삭제(삭제된 개수)
+        int deletedImages = lectureImageService.deleteLectureImagesByLectureId(lectureId);
+        //  강의 관련 스케쥴 삭제
+        int deletedSchedules = lectureScheduleService.deleteLectureScheduleByLectureId(lectureId);
+        //  강의 수강생의 수강 신청 내역 삭제
+        int deletedUserLectures = userLectureService.deleteUserLectureByUserId(lectureId);
+        //  강의 수강생의 수강 내역 삭제
+        int deletedUserLectureSchedules = userLectureScheduleService.deleteUserLectureScheduleByLectureId(lectureId);
+        //  강의 삭제
+        long deletedLectureId = lectureService.deleteLectureByLectureId(lectureId);
+
+        StringBuilder sb = new StringBuilder("삭제된 스케쥴 개수 : ").append(deletedSchedules).append("\n")
+                .append("삭제된 수강 신청 내역 개수 : ").append(deletedUserLectures).append("\n")
+                .append("삭제된 수강 내역 개수 : ").append(deletedUserLectureSchedules).append("\n")
+                .append("삭제된 강의 관련 이미지 개수 : ").append(deletedImages).append("\n")
+                .append("삭제된 강의 번호 : ").append("\n");
+
+        ret = new ResponseEntity<>(sb.toString(), HttpStatus.OK);
+
+        return ret;
     }
 
     @GetMapping

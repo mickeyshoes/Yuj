@@ -1,5 +1,6 @@
 package com.yuj.lecture.service;
 
+import com.yuj.exception.CUserLectureScheduleNotFoundException;
 import com.yuj.lecture.domain.Lecture;
 import com.yuj.lecture.domain.LectureSchedule;
 import com.yuj.lecture.domain.UserLectureSchedule;
@@ -12,7 +13,9 @@ import com.yuj.lecture.repository.UserLectureScheduleRepository;
 import com.yuj.user.domain.User;
 import com.yuj.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +25,8 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class UserLectureScheduleService {
 
     private final UserLectureScheduleRepository userLectureScheduleRepository;
@@ -60,5 +65,49 @@ public class UserLectureScheduleService {
                 .lectureId(userLectureSchedule.getLecture().getLectureId())
                 .userId(userLectureSchedule.getUser().getUserId())
                 .build();
+    }
+
+    /**
+     *
+     * @param lectureId : 삭제할 강의 pk
+     * @return : 강의가 삭제되면서 삭제될 수강 내역 개수
+     */
+    public int deleteUserLectureScheduleByLectureId(Long lectureId) {
+        int ret = 0;
+
+        try {
+            List<UserLectureSchedule> userLectureScheduleList = userLectureScheduleRepository.findByLecture_LectureId(lectureId).orElseThrow(CUserLectureScheduleNotFoundException::new);
+            ret = userLectureScheduleList.size();
+
+            for(UserLectureSchedule userLectureSchedule : userLectureScheduleList) {
+                userLectureScheduleRepository.delete(userLectureSchedule);
+            }
+        } catch(CUserLectureScheduleNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            return ret;
+        }
+    }
+
+    /**
+     * 
+     * @param userId : 탈퇴한 수강생 id
+     * @return : 수강생이 탈퇴하면서 삭제될 수강 내역 개수
+     */
+    public int deleteUserLectureScheduleByUserId(Long userId) {
+        int ret = 0;
+
+        try {
+            List<UserLectureSchedule> userLectureScheduleList = userLectureScheduleRepository.findByUser_UserId(userId).orElseThrow(CUserLectureScheduleNotFoundException::new);
+            ret = userLectureScheduleList.size();
+
+            for(UserLectureSchedule userLectureSchedule : userLectureScheduleList) {
+                userLectureScheduleRepository.delete(userLectureSchedule);
+            }
+        } catch(CUserLectureScheduleNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            return ret;
+        }
     }
 }

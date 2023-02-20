@@ -1,6 +1,7 @@
 package com.yuj.mypage.service;
 
 import com.yuj.exception.CLectureNotFoundException;
+import com.yuj.exception.CLectureScheduleNotFoundException;
 import com.yuj.exception.CUserLectureNotFoundException;
 import com.yuj.exception.CUserNotFoundException;
 import com.yuj.lecture.domain.*;
@@ -104,7 +105,7 @@ public class MyPageService {
 
     //    lectureId를 사용하여 모든 강의 스케쥴 가져오기
     public List<MyPageLectureScheduleResponseDTO> getLectureScheduleByLectureId(long lectureId) {
-        List<LectureSchedule> allByLectureLectureId = lectureScheduleRepository.findAllByLecture_LectureId(lectureId);
+        List<LectureSchedule> allByLectureLectureId = lectureScheduleRepository.findAllByLecture_LectureId(lectureId).orElseThrow(CLectureScheduleNotFoundException::new);
 
         List<MyPageLectureScheduleResponseDTO> myPageLectureScheduleResponseDTOS = new ArrayList<>();
 
@@ -233,7 +234,7 @@ public class MyPageService {
         long totalCnt = 0;                              //  오늘까지 진행된 수업 수
         long attendance = 0;                            //  참석한 수업 수
 
-        List<LectureSchedule> lectureScheduleList = lectureScheduleRepository.findAllByLecture_LectureId(lectureId);
+        List<LectureSchedule> lectureScheduleList = lectureScheduleRepository.findAllByLecture_LectureId(lectureId).orElseThrow(CLectureScheduleNotFoundException::new);
 
         //  수업 열리는 요일 다 구함
         for(LectureSchedule lectureSchedule : lectureScheduleList) {

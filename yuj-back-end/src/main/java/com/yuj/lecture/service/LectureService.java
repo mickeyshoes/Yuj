@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.yuj.exception.CUserLectureNotFoundException;
 import com.yuj.lectureimage.dto.LectureImageDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,6 +120,11 @@ public class LectureService {
         }
     }
 
+    @Transactional
+    public Long deleteLectureByLectureId(Long lectureId) {
+        lectureRepository.deleteById(lectureId);
+        return lectureId;
+    }
 
     public LectureResponseDTO getLectureById(Long lectureId) throws Exception {
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() -> new Exception("수업이 존재하지 않습니다."));
@@ -221,7 +227,7 @@ public class LectureService {
     public List<LectureResponseDTO> getLectureByUserLecture_userId(long userId) {
         List<LectureResponseDTO> result = new ArrayList<>();
 
-        List<UserLecture> list = userLectureRepository.findByUser_UserId(userId);
+        List<UserLecture> list = userLectureRepository.findByUser_UserId(userId).orElseThrow(CUserLectureNotFoundException::new);
 
         for (UserLecture userLecture : list) {
             Long lectureId = userLecture.getLecture().getLectureId();

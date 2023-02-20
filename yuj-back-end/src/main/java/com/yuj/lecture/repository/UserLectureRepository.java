@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface UserLectureRepository extends JpaRepository<UserLecture, Long> {
     Optional<List<UserLecture>> findByLecture_LectureId(Long lectureId);
 
-    List<UserLecture> findByUser_UserId(Long userId);
+    Optional<List<UserLecture>> findByUser_UserId(Long userId);
 
     Optional<UserLecture> findByUser_UserIdAndLecture_LectureId(Long userId, Long lectureId);
 
