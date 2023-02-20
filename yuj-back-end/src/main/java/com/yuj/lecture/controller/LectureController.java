@@ -130,9 +130,9 @@ public class LectureController {
         int deletedImages = lectureImageService.deleteLectureImagesByLectureId(lectureId);
         //  강의 관련 스케쥴 삭제
         int deletedSchedules = lectureScheduleService.deleteLectureScheduleByLectureId(lectureId);
-        //  강의 수강생의 수강 신청 내역 삭제
-        int deletedUserLectures = userLectureService.deleteUserLectureByUserId(lectureId);
-        //  강의 수강생의 수강 내역 삭제
+        //  해당 강의 수강한 수강생들의 수강 신청 내역 삭제
+        int deletedUserLectures = userLectureService.deleteUserLectureByLectureId(lectureId);
+        //  해당 강의 수강생들의 수강 내역 삭제
         int deletedUserLectureSchedules = userLectureScheduleService.deleteUserLectureScheduleByLectureId(lectureId);
         //  강의 삭제
         long deletedLectureId = lectureService.deleteLectureByLectureId(lectureId);
