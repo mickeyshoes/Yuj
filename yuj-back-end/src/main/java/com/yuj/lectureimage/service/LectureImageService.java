@@ -23,6 +23,7 @@ public class LectureImageService {
      * @param lectureId : 삭제할 강의의 pk
      * @return : 삭제될 강의에 저장된 강의 이미지 개수
      */
+    @Transactional
     public int deleteLectureImagesByLectureId(Long lectureId) {
         int ret = 0;
 

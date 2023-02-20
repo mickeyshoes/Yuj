@@ -33,6 +33,7 @@ public class UserLectureScheduleService {
     private final UserRepository userRepository;
     private final LectureRepository lectureRepository;
 
+    @Transactional
     public UserLectureScheduleResponseDTO saveUserLectureSchedule(Long userId, Long LectureId) throws Exception {
         Optional<List<UserLectureSchedule>> schedules = userLectureScheduleRepository.findByUser_UserIdAndLecture_LectureId(userId, LectureId);
         if(schedules.isPresent()) {
@@ -72,6 +73,7 @@ public class UserLectureScheduleService {
      * @param lectureId : 삭제할 강의 pk
      * @return : 강의가 삭제되면서 삭제될 수강 내역 개수
      */
+    @Transactional
     public int deleteUserLectureScheduleByLectureId(Long lectureId) {
         int ret = 0;
 
@@ -94,6 +96,7 @@ public class UserLectureScheduleService {
      * @param userId : 탈퇴한 수강생 id
      * @return : 수강생이 탈퇴하면서 삭제될 수강 내역 개수
      */
+    @Transactional
     public int deleteUserLectureScheduleByUserId(Long userId) {
         int ret = 0;
 

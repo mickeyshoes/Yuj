@@ -50,6 +50,7 @@ public class LectureScheduleService {
      * @param lectureId : 삭제할 강의 PK
      * @return : 강의가 삭제되면서 삭제될 강의 일정 개수
      */
+    @Transactional
     public int deleteLectureScheduleByLectureId(Long lectureId) {
         int ret = 0;
 

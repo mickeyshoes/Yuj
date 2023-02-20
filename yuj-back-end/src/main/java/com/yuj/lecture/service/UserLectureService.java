@@ -86,6 +86,7 @@ public class UserLectureService {
     }
 
     // 유저 렉처 상태 변경(수강 취소)
+    @Transactional
     public Long deleteUserLecture(Long userId, Long lectureId) throws Exception {
         Long ret = -1L;
         // 유저렉처 찾아오기
@@ -138,6 +139,7 @@ public class UserLectureService {
     }
 
     // 유저 수강 후기 등록
+    @Transactional
     public void registReview(LectureReviewRequestDTO userRequestDto) {
         User user = userRepository.findById(userRequestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
 
@@ -162,6 +164,7 @@ public class UserLectureService {
     }
 
     // 유저 수강 후기 삭제
+    @Transactional
     public void deleteReview(Long userLectureId) throws Exception {
         UserLecture userLecture = userLectureRepository.findById(userLectureId).orElseThrow(Exception::new);
         userLecture.setState(!userLecture.isState());
@@ -188,6 +191,7 @@ public class UserLectureService {
      * @param lectureId : 삭제할 강의의 pk
      * @return : 삭제된 수강 신청 내역 개수 반환(해당 강의의 수강 신청 개수 반환)
      */
+    @Transactional
     public int deleteUserLectureByLectureId(Long lectureId) {
         int ret = 0;
 
@@ -211,6 +215,7 @@ public class UserLectureService {
      * @param userId : 탈퇴한 회원의 pk
      * @return : 삭제된 수강 신청 내역 개수(해당 수강생이 수강했던 강의 개수 반환)
      */
+    @Transactional
     public int deleteUserLectureByUserId(Long userId) {
         int ret = 0;
 

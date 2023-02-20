@@ -164,6 +164,7 @@ public class LectureService {
         return returnList;
     }
 
+    @Transactional
     public LectureResponseDTO updateLectureActive(Long lectureId, long userId, Boolean isActive) throws Exception {
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() -> new Exception("강의가 존재하지 않습니다."));
 

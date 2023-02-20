@@ -24,6 +24,7 @@ import com.yuj.user.repository.UserRepository;
 import com.yuj.util.DayCounter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
@@ -133,6 +134,7 @@ public class MyPageService {
 //    private MyPageUserLectureResponseDTO entityToUserLectureResponseDTO(UserLecture userLecture){
 //        User user = userLecture.getUser();
 //    유저 정보 수정
+    @Transactional
     public Optional<User> updateUser(Long userId, MyPageUserInfoRequestDTO myPageUserInfoRequestDTO) {
         Optional<User> user = this.myPageUserInfoRepository.findById(userId);
 
