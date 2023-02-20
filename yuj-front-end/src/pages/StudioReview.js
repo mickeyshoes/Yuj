@@ -20,9 +20,9 @@ const StudioReview = (props) => {
     //init - get all review for lecture(teacher's only)
     useEffect(()=>{
         getReviews();
-        console.log('댓글 리스트 : ', reviewList);
-        // console.log('회원 계정', user.userId);
-        // console.log('스튜디오 강사 아이디', studiostudioDetail.userId);
+        // console.log('댓글 리스트 : ', reviewList);
+        // console.log('회원 계정', typeof(user.userId));
+        // console.log('스튜디오 강사 아이디', typeof(studios.studioDetail.userId));
     }, []);
 
     // change axios, add async
@@ -50,7 +50,7 @@ const StudioReview = (props) => {
                     <div className="flex justify-between mb-3">
                         <div><span className="text-success">총 {reviewList.length}개의 후기</span></div> 
                         {
-                            studio.studioDetail.studioId === user.userId || user.userId === -1
+                            studio.studioDetail.userId === parseInt(user.userId) || user.userId === -1
                                 ?<button className="border-none btn-accent btn text-white gap-2 px-4 btn-sm " disabled style={{'background-color': '#cccccc'}}><CreateIcon />후기 작성</button>
                                 :<button className="border-none btn-accent btn text-white gap-2 px-4 btn-sm" onClick={addReview}><CreateIcon />후기 작성</button>
                         }
