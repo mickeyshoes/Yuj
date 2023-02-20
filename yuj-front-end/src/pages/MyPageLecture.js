@@ -6,7 +6,7 @@ import LectureItemCard from "../components/LectureItemCard";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const LOCAL_URL = "https://i8a504.p.ssafy.io/api";
+const LOCAL_URL = process.env.REACT_APP_API_URL;
 const URL = LOCAL_URL;
 
 const MyPageLecture = () => {

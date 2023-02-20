@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const LOCAL_URL = "https://i8a504.p.ssafy.io/api";
+const LOCAL_URL = process.env.REACT_APP_API_URL;
 // const REMOTE_URL = "https://i8a504.p.ssafy.io/api";
 const URL = LOCAL_URL;
 

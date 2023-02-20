@@ -77,7 +77,7 @@ const StudioLectureDetailPage = () => {
     )
   } else if (userRole() === "user" && !endCheck()) {
     console.log(userLecture)
-    if(userLecture === {} || !userLecture.state ) {
+    if(!userLecture || userLecture === {} || !userLecture.state ) {
     lectureDetailButtons = (
       <div>
         <StudioLectureDetailLectureRegistModalBtn

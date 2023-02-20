@@ -6,16 +6,21 @@ import MyPageCalendar from "../components/MyPageCalendar";
 import axios from "axios";
 import { Link, } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { changeStudioLectureDetailItem } from "../stores/studioSlice";
+import { getLecture } from "../stores/lectureSlice";
 const MyPageDashBoard = () => {
 
     const user = useSelector(state => state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     
-    //신청한 모든 강의
+    //신청한 모든 강의 정보
     const [allLectures, setAllLectures] = useState([]);
+    //신청한 모든 수강신청 정보
+    const [allUserLectures, setAllUserLectures] = useState([]);
     //현재 수강중인 강의
     const [currentLectures, setCurrentLectures] = useState([]);
     //수강 완료한 강의
@@ -49,7 +54,7 @@ const MyPageDashBoard = () => {
         return `${hours}:${minutes}`;
     }
 
-    const LOCAL_URL = "https://i8a504.p.ssafy.io/api";
+    const LOCAL_URL = process.env.REACT_APP_API_URL;
 
     const URL = LOCAL_URL;
 
@@ -176,6 +181,8 @@ const MyPageDashBoard = () => {
 
         const diff = end.diff(start) / 1000;
 
+        if(diff < 0) return '';
+
         const times = [
             { name: '년', milliSeconds: 60 * 60 * 24 * 365 },
             { name: '개월', milliSeconds: 60 * 60 * 24 * 30 },
@@ -201,7 +208,7 @@ const MyPageDashBoard = () => {
             method: "GET",
             url: GET_ALL_LECTURES_USERID
         }).then(response => {
-            setAllLectures(response.data)
+            setAllUserLectures(response.data)
         })
             .catch(error => {
                 console.log(error.response);
@@ -233,6 +240,35 @@ const MyPageDashBoard = () => {
                 setCompletedLecturesLoading(true);
             })
 
+        //수강중인 강의의 정보를 가져오는 api
+        axios({
+            method: "GET",
+            url: `${URL}/lectures/myPage/lectures`, //u
+            params: {
+                userId: user.userId,
+            }
+        }).then(res => {
+            // 가져온 강의들을 강의 완료된것들은 뒤쪽으로 정렬, 등록일을 기준으로 최신 등록한 강의를 앞으로 정렬
+            // Sort the lectures array based on endDate and userRegistDate
+            const sortedLectures = res.data.sort((a, b) => {
+                // Compare the endDate of the two lectures
+                const endDateComparison = new Date(b.endDate) - new Date(a.endDate);
+                if (endDateComparison !== 0) {
+                    // If the endDate is different, return the comparison result
+                    return endDateComparison;
+                } else {
+                    // If the endDate is the same, compare userRegistDate
+                    const userRegistDateComparison = new Date(a.userRegistDate) - new Date(b.userRegistDate);
+                    return userRegistDateComparison;
+                }
+            });
+
+            setAllLectures(sortedLectures);
+            console.log("get all lectures on mypage : ",sortedLectures);
+        })
+            .catch(e => {
+                console.log(e);
+            });
         // 강의 시작 정보 구하기 위한것
         // 2/15 16:12 useEffect에서 처리할것은 아닌것같아 주석처리  문제없으면 삭제 예정
         // axios({
@@ -282,6 +318,17 @@ const MyPageDashBoard = () => {
             })
     }
 
+    const dashboardItemClicked = (lectureId) => {              
+        let clickedLecture = null;
+        allLectures.forEach(lecture => {
+            if(lecture.lectureId == lectureId){
+                console.log("move to detail in mypage : ",lecture)
+                clickedLecture = lecture;
+            }
+        })
+        clickedLecture ? dispatch(changeStudioLectureDetailItem(clickedLecture)) : alert("잘못된 요청입니다.");
+    }
+
     return (
         <>
             <div className="flex w-full">
@@ -311,7 +358,7 @@ const MyPageDashBoard = () => {
                                             </div>
                                             : <div>{currentLectures.slice(0, 3).sort((a, b) => a.timeDiff - b.timeDiff).map((post, idx) => (
                                                 <div key={idx}>
-                                                    <Link to="/studio" state={post.userId} className="h-20 my-2 flex">
+                                                    <Link to="/studioLectureDetailPage" onClick={() => dashboardItemClicked(post.lectureId)} className="h-20 my-2 flex">
                                                         <div className="flex-none ml-5 mr-3 mt-2">
                                                             {/* 강의 thumbnail_image */}
                                                             <img className="rounded object-cover overflow-hidden" style={{width: "75px", height: "48px"}} src={`${process.env.REACT_APP_IMAGE_URL}/${post.thumbnailImage}`}></img>
@@ -353,7 +400,7 @@ const MyPageDashBoard = () => {
                                                 .map((post, idx) => (
                                                     <div key={idx}>
                                                         {/* 실제로는 studio링크가 아닌 해당 강의 스튜디오로 이동하게 짜야함. */}
-                                                        <Link to="/studio" state={post.userId} className="h-20 my-2 flex">
+                                                        <Link to="/studioLectureDetailPage" onClick={() => dashboardItemClicked(post.lectureId)} className="h-20 my-2 flex">
                                                             <div className="flex-none ml-5 mr-3 mt-2">
                                                                 {/* src를 가져온 강의의 thumbnail_image로 */}
                                                                 <img className="rounded object-cover overflow-hidden" style={{width: "75px", height: "48px"}} src={`${process.env.REACT_APP_IMAGE_URL}/${post.thumbnailImage}`} alt="Lecture thumbnail" />

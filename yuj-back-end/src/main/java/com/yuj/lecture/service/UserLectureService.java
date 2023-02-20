@@ -42,27 +42,26 @@ public class UserLectureService {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         try {
             userLecture = userLectureRepository.findByUser_UserIdAndLecture_LectureId(userId, lectureId).orElseThrow(CUserLectureNotFoundException::new);
-        } catch(CUserLectureNotFoundException e) {
+        } catch (CUserLectureNotFoundException e) {
             userLecture = null;
         }
 
         Long ret = -1L;
 
         // 유저가 수강 혹은 재수강 시 lecture의 현재 total_count++, 만약 그 결과가 limit_students를 넘으면 등록 X.
-        if(lecture.getTotalCount() == lecture.getLimitStudents()) return ret;
+        if (lecture.getTotalCount() == lecture.getLimitStudents()) return ret;
         // 유저 수강 내역이 존재하는지 아닌지 검사
-        if(userLecture != null) {
-            if(userLecture.isState()) {
+        if (userLecture != null) {
+            if (userLecture.isState()) {
                 log.info("이미 수강 중");
                 return ret;
-            }
-            else {
+            } else {
                 log.info("재수강");
 
                 //재수강
                 ret = userLecture.getUserLectureId();
                 userLecture.setState(!userLecture.isState());
-                lecture.setTotalCount(lecture.getTotalCount()+1);
+                lecture.setTotalCount(lecture.getTotalCount() + 1);
                 return ret;
             }
         }
@@ -79,7 +78,7 @@ public class UserLectureService {
         log.info("lecture = " + lecture);
         log.info("user = " + user);
 
-        lecture.setTotalCount(lecture.getTotalCount()+1);
+        lecture.setTotalCount(lecture.getTotalCount() + 1);
 
         ret = userLectureRepository.save(newUserLecture).getUserLectureId();
 
@@ -92,11 +91,11 @@ public class UserLectureService {
         // 유저렉처 찾아오기
         UserLecture userLecture = userLectureRepository.findByUser_UserIdAndLecture_LectureId(userId, lectureId).orElseThrow(Exception::new);
         // 수강 중 상태 확인 후 수정
-        if(!userLecture.isState()) return ret;
+        if (!userLecture.isState()) return ret;
         userLecture.setState(!userLecture.isState());
         // total_count--
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(Exception::new);
-        lecture.setTotalCount(lecture.getTotalCount()-1);
+        lecture.setTotalCount(lecture.getTotalCount() - 1);
         // 저장
         userLectureRepository.save(userLecture);
         ret = userLecture.getUserLectureId();
@@ -124,64 +123,109 @@ public class UserLectureService {
                 .state(userLecture.isState())
                 .build();
     }
-    
+
     /*  ** 수강 후기 관련 ** */
-    
+
     // 유저 수강 후기 리스트 
     public List<LectureReviewResponseDTO> getReviewsByUserId(Long userId) {
-		List<LectureReviewResponseDTO> result = new ArrayList<>();
-		List<UserLecture> list = userLectureRepository.getReviewsByUserId(userId);
-		
-		for (UserLecture userLecture : list) {
-			result.add(entityToReviewDTO(userLecture));
-		}
-		return result;
-	}
-    
+        List<LectureReviewResponseDTO> result = new ArrayList<>();
+        List<UserLecture> list = userLectureRepository.getReviewsByUserId(userId);
+
+        for (UserLecture userLecture : list) {
+            result.add(entityToReviewDTO(userLecture));
+        }
+        return result;
+    }
+
     // 유저 수강 후기 등록
     public void registReview(LectureReviewRequestDTO userRequestDto) {
-		User user = userRepository.findById(userRequestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
-		
-		Lecture lecture = lectureRepository.findById(userRequestDto.getLectureId()).orElseThrow(CLectureNotFoundException::new);
-		
-		UserLecture userLecture = UserLecture.builder()
-				.registDate(LocalDate.now())
-				.review(userRequestDto.getReview())
-				.reviewUpdateDate(LocalDateTime.now())
-				.score(userRequestDto.getScore())
-				.lecture(lecture)
-				.user(user)
-				.build();
-		userLectureRepository.save(userLecture);
-		
-		// 후기에 따른 강사 댓글 개수, 점수 합계 update
-		User teacher = userRepository.findById(userRequestDto.getTeacherId()).orElseThrow(CUserNotFoundException::new);
-		
-		teacher.setRatingCnt(teacher.getRatingCnt() + 1);
-		teacher.setRatingSum(teacher.getRatingSum() + userRequestDto.getScore());
-		userRepository.save(teacher);
-	}
-	
+        User user = userRepository.findById(userRequestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+
+        Lecture lecture = lectureRepository.findById(userRequestDto.getLectureId()).orElseThrow(CLectureNotFoundException::new);
+
+        UserLecture userLecture = UserLecture.builder()
+                .registDate(LocalDate.now())
+                .review(userRequestDto.getReview())
+                .reviewUpdateDate(LocalDateTime.now())
+                .score(userRequestDto.getScore())
+                .lecture(lecture)
+                .user(user)
+                .build();
+        userLectureRepository.save(userLecture);
+
+        // 후기에 따른 강사 댓글 개수, 점수 합계 update
+        User teacher = userRepository.findById(userRequestDto.getTeacherId()).orElseThrow(CUserNotFoundException::new);
+
+        teacher.setRatingCnt(teacher.getRatingCnt() + 1);
+        teacher.setRatingSum(teacher.getRatingSum() + userRequestDto.getScore());
+        userRepository.save(teacher);
+    }
+
     // 유저 수강 후기 삭제
     public void deleteReview(Long userLectureId) throws Exception {
-    	UserLecture userLecture = userLectureRepository.findById(userLectureId).orElseThrow(Exception::new);
-    	userLecture.setState(!userLecture.isState());
+        UserLecture userLecture = userLectureRepository.findById(userLectureId).orElseThrow(Exception::new);
+        userLecture.setState(!userLecture.isState());
     }
-    
-    private LectureReviewResponseDTO entityToReviewDTO(UserLecture userLecture) {
-    	User user = userLecture.getUser();
-    	Lecture lecture = userLecture.getLecture();
-    	
-    	return LectureReviewResponseDTO.builder()
-    			.reviewId(userLecture.getUserLectureId())
-    			.userId(user.getUserId())
-    			.userName(user.getNickname())
-    			.date(userLecture.getRegistDate())
-    			.rating(userLecture.getScore())
-    			.lectureName(lecture.getName())
-    			.review(userLecture.getReview())
-    			.profileImage(user.getProfileImagePath())
-    			.build();
-    	}
 
+    private LectureReviewResponseDTO entityToReviewDTO(UserLecture userLecture) {
+        User user = userLecture.getUser();
+        Lecture lecture = userLecture.getLecture();
+
+        return LectureReviewResponseDTO.builder()
+                .reviewId(userLecture.getUserLectureId())
+                .userId(user.getUserId())
+                .userName(user.getNickname())
+                .date(userLecture.getRegistDate())
+                .rating(userLecture.getScore())
+                .lectureName(lecture.getName())
+                .review(userLecture.getReview())
+                .profileImage(user.getProfileImagePath())
+                .build();
+    }
+
+    /**
+     *
+     * @param lectureId : 삭제할 강의의 pk
+     * @return : 삭제된 수강 신청 내역 개수 반환(해당 강의의 수강 신청 개수 반환)
+     */
+    public int deleteUserLectureByLectureId(Long lectureId) {
+        int ret = 0;
+
+        try {
+            //  해당 강의의 모든 수강 신청 내역 찾아내기
+            List<UserLecture> userLectureList = userLectureRepository.findByLecture_LectureId(lectureId).orElseThrow(CUserLectureNotFoundException::new);
+            ret = userLectureList.size();
+
+            for (UserLecture userLecture : userLectureList) {
+                userLectureRepository.delete(userLecture);
+            }
+        } catch(CUserLectureNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            return ret;
+        }
+    }
+
+    /**
+     *
+     * @param userId : 탈퇴한 회원의 pk
+     * @return : 삭제된 수강 신청 내역 개수(해당 수강생이 수강했던 강의 개수 반환)
+     */
+    public int deleteUserLectureByUserId(Long userId) {
+        int ret = 0;
+
+        try {
+            //  해당 수강생의 모든 수강 신청 내역 찾아내기
+            List<UserLecture> userLectureList = userLectureRepository.findByUser_UserId(userId).orElseThrow(CUserLectureNotFoundException::new);
+            ret = userLectureList.size();
+
+            for (UserLecture userLecture : userLectureList) {
+                userLectureRepository.delete(userLecture);
+            }
+        } catch(CUserLectureNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            return ret;
+        }
+    }
 }
