@@ -283,13 +283,13 @@ class Vidu extends Component {
         }
 
         //수업중인 강의 active false로 바꾸기
-        this.props.dispatch(updateLectureActive(
+        this.props.updateLectureInActive(
             {
                 lectureId: this.state.mySessionId,
                 active: false,
-                userId: this.props.userInfo.userId
+                userId: this.props.userId
             }
-        ))
+        )
 
         // Empty all properties...
         this.OV = null;
@@ -303,7 +303,7 @@ class Vidu extends Component {
         });
 
         await axios.delete(
-            '/openvidu/api/sessions/' + this.state.mySessionId,
+            OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + this.state.mySessionId,
             {
                 headers: {
                     'Authorization': 'Basic ' + Base64.encode('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
@@ -566,7 +566,11 @@ class Vidu extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    userInfo: state.user.userInfo
+    userId: state.user.userId
 });
 
-export default connect(mapStateToProps)(Vidu);
+const mapDispatchToProps = (dispatch) => ({
+    updateLectureInActive: (object) => dispatch(updateLectureActive(object)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Vidu);
