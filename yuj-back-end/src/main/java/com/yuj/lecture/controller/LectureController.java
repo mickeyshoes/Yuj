@@ -119,6 +119,75 @@ public class LectureController {
     }
 
     /**
+     *
+     * @param lectureId       : 수정할 강의 pk
+     * @param files           : 새로 교체될 사진 파일들
+     * @param lectureVOString : 새로 교체될 강의 내용(요가 종류, 강좌명, 설명, 수강 정원)
+     * @param scheduleArr     : 새로 교체될 강의 일정
+     * @return                : 성공 시 OK 반환
+     */
+    @PutMapping("/{lectureId}")
+    public ResponseEntity<?> updateLecture(@PathVariable("lectureId") Long lectureId
+            , @RequestPart(value = "files", required = false) List<MultipartFile> files
+            , @RequestParam(value = "vo") String lectureVOString
+            , @RequestParam(value = "scheduleArr", required = false) String scheduleArr
+    ) {
+        log.info("updateLecture in Lecture Controller");
+        log.info("lectureId = " + lectureId);
+        log.info("files = " + files);
+        log.info("lectureVOString = " + lectureVOString);
+        log.info("scheduleArr = " + scheduleArr);
+
+        try {
+            JSONParser jsonParser = new JSONParser(lectureVOString);
+            Object obj = jsonParser.parse();
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> map = mapper.convertValue(obj, Map.class);
+            log.info("obj = " + obj);
+            log.info("map = " + map);
+
+            LectureVO lectureVO = LectureVO.builder()
+                    .userId(Long.parseLong(String.valueOf(map.get("userId"))))
+                    .yogaId(Long.parseLong(String.valueOf(map.get("yogaId"))))
+                    .name(String.valueOf(map.get("name")))
+                    .description(String.valueOf(map.get("description")))
+                    .startDate(LocalDate.parse(String.valueOf(map.get("startDate")), DateTimeFormatter.ISO_DATE))
+                    .endDate(LocalDate.parse(String.valueOf(map.get("endDate")), DateTimeFormatter.ISO_DATE))
+                    .registDate(LocalDate.parse(String.valueOf(map.get("registDate")), DateTimeFormatter.ISO_DATE))
+                    .limitStudents(Integer.parseInt(String.valueOf(map.get("limitStudents"))))
+                    .fee(Integer.parseInt(String.valueOf(map.get("fee"))))
+                    .totalCount(Integer.parseInt(String.valueOf(map.get("totalCount"))))
+                    .build();
+
+            log.info("VO = " + lectureVO);
+            List<LectureScheduleRegistDTO> lsrDtos = new ArrayList<>();
+
+            if (scheduleArr != null) {
+                JSONArray jsonArray = new JSONArray(scheduleArr);
+                log.info("jsonArray = " + jsonArray);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObj = jsonArray.getJSONObject(i);
+                    LectureScheduleRegistDTO dto = LectureScheduleRegistDTO.builder()
+                            .startTime(LocalTime.parse(String.valueOf(jsonObj.get("startTime")) + ":00"))
+                            .endTime(LocalTime.parse(String.valueOf(jsonObj.get("endTime")) + ":00"))
+                            .day(Integer.parseInt(String.valueOf(jsonObj.get("day"))))
+                            .build();
+
+                    log.info("dto : " + dto);
+                    lsrDtos.add(dto);
+                }
+            }
+
+            Long ret = lectureService.updateLecture(lectureId, files, lectureVO, lsrDtos);
+            return new ResponseEntity<>("강의 수정 성공\n강의 번호 : " + ret, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("강의 수정 오류", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * @param lectureId : 삭제할 강의의 PK
      * @return : 강의 삭제 성공 시 OK 반환
      */
@@ -141,7 +210,7 @@ public class LectureController {
                 .append("삭제된 수강 신청 내역 개수 : ").append(deletedUserLectures).append("\n")
                 .append("삭제된 수강 내역 개수 : ").append(deletedUserLectureSchedules).append("\n")
                 .append("삭제된 강의 관련 이미지 개수 : ").append(deletedImages).append("\n")
-                .append("삭제된 강의 번호 : ").append("\n");
+                .append("삭제된 강의 번호 : ").append(deletedLectureId).append("\n");
 
         ret = new ResponseEntity<>(sb.toString(), HttpStatus.OK);
 
