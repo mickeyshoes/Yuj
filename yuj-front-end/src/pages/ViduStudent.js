@@ -214,8 +214,6 @@ class Vidu extends Component {
     //         console.log(content);
     //     })
     // }
-
-    // 세션 생성하는 과정
     async joinSession() {
         this.OV = new OpenVidu();
         // console.log('join session')
@@ -252,7 +250,6 @@ class Vidu extends Component {
                 //강사가 강의 나가면 수강생도 종료
                 mySession.on('streamDestroyed', (event) => {
                     this.deleteSubscriber(event.stream.streamManager);
-                    this.leaveSession();
                 });
                 // 강퇴 당할 시 session에 undefined 정의하고 dom 리랜더링 -> 스튜디오로 이동
                 mySession.on('sessionDisconnected', (event) => {
@@ -317,9 +314,12 @@ class Vidu extends Component {
         // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
         const mySession = this.state.session;
         
-        // console.log('학생 세션 : ', this.state.session);
+        console.log('학생 세션 : ', this.state.session);
         if (mySession) {
             mySession.disconnect();
+            // mySession.disconnect(this.state.session.connection.connectionId);
+            // const connection = mySession.getConnection(this.state.session.connection.connectionId);
+            // mySession.forceDisconnect(connection);
         }
 
         // Empty all properties...

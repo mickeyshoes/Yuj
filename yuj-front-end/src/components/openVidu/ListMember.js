@@ -1,3 +1,4 @@
+import { Hidden } from "@mui/material";
 import React from 'react';
 import styled from 'styled-components';
 
@@ -7,13 +8,13 @@ const Member = styled.p`
     font-size: 1rem;
     span{
         padding-left: 30px;
-    }
+    } 
 `;
 
 const ListMember = ({ listMember, exitMember }) => {
     return (
         <Member>
-            <p style={{width:'80px'}}>{listMember[0]}</p>
+            <p style={{width:'80px', 'text-overflow': 'ellipsis', overflow:'hidden', whiteSpace:'nowrap'}}>{listMember[0]}</p>
             {
                 listMember[2] === true ?
                 <span class="material-symbols-outlined">videocam</span> : <span class="material-symbols-outlined">  videocam_off</span>
