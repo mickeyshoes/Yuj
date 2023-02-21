@@ -18,12 +18,12 @@ const MyPageCalendar = (props) => {
                 events={lectureEvents.map((event, index) => {
                     return {
                         ...event,
-                        tle: event.title.substr(0, 13),
+                        title: event.title.substr(0, 13),
                         backgroundColor: color[index % Object.keys(color).length],
                         borderColor: color[index % Object.keys(color).length],
                         url: "/studio",
                         state: {
-                          lectureId: event.lectureId,
+                            lectureId: event.lectureId,
                         },
                     }
                 })}

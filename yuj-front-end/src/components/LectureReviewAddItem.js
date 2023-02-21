@@ -72,7 +72,7 @@ const StudioReview = (props) => {
         
         const response = await axios.post(
             // `http://localhost:5000/lectures/userLectures/review`, body,
-            `https://i8a504.p.ssafy.io/api/lectures/userLectures/review`, body,
+            `${process.env.REACT_APP_API_URL}/lectures/userLectures/review`, body,
             // `${process.env.REACT_APP_API_URL}/lectures/userLectures/review`, body,
         );
         navigate(-1);
