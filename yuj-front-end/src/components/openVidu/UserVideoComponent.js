@@ -5,7 +5,7 @@ import './UserVideo.css';
 
 const NameTag = styled.p`
     /* width: 150px; */
-    color: #90859A;
+    /* color: #90859A; */
     font-weight: bold;
 `;
 export default class UserVideoComponent extends Component {
@@ -29,9 +29,9 @@ export default class UserVideoComponent extends Component {
                 {this.props.streamManager !== undefined ? (
                     <div className="streamcomponent relative">
                         <OpenViduVideoComponent type={this.props.type} isActive={ this.props.isActive} streamManager={this.props.streamManager}
-                        studentVideoRef={this.props.studentVideoRef} studentCanvasRef={this.props.studentCanvasRef} studentAnimationFrame={this.props.studentAnimationFrame}
-                        teacherVideoRef={this.props.teacherVideoRef} teacherCanvasRef={this.props.teacherCanvasRef} teacherAnimationFrame={this.props.teacherAnimationFrame} />
-                        <div className='absolute top-4 right-4'><NameTag>{this.getNicknameTag() + (this.props.type??'')} 님</NameTag></div>
+                        studentVideoRef={this.props.studentVideoRef} studentCanvasRef={this.props.studentCanvasRef} 
+                        teacherVideoRef={this.props.teacherVideoRef} teacherCanvasRef={this.props.teacherCanvasRef}/>
+                        <div className='absolute top-4 right-4' style={{color:this.props.type !== "강사" ? '#D2CDBC':'#90859A'}}><NameTag>{this.getNicknameTag() + (this.props.type??'')} 님</NameTag></div>
                     </div>
                 ) : null}
             </div>

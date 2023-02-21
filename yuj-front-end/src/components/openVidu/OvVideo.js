@@ -108,11 +108,11 @@ class OpenViduVideoComponent extends Component {
 
         return (this.props.isActive === true ? 
             (<>
-                <canvas width={1920} height={1080} style={{ border:'solid 7px #B7AFBD', width:'auto', height:'90vh', borderRadius: '10px'}} ref={this.canvasRef}/>
+                <canvas width={1920} height={1080} style={{ border:'solid 7px', borderColor: this.props.type !== "강사" ? '#D2CDBC':'#90859A', width:'auto', height:'90vh', borderRadius: '10px'}} ref={this.canvasRef}/>
                 <video width={'0px'} height={'0px'} autoPlay = { true} ref = { this.videoRef } style={{visibility : "hidden"}}/>
             </>) 
         :   (<>
-                <canvas width={1920} height={1080} style={{ border:'solid 7px #B7AFBD', width:'100%', height:'100%', borderRadius: '10px' }} ref={this.canvasRef}/>
+                <canvas width={1920} height={1080} style={{ border:'solid 7px', borderColor: this.props.type !== "강사" ? '#D2CDBC':'#90859A', width:'100%', height:'100%', borderRadius: '10px' }} ref={this.canvasRef}/>
                 <video width={'0px'} height={'0px'} autoPlay = { true} ref = { this.videoRef } style={{visibility : "hidden"}}/>
             </>))
     }
