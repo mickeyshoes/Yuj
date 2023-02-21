@@ -18,20 +18,22 @@ class OpenViduVideoComponent extends Component {
 
     componentDidUpdate(props) {
         this.navigateDefaultOrAIDrawing(props);
-        console.log('did update ref check!', this.props.studentVideoRef, this.props.studentCanvasRef, this.props.teacherVideoRef, this.props.teacherCanvasRef);
+        // console.log('did update ref check!', this.props.studentVideoRef, this.props.studentCanvasRef, this.props.teacherVideoRef, this.props.teacherCanvasRef);
 
     }
 
     componentDidMount() {
         this.context = this.canvasRef.current.getContext('2d');
-        console.log(this.props.type,' : did mount ref check!', this.props.studentVideoRef, this.props.studentCanvasRef, this.props.teacherVideoRef, this.props.teacherCanvasRef);
+        // console.log(this.props.type,' : did mount ref check!', this.props.studentVideoRef, this.props.studentCanvasRef, this.props.teacherVideoRef, this.props.teacherCanvasRef);
         this.navigateDefaultOrAIDrawing(this.props);
+        console.log('강사 컴포넌트 props!!!!! : ', this.props.clientType, typeof (this.props.clientType), this.props.clientType === '수강생');
+        console.log('this.props.type !!! : ', this.props.type!== "강사");
     }
 
     navigateDefaultOrAIDrawing(state){
         this.width = this.canvasRef.current.widht;
         this.height = this.canvasRef.current.height;
-        console.log('in navigateDefaultOrAIDrawing', this.props.model.userInferenceState.inferenceState);
+        // console.log('in navigateDefaultOrAIDrawing', this.props.model.userInferenceState.inferenceState);
 
         if(state && !!this.videoRef){
             this.props.streamManager.addVideoElement(this.videoRef.current);
@@ -42,10 +44,10 @@ class OpenViduVideoComponent extends Component {
     async drawVideoWithInferenceInfo(){
         this.context.drawImage(this.videoRef.current, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height);
         if(this.props.model.userInferenceState.inferenceState){
-            console.log('inference ready');
+            // console.log('inference ready');
             await this.renderResult();
         }
-        console.log('animated done');
+        // console.log('animated done');
         this.rafId.current = requestAnimationFrame(this.drawVideoWithInferenceInfo.bind(this));
     }
 
@@ -53,8 +55,8 @@ class OpenViduVideoComponent extends Component {
 
         let teacherVideo = this.props.teacherVideoRef;
         let teacherCanvas = this.props.teacherCanvasRef;
-        console.log(this.props.type, ' : 85line',teacherVideo, teacherCanvas);
-        console.log(this.props.type, ' : 86line',teacherVideo.current, teacherCanvas.current);
+        // console.log(this.props.type, ' : 85line',teacherVideo, teacherCanvas);
+        // console.log(this.props.type, ' : 86line',teacherVideo.current, teacherCanvas.current);
         let teacherCanvasContext = teacherCanvas.current.getContext('2d');
 
 
@@ -64,21 +66,21 @@ class OpenViduVideoComponent extends Component {
         let userPose = await estimate(this.props.model.model, this.canvasRef.current);
         let teacherPose = await estimate(this.props.model.model, teacherCanvas.current);
 
-        console.log('user pose ', userPose);
-        console.log('teacher pose ', teacherPose);
+        // console.log('user pose ', userPose);
+        // console.log('teacher pose ', teacherPose);
 
 
         let result = await Promise.all([
             userPose, teacherPose
         ]).then((poses) => {
-            console.log(poses);
+            // console.log(poses);
             userPose = convertToCalculateFormat(poses[0]);
             teacherPose = convertToCalculateFormat(poses[1]);
             return userPose.keypoints.length >0 && teacherPose.keypoints.length >0 ? calSimilarity(ModelParams.strategy, ...poses):100;
         }).then(point=> point);
 
 
-        console.log('****************************similarity result: ', result);
+        // console.log('****************************similarity result: ', result);
         let userColor = result <= ModelParams.SCORE_THRESHHOLD ? "Green" : "White";
 
         if(userPose.keypoints.length>0){
@@ -108,11 +110,21 @@ class OpenViduVideoComponent extends Component {
 
         return (this.props.isActive === true ? 
             (<>
-                <canvas width={1920} height={1080} style={{ border:'solid 7px', borderColor: this.props.type !== "강사" ? '#D2CDBC':'#90859A', width:'auto', height:'90vh', borderRadius: '10px'}} ref={this.canvasRef}/>
-                <video width={'0px'} height={'0px'} autoPlay = { true} ref = { this.videoRef } style={{visibility : "hidden"}}/>
+                <canvas width={1920} height={1080} style={{
+                    border: 'solid 7px', borderColor: this.props.type !== "강사" ?
+                        this.props.clientType !== '강사' ?  
+                        '#D2CDBC' : '#90859A'
+                        : '#90859A', width: 'auto', height: '90vh', borderRadius: '10px'
+                }} ref={this.canvasRef} />
+                <video autoPlay = { true} ref = { this.videoRef } style={{visibility : "hidden", width: '0px', height: '0px'}}/>
             </>) 
         :   (<>
-                <canvas width={1920} height={1080} style={{ border:'solid 7px', borderColor: this.props.type !== "강사" ? '#D2CDBC':'#90859A', width:'100%', height:'100%', borderRadius: '10px' }} ref={this.canvasRef}/>
+                <canvas width={1920} height={1080} style={{
+                    border: 'solid 7px', borderColor: this.props.type !== "강사" ?
+                        this.props.clientType !== '강사' ?
+                            '#D2CDBC' : '#90859A'
+                        : '#90859A', width: '100%', height: '100%', borderRadius: '10px'
+                }} ref={this.canvasRef} />
                 <video width={'0px'} height={'0px'} autoPlay = { true} ref = { this.videoRef } style={{visibility : "hidden"}}/>
             </>))
     }

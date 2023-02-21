@@ -10,10 +10,6 @@ const NameTag = styled.p`
 `;
 export default class UserVideoComponent extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     componentDidUpdate(){
         console.log('update comp');
     }
@@ -28,9 +24,9 @@ export default class UserVideoComponent extends Component {
             <div style={{padding: '10px'}}>
                 {this.props.streamManager !== undefined ? (
                     <div className="streamcomponent relative">
-                        <OpenViduVideoComponent type={this.props.type} isActive={ this.props.isActive} streamManager={this.props.streamManager}
-                        studentVideoRef={this.props.studentVideoRef} studentCanvasRef={this.props.studentCanvasRef} 
-                        teacherVideoRef={this.props.teacherVideoRef} teacherCanvasRef={this.props.teacherCanvasRef}/>
+                        <OpenViduVideoComponent type={this.props.type} isActive={this.props.isActive} streamManager={this.props.streamManager}
+                            studentVideoRef={this.props.studentVideoRef} studentCanvasRef={this.props.studentCanvasRef}
+                            teacherVideoRef={this.props.teacherVideoRef} teacherCanvasRef={this.props.teacherCanvasRef} clientType={this.props.clientType } />
                         <div className='absolute top-4 right-4' style={{color:this.props.type !== "강사" ? '#D2CDBC':'#90859A'}}><NameTag>{this.getNicknameTag() + (this.props.type??'')} 님</NameTag></div>
                     </div>
                 ) : null}

@@ -74,7 +74,6 @@ class Vidu extends Component {
         this.voiceControl = this.voiceControl.bind(this);
         this.listControl = this.listControl.bind(this);
         this.aiInferenceToggle = this.aiInferenceToggle.bind(this);
-        this.teacherSkeletonToggle = this.teacherSkeletonToggle.bind(this);
 
         this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
         this.handleChangeUserName = this.handleChangeUserName.bind(this);
@@ -455,11 +454,6 @@ class Vidu extends Component {
         this.setState({ aiMessage: message })
     }
 
-    teacherSkeletonToggle() {
-        this.props.toggleSkeletonMode();
-        let message = this.props.model.teacherSkeletonState.skeletonState ? '강사 스켈레톤 끄기' : '강사 스켈레톤 켜기';
-        this.setState({teacherSkeletonMessage: message});
-    }
 
     render() {
         if(this.state.session === undefined && this.state.isVisited === false){
@@ -481,7 +475,7 @@ class Vidu extends Component {
             display: flex !important;
             flex-wrap: wrap !important;
             align-items: center;
-            margin-top: 7%;
+            margin-top: 10%;
 
             width: 100%;
             height: 100%;
@@ -561,9 +555,6 @@ class Vidu extends Component {
                                 </button>
                                 <button className="clickControl" style={{margin: '0', height: '2.5rem'}} onClick={this.aiInferenceToggle}><div className="flex w-full justify-center">{this.props.model.userInferenceState.inferenceState === true ?
                                     <span className="material-symbols-outlined">psychology_alt</span> : <span className="material-symbols-outlined">psychology</span>}  &nbsp;&nbsp;  {this.state.aiMessage}</div>
-                                </button>
-                                <button className="clickControl" style={{margin: '0', height: '2.5rem'}} onClick={this.teacherSkeletonToggle}><div className="flex w-full justify-center">{this.props.model.teacherSkeletonState.skeletonState === true ?
-                                    <span className="material-symbols-outlined">auto_fix_off</span> : <span className="material-symbols-outlined">auto_fix</span>}  &nbsp;&nbsp;  {this.state.teacherSkeletonMessage}</div>
                                 </button>
                                 <button className="clickControl" style={{margin: '0', height: '2.5rem'}} onClick={this.listControl}><div className="flex w-full justify-center">{this.state.liston === true ?
                                     <span className="material-symbols-outlined">person</span> : <span className="material-symbols-outlined">person_off</span>}  &nbsp;&nbsp;  {this.state.listMessage}</div>

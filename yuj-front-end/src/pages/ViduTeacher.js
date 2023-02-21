@@ -502,19 +502,19 @@ class Vidu extends Component {
                             <div>
                                 {this.state.mainStreamManager !== undefined && this.state.isActive === true ? (
                                     <div style={{ position: 'relative', width: 'auto' }} onClick={() => { this.handleMainVideoStream(this.state.mainStreamManager) }}>
-                                        <UserVideoComponent isActive={ this.state.isActive} streamManager={this.state.mainStreamManager} />
+                                        <UserVideoComponent isActive={ this.state.isActive} streamManager={this.state.mainStreamManager} clientType={ '강사'}/>
                                     </div>
                                 ) : null}
                             </div>
                             <VideoGrid>
                                 {this.state.publisher !== undefined ? (
                                     <div style={{ position: 'relative', width: '33%' }} onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                                        <UserVideoComponent streamManager={this.state.publisher} />
+                                        <UserVideoComponent streamManager={this.state.publisher} clientType={ '강사'} />
                                     </div>
                                 ): null}
                                 {this.state.subscribers.map((sub, i) => (
                                     <div key={i} style={{ position: 'relative', width:'33%'}} onClick={() => this.handleMainVideoStream(sub)}>
-                                        <UserVideoComponent streamManager={sub} onClick={() => { console.log('클릭',sub);} } />
+                                        <UserVideoComponent streamManager={sub} onClick={() => { console.log('클릭', sub); }} clientType={'수강생' } />
                                     </div>
                                 ))}
                             </VideoGrid>
