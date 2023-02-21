@@ -66,22 +66,26 @@ input.btn {
 	padding-right: 8px;
 }
 
-.clickControl{
+/* .clickControl{
 	width: 12rem;
 	height: 4vh;
 	margin-bottom: 10px;
 
 	background-color: #EBE8DF;
 	border-radius:  90px;
+} */
+
+.clickControl{
+	width: 12rem;
+	height: 4vh;
+	margin-bottom: 10px;
+
+	background-color: #EBE8DF;
+	border-radius:  15px;
 }
-
-.clickControl{
-	width: 12rem;
-	height: 4vh;
-	margin-bottom: 10px;
-
-	background-color: #EBE8DF;
-	border-radius:  90px;
+.clickControl:hover{
+	background-color: #90859A;
+	color: white;
 }
 
 a:hover .demo-logo {
