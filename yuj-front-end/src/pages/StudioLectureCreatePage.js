@@ -16,6 +16,7 @@ import {
   getStudioLiveLecture,
 } from "../stores/studioSlice";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const StudioLectureCreatePage = () => {
   // useHistory의 기능을 모두 useNavigate가 대체 -> 뒤로가기, 앞으로가기 등
@@ -31,7 +32,11 @@ const StudioLectureCreatePage = () => {
     if (addScheduleCnt === schedules.length) {
       setAddSchduleCnt(addScheduleCnt + 1);
     } else {
-      alert("일정을 확인해 주세요.");
+      Swal.fire({
+        text: "일정을 다시 확인해 주세요.",
+        confirmButtonColor: "#90859A",
+        confirmButtonText: "확인",
+      });
     }
   };
   const minusAddSchdulecnt = (e) => {
@@ -210,13 +215,29 @@ const StudioLectureCreatePage = () => {
       )
       .then((response) => {
         console.log("OK!!!!");
-        console.log(response.data);
-        // window.location.replace("/"); //  로그인 성공 시 화면 이동
-        navigate("/studio");
+        console.log("확인 :::",response.data);
+        if(!response.data.success) {
+          Swal.fire({
+            icon: "error",
+            iconColor: "#EBE8DF",
+            text: "강의 개설 정보를 다시 확인해 주세요.",
+            confirmButtonColor: "#90859A",
+            confirmButtonText: "확인",
+          });
+        } else {
+          navigate("/studio");
+        }
       })
       .catch((error) => {
         console.log("Error!!!!!!!!!!!!!");
-        console.error(error);
+        console.error("확인 :::", error);
+        Swal.fire({
+          icon: "error",
+          iconColor: "#EBE8DF",
+          text: "강의 개설 정보를 다시 확인해 주세요.",
+          confirmButtonColor: "#90859A",
+          confirmButtonText: "확인",
+        });
       });
 
     // const postSurvey = await axios({

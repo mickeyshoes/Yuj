@@ -3,6 +3,7 @@ import axios from "axios";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Link } from "react-router-dom";
 import Styles from "./LoginPage.module.css";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const [userId, setUserId] = useState("");
@@ -94,7 +95,17 @@ const SignUp = () => {
       .then((response) => {
         console.log("OK!!!!");
         console.log(response.data);
-        window.location.replace("/"); //  로그인 성공 시 화면 이동
+        if(!response.data.success) {
+          Swal.fire({
+            icon: "error",
+            iconColor: "#EBE8DF",
+            text: "회원 가입 정보를 다시 확인해 주세요.",
+            confirmButtonColor: "#90859A",
+            confirmButtonText: "확인",
+          });
+        } else{
+          window.location.replace("/"); // 회원가입 성공 시 화면 이동
+        }
       })
       .catch((error) => {
         console.log("Error!!!!!!!!!!!!!");
@@ -342,7 +353,7 @@ const SignUp = () => {
                   type="text"
                   id="nickname"
                   className={"bg-opacity-50 input rounded-xl input-sm"}
-                  minLength={6}
+                  minLength={2}
                   maxLength={16}
                   value={nickname}
                   onChange={(event) => setNickname(event.target.value)}

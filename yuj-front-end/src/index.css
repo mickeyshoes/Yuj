@@ -7,3 +7,8 @@
     font-family: "nanum Gothic";
     color: #323131;
 }
+
+/* sweetalert css */
+.swal2-styled:focus {
+    box-shadow: none !important;
+}

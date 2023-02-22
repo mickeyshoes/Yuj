@@ -12,6 +12,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
     "@reduxjs/toolkit": "^1.9.1",
+    "@sweetalert2/theme-borderless": "^5.0.15",
     "@tensorflow-models/pose-detection": "^2.0.0",
     "@tensorflow/tfjs": "^3.21.0",
     "@tensorflow/tfjs-backend-cpu": "^3.21.0",
@@ -46,6 +47,7 @@
     "slick-carousel": "^1.8.1",
     "style-loader": "^3.3.1",
     "styled-components": "^5.3.6",
+    "sweetalert2": "^11.7.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
