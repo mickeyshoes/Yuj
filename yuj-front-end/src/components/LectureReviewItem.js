@@ -57,10 +57,10 @@ const LectureReviewItem = (props) => {
                         (<><EditIcon/><DeleteIcon/></>) : null} */}
                         {parseInt(loginUserInfo.userId) === item.userId ?
                             (<>
-                                <span className='rounded-full p-1 hover:bg-success hover:bg-opacity-40 flex ml-5 mr-3 items-center' onClick={updateReview()}><EditIcon sx={{ fontSize: 15 }} />
+                                <span className='rounded-full p-1 hover:bg-success hover:bg-opacity-40 flex ml-5 mr-3 items-center' onClick={updateReview}><EditIcon sx={{ fontSize: 15 }} />
                                     <p className="text-xs ml-1">수정</p>
                                 </span>
-                                <span className='rounded-full p-1 hover:bg-success hover:bg-opacity-40 flex items-center' onClick={deleteReview()}><DeleteIcon sx={{ fontSize: 15 }} />
+                                <span className='rounded-full p-1 hover:bg-success hover:bg-opacity-40 flex items-center' onClick={deleteReview}><DeleteIcon sx={{ fontSize: 15 }} />
                                     <p className="text-xs ml-1">삭제</p>
                                 </span>
                             </>) : null}
