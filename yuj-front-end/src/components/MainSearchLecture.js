@@ -12,6 +12,7 @@ const MainSearchLecture = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getYogaList());
+    dispatch(searchLectures(keyword)); //변동 사항 반영 안 되는 문제 해결
   }, []);
 
   const [keyword, setKeyword] = useState("");

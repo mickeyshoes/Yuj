@@ -78,15 +78,19 @@ const StudioLectureDetailPage = () => {
     )
   } else if (userRole() === "user" && !endCheck()) {
     console.log(userLecture)
-    if(!userLecture || userLecture === {} || !userLecture.state ) {
-    lectureDetailButtons = (
-      <div>
-        <StudioLectureDetailLectureRegistModalBtn
-          text={"수강 신청"}
-          className={"btn-accent text-white px-12"}
-        />
-      </div>
-    );
+    if(!userLecture || userLecture === {} || !userLecture.state) {
+      if(lecture.totalCount < lecture.limitStudents){
+        lectureDetailButtons = (
+          <div>
+            <StudioLectureDetailLectureRegistModalBtn
+              text={"수강 신청"}
+              className={"btn-accent text-white px-12"}
+            />
+          </div>
+        );
+      } else {
+        
+      }
     } else {
       lectureDetailButtons = (
         <div>
