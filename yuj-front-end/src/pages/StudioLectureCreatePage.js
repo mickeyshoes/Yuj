@@ -45,7 +45,7 @@ const StudioLectureCreatePage = () => {
       let tmpSchedules = [];
       const id = e.target.id;
       for (let i = 0; i < schedules.length; i++) {
-        if (id != i) {
+        if (id !== i) {
           tmpSchedules.push(schedules[i]);
         }
       }
@@ -215,8 +215,8 @@ const StudioLectureCreatePage = () => {
       )
       .then((response) => {
         console.log("OK!!!!");
-        console.log("확인 :::",response.data);
-        if(!response.data.success) {
+        console.log("확인 :::",response.status);
+        if(response.status !== 200) {
           Swal.fire({
             icon: "error",
             iconColor: "#EBE8DF",
