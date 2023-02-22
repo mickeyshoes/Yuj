@@ -70,7 +70,7 @@ const LectureItemCard = (props) => {
               {complete()}
             </div>
             <div className="max-h-48">
-            <img src={`${process.env.REACT_APP_IMAGE_URL}/${lecture.images ? lecture.images[0].filePath : thumbnail}`} alt="Card Image" />
+            <img src={`${process.env.REACT_APP_IMAGE_URL}/${lecture.images.length !== 0 ? lecture.images[0].filePath : thumbnail}`} alt="Card Image" />
             </div>
           </Link>
         </figure>
