@@ -22,7 +22,8 @@ const MainHeader = () => {
     dispatch(searchTeachers(keyword));
   }
 
-  const notReadyAlert = () => {
+  const notReadyAlert = (e) => {
+    e.preventDefault();
     Swal.fire({
       icon: "info",
       iconColor: "#EBE8DF",
