@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 //시작, 끝 시간 셀렉트 박스를 위한 시간 옵션 만들기
 let hour = [];
@@ -30,7 +31,11 @@ const StudioLectureCreateScheduleInput = (props) => {
   };
   const handleSelectEndTime = (e) => {
     if(startTimeValue >= e.target.value) {
-      alert("일정을 다시 확인해 주세요.")
+      Swal.fire({
+        text: "일정을 다시 확인해 주세요.",
+        confirmButtonColor: "#90859A",
+        confirmButtonText: "확인",
+      });
     } else {
       setEndTimeValue(e.target.value);
       let schedule = {

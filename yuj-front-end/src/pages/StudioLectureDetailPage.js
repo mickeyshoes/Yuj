@@ -19,11 +19,20 @@ import {
   getStudioLectureList,
   getStudioLiveLecture,
 } from "../stores/studioSlice";
-import { changeUserLecture, deleteUserLecture, getLectureSchedule, getUserLecture, registUserLecture } from "../stores/lectureSlice";
-import { StudioLectureDetailLectureRegistCancelModal, StudioLectureDetailLectureRegistCancelModalBtn } from "../components/StudioLectureDetailLectureRegistCancelModal";
+import {
+  changeUserLecture,
+  deleteUserLecture,
+  getLectureSchedule,
+  getUserLecture,
+  registUserLecture,
+} from "../stores/lectureSlice";
+import {
+  StudioLectureDetailLectureRegistCancelModal,
+  StudioLectureDetailLectureRegistCancelModalBtn,
+} from "../components/StudioLectureDetailLectureRegistCancelModal";
+import Swal from "sweetalert2";
 
 const StudioLectureDetailPage = () => {
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,7 +42,7 @@ const StudioLectureDetailPage = () => {
   const studio = useSelector((state) => state.studio);
   const userId = user.userId;
   const teacherId = lecture.userId;
-  console.log("lecture : " ,lecture);
+  console.log("lecture : ", lecture);
   // console.log(user);
   // console.log(userId);
   // console.log(teacherId);
@@ -54,12 +63,14 @@ const StudioLectureDetailPage = () => {
     // changeUserLecture({});
     console.log("userId ::" + userId);
     console.log(lecture.lectureId);
-    dispatch(getUserLecture({userId: user.userId, lectureId: lecture.lectureId}));
-  }, [])
-  const userLecture = useSelector(state => state.lecture.userLecture);
+    dispatch(
+      getUserLecture({ userId: user.userId, lectureId: lecture.lectureId })
+    );
+  }, []);
+  const userLecture = useSelector((state) => state.lecture.userLecture);
   useEffect(() => {
     console.log(userLecture);
-  },[userLecture])
+  }, [userLecture]);
 
   // 수강생 -> 수강 신청(수강 취소), 목록으로
   // 강사 -> 수정하기, 폐강하기, 목록으로
@@ -69,17 +80,25 @@ const StudioLectureDetailPage = () => {
     else return "user";
   }
 
+  const notReadyAlert = () => {
+    Swal.fire({
+      icon: "info",
+      iconColor: "#EBE8DF",
+      text: "아직 준비 중인 기능입니다.",
+      confirmButtonColor: "#90859A",
+      confirmButtonText: "확인",
+    });
+  };
+
   let lectureDetailButtons;
-  console.log("userRole : " + userRole())
+  console.log("userRole : " + userRole());
   if (user.userId === -1) {
     //로그인한 유저 정보가 없는 경우 목록으로 버튼만
-    lectureDetailButtons = (
-      <></>
-    )
+    lectureDetailButtons = <></>;
   } else if (userRole() === "user" && !endCheck()) {
-    console.log(userLecture)
-    if(!userLecture || userLecture === {} || !userLecture.state) {
-      if(lecture.totalCount < lecture.limitStudents){
+    console.log(userLecture);
+    if (!userLecture || userLecture === {} || !userLecture.state) {
+      if (lecture.totalCount < lecture.limitStudents) {
         lectureDetailButtons = (
           <div>
             <StudioLectureDetailLectureRegistModalBtn
@@ -89,7 +108,6 @@ const StudioLectureDetailPage = () => {
           </div>
         );
       } else {
-        
       }
     } else {
       lectureDetailButtons = (
@@ -104,7 +122,12 @@ const StudioLectureDetailPage = () => {
   } else if (userRole() === "teacher" && !endCheck()) {
     lectureDetailButtons = (
       <div className="flex flex-wrap gap-2">
-        <button className="btn btn-accent text-white px-12">수정하기</button>
+        <button
+          className="btn btn-accent text-white px-12"
+          onClick={notReadyAlert}
+        >
+          수정하기
+        </button>
         <StudioLectureDetailLectureClosingModalBtn
           text={"폐강하기"}
           className={"px-12"}
@@ -119,43 +142,46 @@ const StudioLectureDetailPage = () => {
   }, []);
   let lectureSchedule = useSelector((state) => state.lecture.lectureSchedule);
 
-
   //사이드바
   useEffect(() => {
     getStudioInfo();
   }, []);
 
-
   const getStudioInfo = () => {
     dispatch(getStudioDetail(lecture.userId));
     dispatch(getStudioLectureList(lecture.userId));
     dispatch(getStudioLiveLecture(lecture.userId));
-  }
+  };
 
   //수강신청
   const registUL = () => {
-    dispatch(registUserLecture({userId: user.userId, lectureId: lecture.lectureId}));
+    dispatch(
+      registUserLecture({ userId: user.userId, lectureId: lecture.lectureId })
+    );
     window.location.reload();
-  }
+  };
 
   //수강취소
   const deleteUL = () => {
     console.log(user.userId, lecture.lectureId);
-    dispatch(deleteUserLecture({userId: user.userId, lectureId: lecture.lectureId}));
+    dispatch(
+      deleteUserLecture({ userId: user.userId, lectureId: lecture.lectureId })
+    );
     window.location.reload();
-  }
+  };
 
   //수업 폐강
-  const deleteLecture = async() => {
-    await deleteLectureAPI(lecture.lectureId)
-      .then(() => {
-        navigate('/studio', {state:{teacherId: user.userId}, replace: true});
-      })
-  }
+  const deleteLecture = async () => {
+    await deleteLectureAPI(lecture.lectureId).then(() => {
+      navigate("/studio", { state: { teacherId: user.userId }, replace: true });
+    });
+  };
 
   const deleteLectureAPI = (lectureId) => {
-    return axios.delete(`${process.env.REACT_APP_API_URL}/lectures/${lectureId}`);
-  }
+    return axios.delete(
+      `${process.env.REACT_APP_API_URL}/lectures/${lectureId}`
+    );
+  };
 
   return (
     <>
@@ -193,7 +219,7 @@ const StudioLectureDetailPage = () => {
           {
             text: "확인",
             className: "btn-accent text-white",
-            onClickEvent: () => deleteLecture()
+            onClickEvent: () => deleteLecture(),
           },
           {
             text: "취소",
@@ -209,7 +235,7 @@ const StudioLectureDetailPage = () => {
         />
         <div className="px-40 overflow-hidden">
           <div className="mt-5">
-            <StudioLectureDetailCarousel thisLecture={lecture}/>
+            <StudioLectureDetailCarousel thisLecture={lecture} />
           </div>
           <div className="mt-5">
             <StudioLectureDetailInfoBox
@@ -218,13 +244,22 @@ const StudioLectureDetailPage = () => {
             />
           </div>
           <div className="mt-3">
-            <StudioLectureDetailSchedule lectureSchedule={lectureSchedule} />
+            <StudioLectureDetailSchedule
+              lectureSchedule={lectureSchedule}
+              startDate={lecture.startDate}
+              endDate={lecture.endDate}
+            />
           </div>
           {/* 강사 및 수강생 별로 버튼 다르게 해야함*/}
           <div className="flex justify-end flex-wrap gap-2 pt-5 pb-8">
             {lectureDetailButtons}
             {/* <Link to="/studioLectureListPage" className="flex"> */}
-              <button className="btn btn-primary px-12" onClick={() => navigate(-1)}>뒤로가기</button>
+            <button
+              className="btn btn-primary px-12"
+              onClick={() => navigate(-1)}
+            >
+              뒤로가기
+            </button>
             {/* </Link> */}
           </div>
         </div>
