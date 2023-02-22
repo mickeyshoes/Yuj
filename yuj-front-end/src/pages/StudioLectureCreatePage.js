@@ -108,7 +108,7 @@ const StudioLectureCreatePage = () => {
   //데이터 전송
   const [imgFiles, setImgFiles] = useState([]); //미리보기, 이미지 데이터 전송
   const [schedules, setSchedules] = useState([]); //스케줄 데이터 전송
-  const [imgTransfer, setImgTransfer] = useState(); //이미지 데이터 전송 전용
+  const [imgTransfer, setImgTransfer] = useState([]); //이미지 데이터 전송 전용
 
   console.log("In StudioLectureCreatePage");
   console.log("imgTransfer = " + imgTransfer);
