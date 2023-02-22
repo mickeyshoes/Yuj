@@ -287,9 +287,11 @@ public class LectureService {
         List<UserLecture> list = userLectureRepository.findByUser_UserId(userId).orElseThrow(CUserLectureNotFoundException::new);
 
         for (UserLecture userLecture : list) {
-            Long lectureId = userLecture.getLecture().getLectureId();
-            LectureResponseDTO lrdto = entityToResponseDTO(lectureRepository.findByLectureId(lectureId));
-            result.add(lrdto);
+            if(userLecture.isState()) {
+                Long lectureId = userLecture.getLecture().getLectureId();
+                LectureResponseDTO lrdto = entityToResponseDTO(lectureRepository.findByLectureId(lectureId));
+                result.add(lrdto);
+            }
         }
         return result;
     }
