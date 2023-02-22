@@ -55,11 +55,14 @@ public class UserService {
             throw new CSignUpFailedCException("이미 존재하는 아이디입니다.");
 
         try {
-            List<ImageFile> imageFileList = fileHandler.parseLectureImageInfo(files);
+            List<ImageFile> imageFileList = files!= null ? fileHandler.parseLectureImageInfo(files) : new ArrayList<>();
 
             //  파일이 존재하면 처리
             if(!imageFileList.isEmpty()) {
                 ImageFile imageFile = imageFileList.get(0);
+                userSignupRequestDTO.setProfileImagePath(imageFile.getFilePath());
+            } else {    //   파일이 존재하지 않으면 기본 파일
+                ImageFile imageFile = ImageFile.builder().filePath("defaultProfile.jpg").fileSize(10485L).origFileName("defaultProfile.jpg").build();
                 userSignupRequestDTO.setProfileImagePath(imageFile.getFilePath());
             }
 
