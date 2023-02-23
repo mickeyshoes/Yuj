@@ -116,7 +116,8 @@ class OpenViduVideoComponent extends Component {
                         '#D2CDBC' : '#90859A'
                         : '#90859A', width: 'auto', height: '90vh', borderRadius: '10px'
                 }} ref={this.canvasRef} />
-                <video autoPlay = { true} ref = { this.videoRef } style={{visibility : "hidden", width: '0px', height: '0px'}}/>
+                <video autoPlay = { true} ref = { this.videoRef } style={{width: '0%', height: '0%'}}/>
+                {/* <video autoPlay = { true} ref = { this.videoRef } style={{visibility : "hidden", width: '0px', height: '0px'}}/> */}
             </>) 
         :   (<>
                 <canvas width={1920} height={1080} style={{
@@ -125,7 +126,7 @@ class OpenViduVideoComponent extends Component {
                             '#D2CDBC' : '#90859A'
                         : '#90859A', width: '100%', height: '100%', borderRadius: '10px'
                 }} ref={this.canvasRef} />
-                <video width={'0px'} height={'0px'} autoPlay = { true} ref = { this.videoRef } style={{visibility : "hidden"}}/>
+                <video autoPlay = { true} ref = { this.videoRef } style={{width: '0%', height: '0%'}}/>
             </>))
     }
 

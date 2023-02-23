@@ -475,7 +475,7 @@ class Vidu extends Component {
             display: flex !important;
             flex-wrap: wrap !important;
             align-items: center;
-            margin-top: 10%;
+            /* margin-top: 10%; */
 
             width: 100%;
             height: 100%;
