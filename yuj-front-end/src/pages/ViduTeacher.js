@@ -61,6 +61,7 @@ class Vidu extends Component {
         this.videoControl = this.videoControl.bind(this);
         this.voiceControl = this.voiceControl.bind(this);
         this.listControl = this.listControl.bind(this);
+        this.updateList = this.updateList.bind(this);
         this.exitMember = this.exitMember.bind(this);
 
         this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
@@ -199,7 +200,7 @@ class Vidu extends Component {
                     var subscriber = mySession.subscribe(event.stream, undefined);
                     var subscribers = this.state.subscribers;
                     subscribers.push(subscriber);
-
+                    this.updateList();
                     this.setState({
                         subscribers: subscribers,
                     });
@@ -221,6 +222,7 @@ class Vidu extends Component {
 
                 mySession.on('streamDestroyed', (event) => {
                     this.deleteSubscriber(event.stream.streamManager);
+                    this.updateList();
                 });
 
                 mySession.on('exception', (exception) => {
@@ -386,43 +388,42 @@ class Vidu extends Component {
         this.setState({ liston: !this.state.liston });
         if (this.state.liston === false) {
             this.setState({ listMessage: '참가자 끄기' });
-            let Sessions = await axios.get(
-                OPENVIDU_SERVER_URL + '/openvidu/api/sessions',
-                {
-                    headers: {
-                        'Authorization': 'Basic ' + Base64.encode('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
-                    },
-                }
-            );
-            // console.log(Sessions);
-            // 현재 세션에 참가하고 있는 사람들의 세션 아이디, 비디오, 오디오 상태 확인
-            let listMembersDemo = [];
-            Sessions.data.content.forEach((content) => {
-                if (this.state.mySessionId === content.id) {
-                    content.connections.content.map((c) => {
-                        // console.log(c.id); // 세션 아이디
-                        // console.log(JSON.parse(c.clientData).clientType); // 커스텀 한 데이터 값 : 강사/수강생 여부
-                        // console.log(c.publishers[0].mediaOptions.videoActive); // 해당 세션 아이디의 비디오 사용 여부
-                        // console.log(c.publishers[0].mediaOptions.audioActive); // 해당 세션 아이디의 오디오 사용 여부
-                        let member = {};
-                        member[0] = JSON.parse(c.clientData).clientData;
-                        member[1] = JSON.parse(c.clientData).clientType;
-                        member[2] = c.publishers[0].mediaOptions.videoActive;
-                        member[3] = c.publishers[0].mediaOptions.audioActive;
-                        member[4] = c.id;
-                        member[5] = this.state.myUserType;
-                        
-                        listMembersDemo.push(member);
-                    });
-                }
-                this.setState(() => ({
-                    listMembers: listMembersDemo
-                }));
-                
-            })
+            this.updateList();
         } else { 
             this.setState({ listMessage: '참가자 켜기' });
         }
+    }
+
+    async updateList() { 
+        let Sessions = await axios.get(
+            OPENVIDU_SERVER_URL + '/openvidu/api/sessions',
+            {
+                headers: {
+                    'Authorization': 'Basic ' + Base64.encode('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
+                },
+            }
+        );
+        // 현재 세션에 참가하고 있는 사람들의 세션 아이디, 비디오, 오디오 상태 확인
+        let listMembersDemo = [];
+        Sessions.data.content.forEach((content) => {
+            if (this.state.mySessionId === content.id) {
+                content.connections.content.map((c) => {
+                    let member = {};
+                    member[0] = JSON.parse(c.clientData).clientData;
+                    member[1] = JSON.parse(c.clientData).clientType;// 커스텀 한 데이터 값 : 강사/수강생 여부
+                    member[2] = c.publishers[0].mediaOptions.videoActive;// 해당 세션 아이디의 비디오 사용 여부
+                    member[3] = c.publishers[0].mediaOptions.audioActive;// 해당 세션 아이디의 오디오 사용 여부
+                    member[4] = c.id;
+                    member[5] = this.state.myUserType;
+                    
+                    listMembersDemo.push(member);
+                });
+            }
+            this.setState(() => ({
+                listMembers: listMembersDemo
+            }));
+            
+        })
     }
 
     async exitMember(connectionId) { 
@@ -443,7 +444,6 @@ class Vidu extends Component {
         }
 
         const VideoContainer = styled.div`
-           
             background: #F8F6F3;
             justify-content: center;
             top:0px;
