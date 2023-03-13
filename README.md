@@ -34,7 +34,7 @@
 ![강사 목록](./image/%EA%B0%95%EC%82%AC%20%EB%AA%A9%EB%A1%9D.png)
 #### 강의 목록
 > 전체 강의 목록을 조회할 수 있습니다. 강의에 관련된 간략한 정보를 확인할 수 있습니다.
-![강의 목록](./image/lecture_introduce.png)
+![강의 목록](./image/lecture_introduce.PNG)
 
 #### 강의 수강(수강생 시점)
 <!-- ![yuj-pose-detection-success](https://user-images.githubusercontent.com/49228132/219531818-207fd822-2ae2-4fa0-9790-d8f2c79b5bb0.gif) -->
